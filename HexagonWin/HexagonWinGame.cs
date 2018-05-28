@@ -51,24 +51,7 @@ namespace HexagonWin
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            MonoObject.UserIdleTextures.Add(this.Content.Load<Texture2D>("hexagon_blue"));
-
-            MonoObject.UserActiveTextures.Add(this.Content.Load<Texture2D>("hexagon_blue_checked"));
-
-            MonoObject.FieldTextures.Add(this.Content.Load<Texture2D>("hexagon_gray"));
-
-            for(int row = 0; row < this.gameCore.Map.Width; row++)
-            {
-                for(int column = 0; column < this.gameCore.Map.Height; column++)
-                {
-                    this.gameCore.Map.SetItem(new HexagonObject() { Texture = MonoObject.FieldTextures[0] }, row, column);
-                }
-            }
-            
-            this.gameCore.Map.SetItem(new HexagonObject() { Texture = MonoObject.UserIdleTextures[0], BelongUser = 0, Life = 8 }, 1, 0);
-            this.gameCore.Map.SetItem(new HexagonObject() { Texture = MonoObject.UserIdleTextures[0], Life = 4 }, 2, 8);
-            this.gameCore.Map.SetItem(new HexagonObject() { Texture = MonoObject.UserIdleTextures[0], Life = 2 }, 8, 2);
-            this.gameCore.Map.SetItem(new HexagonObject() { Texture = MonoObject.UserIdleTextures[0], Life = 16 }, 9, 7);
+            this.gameCore.LoadContent(this.Content);
         }
 
         /// <summary>
