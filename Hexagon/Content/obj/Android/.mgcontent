@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Android</Platform>
+  <Config />
+  <SourceFiles>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_blue.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_blue_checked.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_gray.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_green.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_red.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_white.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_yellow.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/LifeFont.spritefont</File>
+  </SourceFiles>
+</SourceFileCollection>

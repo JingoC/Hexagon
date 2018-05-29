@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Hexagon
 {
+    using HexagonLibrary;
+    using HexagonLibrary.Entity.GameObjects;
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -11,7 +14,7 @@ namespace Hexagon
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Core gameCore;
         public HexagonAndroidGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -21,6 +24,8 @@ namespace Hexagon
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 480;
             graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+
+            this.gameCore = new Core(HexagonLibrary.Device.GameDeviceType.Touch);
         }
 
         /// <summary>
@@ -46,6 +51,7 @@ namespace Hexagon
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            this.gameCore.LoadContent(this.Content);
         }
 
         /// <summary>
@@ -68,6 +74,7 @@ namespace Hexagon
                 Exit();
 
             // TODO: Add your update logic here
+            this.gameCore.Update();
 
             base.Update(gameTime);
         }
@@ -81,8 +88,25 @@ namespace Hexagon
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            this.spriteBatch.Begin();
+            foreach (var item in this.gameCore.Map.Items)
+            {
+                this.DrawObject(item);
+            }
+            this.spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        void DrawObject(MonoObject mObj)
+        {
+            if (mObj.Texture != null)
+            {
+                this.spriteBatch.Draw(mObj.Texture, mObj.Position, mObj.Color);
+                SpriteFont sp = this.Content.Load<SpriteFont>("LifeFont");
+
+                this.spriteBatch.DrawString(sp, mObj.Text, mObj.TextPositon, Color.Black);
+            }
         }
     }
 }

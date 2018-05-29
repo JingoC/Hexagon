@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace HexagonLibrary.Model.Navigation
@@ -63,6 +64,11 @@ namespace HexagonLibrary.Model.Navigation
             int row = hObj.SectorId / this.Width;
             int column = hObj.SectorId - (row * this.Height);
             return this.GetPositionInfo(row, column);
+        }
+
+        public bool IsLinkedObjects(HexagonObject o1, HexagonObject o2)
+        {
+            return this.GetPositionInfo(o1).AroundObjects.Exists((x)=>x.Equals(o2));
         }
 
         public GameObjectPositionInfo GetPositionInfo(int row, int column)

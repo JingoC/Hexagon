@@ -53,9 +53,13 @@
     <Compile Include="Entity\GameObjects\MonoObject.cs" />
     <Compile Include="Entity\Players\CPU.cs" />
     <Compile Include="Entity\Players\Player.cs" />
+    <Compile Include="Entity\Players\Strategy\FirstStrategy.cs" />
+    <Compile Include="Entity\Players\Strategy\ICPUStrategy.cs" />
     <Compile Include="Entity\Players\User.cs" />
     <Compile Include="Model\Navigation\GameObjectPositionInfo.cs" />
     <Compile Include="Model\Navigation\Map.cs" />
+    <Compile Include="Model\StateMachines\StateMachine.cs" />
+    <Compile Include="Model\StateMachines\StateMachineEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
