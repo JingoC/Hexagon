@@ -22,7 +22,8 @@ namespace HexagonLibrary.Entity.GameObjects
         UserActive2 = 12,
         UserActive3 = 13,
         FieldFree = 20,
-        FieldMarked = 21
+        FieldMarked = 21,
+        SysButton = 40
     }
 
     public enum TypeFonts
@@ -35,6 +36,7 @@ namespace HexagonLibrary.Entity.GameObjects
         public static List<Texture2D> UserIdleTextures = new List<Texture2D>();
         public static List<Texture2D> UserActiveTextures = new List<Texture2D>();
         public static List<Texture2D> FieldTextures = new List<Texture2D>();
+        public static List<Texture2D> SystemTextures = new List<Texture2D>();
         public static List<SpriteFont> Fonts = new List<SpriteFont>();
 
         public static void LoadContent()
@@ -50,6 +52,8 @@ namespace HexagonLibrary.Entity.GameObjects
 
             GameObject.FieldTextures.Add(content.Load<Texture2D>("hexagon_gray"));
             GameObject.FieldTextures.Add(content.Load<Texture2D>("hexagon_white"));
+
+            GameObject.SystemTextures.Add(content.Load<Texture2D>("user_button"));
 
             GameObject.Fonts.Add(content.Load<SpriteFont>("LifeFont"));
         }
@@ -68,6 +72,7 @@ namespace HexagonLibrary.Entity.GameObjects
                 case TypeTexture.UserActive3: return GameObject.UserActiveTextures[(int)typeTexture - (int)TypeTexture.UserActive0];
                 case TypeTexture.FieldFree:
                 case TypeTexture.FieldMarked: return GameObject.FieldTextures[(int)typeTexture - (int)TypeTexture.FieldFree];
+                case TypeTexture.SysButton: return GameObject.SystemTextures[(int)typeTexture - (int)TypeTexture.SysButton];
                 default: throw new Exception("Texture not found");
             }
         }

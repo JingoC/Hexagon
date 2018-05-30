@@ -47,20 +47,29 @@ namespace WinSystem.System
         public event DeviceEventHandler UnPressedMouse;
 
         private bool mouseIsPressed;
+        private bool keyboardIsPressed;
+        private bool touchIsPressed;
 
         public bool Enable { get; set; } = true;
+        public bool MouseEnable { get; set; } = true;
+        public bool TouchEnable { get; set; } = true;
 
         public Input()
         {
             this.mouseIsPressed = false;
+            this.touchIsPressed = false;
+            this.keyboardIsPressed = false;
         }
         
         public void Update()
         {
             if (this.Enable)
             {
-                this.UpdateMouse();
-                //this.UpdateTouch();
+                if (this.MouseEnable)
+                    this.UpdateMouse();
+
+                if (this.TouchEnable)
+                    this.UpdateTouch();
             }
         }
 
@@ -95,23 +104,29 @@ namespace WinSystem.System
 
                 switch (touch.State)
                 {
-                    case TouchLocationState.Pressed: { this.mouseIsPressed = true; } break;
+                    case TouchLocationState.Pressed: { this.touchIsPressed = true; } break;
                     case TouchLocationState.Released:
                         {
-                            if (this.mouseIsPressed)
+                            if (this.touchIsPressed)
                             {
-                                this.mouseIsPressed = false;
+                                this.touchIsPressed = false;
                                 DeviceEventArgs e = new DeviceEventArgs();
                                 e.X = touch.Position.X;
                                 e.Y = touch.Position.Y;
 
-                                //this.ScreenClickExecute(this, e);
+                                if (this.ClickTouch != null)
+                                    this.ClickTouch(this, e);
                             }
                         }
                         break;
                     default: break;
                 }
             }
+        }
+
+        void UpdateKeyboard()
+        {
+            var state = Keyboard.GetState();
         }
     }
 }

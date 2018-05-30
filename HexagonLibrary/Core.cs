@@ -37,18 +37,7 @@ namespace HexagonLibrary
             this.CPUs.Add(new CPU() { ID = 1, Strategy = new FirstStrategy() });
             this.CPUs.Add(new CPU() { ID = 2, Strategy = new FirstStrategy() });
             this.CPUs.Add(new CPU() { ID = 3, Strategy = new FirstStrategy() });
-
-            this.threadActionCpu = new Thread(new ThreadStart(delegate()
-            {
-                foreach(var item in this.CPUs)
-                {
-                    item.Strategy.Calculate(this.Map, item);
-                }
-                
-                this.IsReady = true;
-                this.Step++;
-            }));
-
+            
             this.stateMachine = new StateMachine() { Map = this.Map };
 
             this.stateMachine.ClickHisObject += StateMachine_ClickHisObject;
@@ -167,6 +156,20 @@ namespace HexagonLibrary
             this.IsReady = false;
 
             this.stateMachine.SetGameState(TypeGameState.Cpu);
+
+            this.threadActionCpu = new Thread(new ThreadStart(delegate ()
+            {
+                foreach (var item in this.CPUs)
+                {
+                    item.Strategy.Calculate(this.Map, item);
+                }
+
+                this.IsReady = true;
+                this.Step++;
+                this.stateMachine.SetGameState(TypeGameState.Play);
+
+                this.threadActionCpu.Abort();
+            }));
             this.threadActionCpu.Start();
         }
 
