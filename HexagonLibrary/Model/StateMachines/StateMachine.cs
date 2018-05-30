@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace HexagonLibrary.Model.StateMachines
 {
-    using Device;
     using Model.Navigation;
     using Entity.Players;
     using Entity.GameObjects;
+
+    using WinSystem.System;
 
     public enum TypeState
     {
@@ -39,8 +40,7 @@ namespace HexagonLibrary.Model.StateMachines
         private HexagonObject lastObject;
         private HexagonObject currentObject;
         private TypeGameState gameState;
-
-        public IGameDevice Device { get; set; }
+        
         public Map Map { get; set; }
 
         public event StateMachineEventHandler ClickHisObject;
@@ -51,19 +51,20 @@ namespace HexagonLibrary.Model.StateMachines
         public event StateMachineEventHandler ClickAddLootPoint;
         public event StateMachineEventHandler ClickModifyFreeOjbect;
 
-        public StateMachine(IGameDevice device)
+        public StateMachine()
         {
             this.state = TypeState.Idle;
             this.gameState = TypeGameState.Play;
-
-            this.Device = device;
-
-            this.Device.ScreenClick += Device_ScreenClick;
+            
+            InputSingleton.GetInstance().ClickMouse += Device_ScreenClick;
+            InputSingleton.GetInstance().ClickTouch += Device_ScreenClick;
         }
 
         private void Device_ScreenClick(object sender, DeviceEventArgs e)
         {
-            var hexagon = this.Map.Items.FirstOrDefault((x) => x.IsIntersection(e.X, e.Y));
+            var control = this.Map.Items.FirstOrDefault((x) => (x as HexagonObject).IsEntry(e.X, e.Y));
+            HexagonObject hexagon = control != null ? control as HexagonObject : null;
+
             switch (this.gameState)
             {
                 case TypeGameState.Play: this.GameState_PlayHandler(hexagon); break;

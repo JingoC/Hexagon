@@ -1,5 +1,11 @@
 ﻿using System;
 
+using Microsoft.Xna.Framework;
+
+using WinSystem;
+using WinSystem.Controls;
+using HexagonLibrary;
+
 namespace HexagonWin
 {
 #if WINDOWS || LINUX
@@ -14,9 +20,26 @@ namespace HexagonWin
         [STAThread]
         static void Main()
         {
-            using (var game = new HexagonWinGame())
-                game.Run();
+            using (var winSystem = new WSystem())
+            {
+                Core core = new Core();
+                Activity coreActivity = new Activity();
+                
+                winSystem.ActivitySelected.Items.Add(core);
+
+                winSystem.LoadContentEvent += delegate (object sender, EventArgs e)
+                {
+                    core.LoadContent();
+                };
+
+                winSystem.UpdateEvent += delegate (object sender, EventArgs e)
+                {
+                    core.Update();
+                };
+
+                winSystem.Graphics.Run();
+            }
         }
-    }
 #endif
+    }
 }

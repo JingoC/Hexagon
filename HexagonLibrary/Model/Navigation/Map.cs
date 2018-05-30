@@ -6,10 +6,10 @@ using System.Text;
 namespace HexagonLibrary.Model.Navigation
 {
     using Entity.GameObjects;
+    using WinSystem.Controls;
 
-    public class Map
+    public class Map : Container
     {
-        public List<HexagonObject> Items { get; private set; } = new List<HexagonObject>();
         public List<List<HexagonObject>> Rows { get; private set; } = new List<List<HexagonObject>>();
         public List<List<HexagonObject>> Columns { get; private set; } = new List<List<HexagonObject>>();
 
@@ -47,6 +47,7 @@ namespace HexagonLibrary.Model.Navigation
             int y = item.Height * row + row * (-12);
             item.Position = new Microsoft.Xna.Framework.Vector2(x, y);
             item.SectorId = row * this.Height + column;
+            item.Font = GameObject.GetFont(TypeFonts.TextHexagon);
             this.Items[row * this.Height + column] = item;
             this.Rows[row][column] = item;
             this.Columns[column][row] = item;

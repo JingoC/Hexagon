@@ -4,13 +4,13 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/hexagon_blue.png</File>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/hexagon_gray.png</File>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/hexagon_blue_checked.png</File>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/LifeFont.spritefont</File>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/hexagon_white.png</File>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/hexagon_green.png</File>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/hexagon_red.png</File>
-    <File>Z:/clones/Hexagon/HexagonWin/Content/hexagon_yellow.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_blue.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_gray.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_blue_checked.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/LifeFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_white.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_green.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_red.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_yellow.png</File>
   </SourceFiles>
 </SourceFileCollection>

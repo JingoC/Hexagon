@@ -42,7 +42,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="HexagonWinGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,13 +61,15 @@
     <None Include="app.config" />
     <None Include="app.manifest" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="View\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\HexagonLibrary\HexagonLibrary.csproj">
       <Project>{4bf6e92f-62c0-484c-9c52-4d17f58db286}</Project>
       <Name>HexagonLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinSystem\WinSystem.csproj">
+      <Project>{e79636e5-6697-4ee2-937a-d78aacafcff9}</Project>
+      <Name>WinSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,11 +12,25 @@ namespace WinSystem.Controls
 
     using WinSystem.System;
 
-    public class MonoObject
+    public enum TextAlignHorizontal
+    {
+        Left = 1,
+        Center = 2,
+        Right = 3
+    }
+
+    public enum TextAlignVertical
+    {
+        Top = 1,
+        Center = 2,
+        Botton = 3
+    }
+
+    public class MonoObject : IControl
     {
         public Texture2D Texture { get; set; }
-        public Vector2 Position { get; set; }
-        public Color Color { get; set; }
+        virtual public Vector2 Position { get; set; }
+        public Color Color { get; set; } = Color.White;
         public string Name { get; set; }
 
         public int Width { get => this.Texture.Width; }
@@ -29,13 +43,19 @@ namespace WinSystem.Controls
 
         }
 
-        public void CheckEntry(int x, int y)
+        public bool IsEntry(float x, float y)
         {
             float x1 = this.Position.X;
             float y1 = this.Position.Y;
             float x2 = x1 + this.Width;
             float y2 = y1 + this.Height;
-            if ((x > x1) && (x < x2) && (y > y1) && (y < y2) && (this.Click != null))
+
+            return ((x > x1) && (x < x2) && (y > y1) && (y < y2));
+        }
+
+        public void CheckEntry(float x, float y)
+        {
+            if (this.IsEntry(x, y) && (this.Click != null))
             {
                 this.Click(this, EventArgs.Empty);
             }

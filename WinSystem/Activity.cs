@@ -12,21 +12,25 @@ namespace WinSystem
     using Controls;
     using System;
 
-    public class Activity
+    public class Activity : Container
     {
-        public List<MonoObject> Controls { get; private set; } = new List<MonoObject>();
+        static int countActivity = 0;
+        
         public Color Background { get; set; }
+        public string Name { get; set; } = $"Activity{countActivity}";
 
         public Activity()
         {
-
+            countActivity++;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             GraphicsSingleton.GetInstance().GraphicsDevice.Clear(this.Background);
 
-            this.Controls.ForEach((x) => x.Draw());
+            GraphicsSingleton.GetInstance().GetSpriteBatch().Begin();
+            base.Draw();
+            GraphicsSingleton.GetInstance().GetSpriteBatch().End();
         }
     }
 }

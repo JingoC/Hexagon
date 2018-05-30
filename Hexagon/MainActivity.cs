@@ -16,7 +16,7 @@ namespace Hexagon
     public class MainActivity : Microsoft.Xna.Framework.AndroidGameActivity
     {
         protected override void OnCreate(Bundle bundle)
-        {
+        { 
             base.OnCreate(bundle);
             var g = new HexagonAndroidGame();
             SetContentView((View)g.Services.GetService(typeof(View)));

@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="Activity.cs" />
     <Compile Include="Controls\Button.cs" />
+    <Compile Include="Controls\Container.cs" />
+    <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\Label.cs" />
     <Compile Include="Controls\MonoObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

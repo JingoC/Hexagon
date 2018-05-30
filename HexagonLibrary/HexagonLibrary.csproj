@@ -45,23 +45,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
-    <Compile Include="Device\DeviceEventArgs.cs" />
-    <Compile Include="Device\IGameDevice.cs" />
-    <Compile Include="Device\MonoDevice.cs" />
-    <Compile Include="Entity\GameObjects\GameObject.cs" />
     <Compile Include="Entity\GameObjects\HexagonObject.cs" />
-    <Compile Include="Entity\GameObjects\MonoObject.cs" />
+    <Compile Include="Entity\GameObjects\GameObject.cs" />
     <Compile Include="Entity\Players\CPU.cs" />
     <Compile Include="Entity\Players\Player.cs" />
     <Compile Include="Entity\Players\Strategy\FirstStrategy.cs" />
     <Compile Include="Entity\Players\Strategy\ICPUStrategy.cs" />
     <Compile Include="Entity\Players\User.cs" />
-    <Compile Include="Entity\SystemObjects\Button.cs" />
     <Compile Include="Model\Navigation\GameObjectPositionInfo.cs" />
     <Compile Include="Model\Navigation\Map.cs" />
     <Compile Include="Model\StateMachines\StateMachine.cs" />
     <Compile Include="Model\StateMachines\StateMachineEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WinSystem\WinSystem.csproj">
+      <Project>{e79636e5-6697-4ee2-937a-d78aacafcff9}</Project>
+      <Name>WinSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

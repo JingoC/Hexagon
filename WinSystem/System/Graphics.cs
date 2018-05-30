@@ -15,7 +15,7 @@ namespace WinSystem.System
 
         public static Graphics GetInstance()
         {
-            return (graphics != null) ? graphics : new Graphics();
+            return (graphics != null) ? graphics : (graphics = new Graphics());
         }
 
 
@@ -31,7 +31,7 @@ namespace WinSystem.System
             this.graphics = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
 
-            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.IsMouseVisible = true;
         }
 
         public SpriteBatch GetSpriteBatch() { return this.spriteBatch; }
@@ -41,8 +41,15 @@ namespace WinSystem.System
         public event EventHandler UpdateEvent;
         public event EventHandler DrawEvent;
 
+        protected override void Initialize()
+        {
+            base.Initialize();
+        }
+
         protected override void LoadContent()
         {
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+
             base.LoadContent();
 
             if (this.LoadContentEvent != null)

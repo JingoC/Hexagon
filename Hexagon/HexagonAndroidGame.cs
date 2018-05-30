@@ -16,7 +16,7 @@ namespace Hexagon
         SpriteBatch spriteBatch;
         Core gameCore;
         public HexagonAndroidGame()
-        {
+        { 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             
@@ -98,7 +98,7 @@ namespace Hexagon
             base.Draw(gameTime);
         }
 
-        void DrawObject(MonoObject mObj)
+        void DrawObject(GameObject mObj)
         {
             if (mObj.Texture != null)
             {

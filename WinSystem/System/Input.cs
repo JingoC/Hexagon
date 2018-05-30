@@ -15,24 +15,103 @@ namespace WinSystem.System
 
         static public Input GetInstance()
         {
-            return input != null ? InputSingleton.input : new Input();
+            return input != null ? InputSingleton.input : (input = new Input());
+        }
+    }
+
+    public delegate void DeviceEventHandler(object sender, DeviceEventArgs e);
+
+    public class DeviceEventArgs : EventArgs
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+
+        public float X2 { get; set; }
+        public float Y2 { get; set; }
+
+        public DeviceEventArgs()
+        {
+
         }
     }
 
     public class Input
     {
-        public event EventHandler ClickTouch;
-        public event EventHandler PressedTouch;
-        public event EventHandler UnPressedTouch;
-        public event EventHandler MoveTouch;
+        public event DeviceEventHandler ClickTouch;
+        public event DeviceEventHandler PressedTouch;
+        public event DeviceEventHandler UnPressedTouch;
+        public event DeviceEventHandler MoveTouch;
 
-        public event EventHandler ClickMouse;
-        public event EventHandler PressedMouse;
-        public event EventHandler UnPressedMouse;
+        public event DeviceEventHandler ClickMouse;
+        public event DeviceEventHandler PressedMouse;
+        public event DeviceEventHandler UnPressedMouse;
+
+        private bool mouseIsPressed;
+
+        public bool Enable { get; set; } = true;
 
         public Input()
         {
-            
+            this.mouseIsPressed = false;
+        }
+        
+        public void Update()
+        {
+            if (this.Enable)
+            {
+                this.UpdateMouse();
+                //this.UpdateTouch();
+            }
+        }
+
+        void UpdateMouse()
+        {
+            switch (Mouse.GetState().LeftButton)
+            {
+                case ButtonState.Pressed: { this.mouseIsPressed = true; } break;
+                case ButtonState.Released:
+                    {
+                        if (this.mouseIsPressed)
+                        {
+                            this.mouseIsPressed = false;
+                            DeviceEventArgs e = new DeviceEventArgs();
+                            e.X = Mouse.GetState().X;
+                            e.Y = Mouse.GetState().Y;
+                            
+                            if (this.ClickMouse != null)
+                                this.ClickMouse(this, e);
+                        }
+                    }
+                    break;
+                default: break;
+            }
+        }
+
+        void UpdateTouch()
+        {
+            var touch = TouchPanel.GetState().FirstOrDefault();
+            if (touch != null)
+            {
+
+                switch (touch.State)
+                {
+                    case TouchLocationState.Pressed: { this.mouseIsPressed = true; } break;
+                    case TouchLocationState.Released:
+                        {
+                            if (this.mouseIsPressed)
+                            {
+                                this.mouseIsPressed = false;
+                                DeviceEventArgs e = new DeviceEventArgs();
+                                e.X = touch.Position.X;
+                                e.Y = touch.Position.Y;
+
+                                //this.ScreenClickExecute(this, e);
+                            }
+                        }
+                        break;
+                    default: break;
+                }
+            }
         }
     }
 }
