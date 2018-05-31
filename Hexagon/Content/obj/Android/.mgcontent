@@ -4,6 +4,8 @@
   <Platform>Android</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultButton.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultButtonPressed.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_blue.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_blue_checked.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_gray.png</File>
@@ -11,6 +13,6 @@
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_red.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_white.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_yellow.png</File>
-    <File>D:/gitclone/Hexagon/Hexagon/Content/LifeFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultFont.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

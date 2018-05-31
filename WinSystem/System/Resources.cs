@@ -29,6 +29,7 @@ namespace WinSystem.System
 
         static public bool LoadResource()
         {
+#if !ANDROID
             if (!File.Exists(fileResource))
             {
                 File.Create(fileResource);
@@ -44,6 +45,22 @@ namespace WinSystem.System
             {
                 return false;
             }
+#else
+            string json = "[{\"Name\": \"defaultButton\", \"Type\": \"Texture2D\"},{\"Name\": \"defaultButtonPressed\", \"Type\": \"Texture2D\"},{\"Name\": \"defaultFont\", \"Type\": \"Font\"},{\"Name\": \"hexagon_blue\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_green\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_red\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_yellow\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_blue_checked\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_gray\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_white\", \"Type\": \"Texture2D\"},{\"Name\": \"user_button\", \"Type\": \"Texture2D\"}]";
+            try
+            {
+                var json_list = JsonConvert.DeserializeObject<List<ResoureceInfo>>(json);
+                foreach(var item in json_list)
+                {
+                    AddResource(item.Name, item.Type);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+#endif
         }
 
         static public void AddResource(string name, TypeResource type)
