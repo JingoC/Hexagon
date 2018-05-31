@@ -47,6 +47,7 @@ namespace WinSystem.System
         public event DeviceEventHandler UnPressedMouse;
 
         private bool mouseIsPressed;
+        private bool mouseIsPressedEvent;
         private bool keyboardIsPressed;
         private bool touchIsPressed;
 
@@ -57,6 +58,8 @@ namespace WinSystem.System
         public Input()
         {
             this.mouseIsPressed = false;
+            this.mouseIsPressedEvent = false;
+
             this.touchIsPressed = false;
             this.keyboardIsPressed = false;
         }
@@ -77,18 +80,35 @@ namespace WinSystem.System
         {
             switch (Mouse.GetState().LeftButton)
             {
-                case ButtonState.Pressed: { this.mouseIsPressed = true; } break;
+                case ButtonState.Pressed:
+                    {
+                        this.mouseIsPressed = true;
+                        if (!this.mouseIsPressedEvent)
+                        {
+                            this.mouseIsPressedEvent = true;
+                            if (this.PressedMouse != null)
+                            {
+                                DeviceEventArgs e = new DeviceEventArgs();
+                                e.X = Mouse.GetState().X;
+                                e.Y = Mouse.GetState().Y;
+                                this.PressedMouse(this, e);
+                            }
+                                
+                        }
+                    } break;
                 case ButtonState.Released:
                     {
                         if (this.mouseIsPressed)
                         {
                             this.mouseIsPressed = false;
-                            DeviceEventArgs e = new DeviceEventArgs();
-                            e.X = Mouse.GetState().X;
-                            e.Y = Mouse.GetState().Y;
-                            
+                            this.mouseIsPressedEvent = false;       
                             if (this.ClickMouse != null)
+                            {
+                                DeviceEventArgs e = new DeviceEventArgs();
+                                e.X = Mouse.GetState().X;
+                                e.Y = Mouse.GetState().Y;
                                 this.ClickMouse(this, e);
+                            }
                         }
                     }
                     break;

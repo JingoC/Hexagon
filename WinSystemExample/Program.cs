@@ -12,6 +12,8 @@ namespace WinSystemExample
     using Microsoft.Xna.Framework;
 
     using HexagonLibrary;
+    using WinSystem.System;
+    using HexagonLibrary.Model.GameMode;
 
     /// <summary>
     /// The main class.
@@ -19,6 +21,7 @@ namespace WinSystemExample
     public static class Program
     {
         static int counter = 0;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -27,39 +30,40 @@ namespace WinSystemExample
         {
             using (var winSystem = new WSystem())
             {
-                winSystem.SetResource("test_button", TypeResource.Texture);
-                winSystem.SetResource("buttonFont", TypeResource.Font);
-                
-                var btn = new Button();
-                btn.Click += delegate (object sender, EventArgs e)
-                {
-                    btn.Text = counter.ToString();
-                    counter++;
-                };
-                
-                var btn_next = new Button();
-                btn_next.Position = new Vector2(0, 80);
-                btn_next.Text = "Start game";
-                btn_next.Click += (s, e) => winSystem.SelectActivity("gameActivity");
-
-                winSystem.ActivitySelected.Items.Add(btn);
-                winSystem.ActivitySelected.Items.Add(btn_next);
-
-                Core core = new Core();
-                Activity coreActivity = new Activity();
-                coreActivity.Items.Add(core);
-                coreActivity.Name = "gameActivity";
-                coreActivity.Background = Color.Aqua;
-
-                winSystem.Activities.Add(coreActivity);
+                Core core = new Core(new GameSettings());
 
                 winSystem.LoadContentEvent += delegate (object sender, EventArgs e)
                 {
-                    btn.Texture = winSystem.GetResource("test_button") as Texture2D;
-                    btn.Font = winSystem.GetResource("buttonFont") as SpriteFont;
+                    Resources.AddResource("test_button", TypeResource.Texture2D);
 
-                    btn_next.Texture = winSystem.GetResource("test_button") as Texture2D;
-                    btn_next.Font = winSystem.GetResource("buttonFont") as SpriteFont;
+                    var btn = new Button();
+                    btn.Texture = Resources.GetResource("test_button") as Texture2D;
+                    btn.OnClick += delegate (object s, EventArgs ev)
+                    {
+                        btn.Text = counter.ToString();
+                        counter++;
+                    };
+
+                    var btn_next = new Button();
+                    btn_next.Position = new Vector2(0, 80);
+                    btn_next.Text = "Start game";
+                    btn_next.Texture = Resources.GetResource("test_button") as Texture2D;
+                    btn_next.OnClick += (s, ev) => winSystem.SelectActivity("gameActivity");
+                    
+                    var defBtn = new Button();
+                    defBtn.Position = new Vector2(0, 160);
+                    defBtn.Text = "Default";
+                    defBtn.OnClick += (s, ev) => winSystem.SelectActivity("gameActivity");
+                    
+                    winSystem.ActivitySelected.Items.Add(btn);
+                    winSystem.ActivitySelected.Items.Add(btn_next);
+                    winSystem.ActivitySelected.Items.Add(defBtn);
+                    
+                    Activity coreActivity = new Activity();
+                    coreActivity.Items.Add(core);
+                    coreActivity.Name = "gameActivity";
+                    coreActivity.Background = Color.Aqua;
+                    winSystem.Activities.Add(coreActivity);
 
                     core.LoadContent();
                 };

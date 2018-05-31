@@ -13,17 +13,9 @@ namespace WinSystem.Controls
 
     public class Label : MonoObject
     {
-        public string Text { get; set; } = String.Empty;
-        public Color ForeColor { get; set; } = Color.Black;
-        
         public Label()
         {
             
-        }
-
-        public override void Draw()
-        {
-            //GraphicsSingleton.GetInstance().GetSpriteBatch().DrawString()
         }
     }
 }

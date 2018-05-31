@@ -33,46 +33,21 @@ namespace HexagonLibrary.Entity.GameObjects
 
     public partial class GameObject
     {
-        public static List<Texture2D> UserIdleTextures = new List<Texture2D>();
-        public static List<Texture2D> UserActiveTextures = new List<Texture2D>();
-        public static List<Texture2D> FieldTextures = new List<Texture2D>();
-        public static List<Texture2D> SystemTextures = new List<Texture2D>();
-        public static List<SpriteFont> Fonts = new List<SpriteFont>();
-
-        public static void LoadContent()
-        {
-            var content = GraphicsSingleton.GetInstance().Content as ContentManager;
-            GameObject.UserIdleTextures.Add(content.Load<Texture2D>("hexagon_blue"));
-            GameObject.UserIdleTextures.Add(content.Load<Texture2D>("hexagon_green"));
-            GameObject.UserIdleTextures.Add(content.Load<Texture2D>("hexagon_red"));
-            GameObject.UserIdleTextures.Add(content.Load<Texture2D>("hexagon_yellow"));
-
-            GameObject.UserActiveTextures.Add(content.Load<Texture2D>("hexagon_blue_checked"));
-            GameObject.UserActiveTextures.Add(content.Load<Texture2D>("hexagon_blue_checked"));
-
-            GameObject.FieldTextures.Add(content.Load<Texture2D>("hexagon_gray"));
-            GameObject.FieldTextures.Add(content.Load<Texture2D>("hexagon_white"));
-
-            GameObject.SystemTextures.Add(content.Load<Texture2D>("user_button"));
-
-            GameObject.Fonts.Add(content.Load<SpriteFont>("LifeFont"));
-        }
-
         public static Texture2D GetTexture(TypeTexture typeTexture)
         {
             switch (typeTexture)
             {
-                case TypeTexture.UserIdle0:
-                case TypeTexture.UserIdle1:
-                case TypeTexture.UserIdle2:
-                case TypeTexture.UserIdle3: return GameObject.UserIdleTextures[(int)typeTexture];
-                case TypeTexture.UserActive0:
-                case TypeTexture.UserActive1:
-                case TypeTexture.UserActive2:
-                case TypeTexture.UserActive3: return GameObject.UserActiveTextures[(int)typeTexture - (int)TypeTexture.UserActive0];
-                case TypeTexture.FieldFree:
-                case TypeTexture.FieldMarked: return GameObject.FieldTextures[(int)typeTexture - (int)TypeTexture.FieldFree];
-                case TypeTexture.SysButton: return GameObject.SystemTextures[(int)typeTexture - (int)TypeTexture.SysButton];
+                case TypeTexture.UserIdle0: return Resources.GetResource("hexagon_blue") as Texture2D;
+                case TypeTexture.UserIdle1: return Resources.GetResource("hexagon_green") as Texture2D;
+                case TypeTexture.UserIdle2: return Resources.GetResource("hexagon_red") as Texture2D;
+                case TypeTexture.UserIdle3: return Resources.GetResource("hexagon_yellow") as Texture2D;
+                case TypeTexture.UserActive0: return Resources.GetResource("hexagon_blue_checked") as Texture2D;
+                case TypeTexture.UserActive1: return Resources.GetResource("hexagon_blue_checked") as Texture2D;
+                case TypeTexture.UserActive2: return Resources.GetResource("hexagon_blue_checked") as Texture2D;
+                case TypeTexture.UserActive3: return Resources.GetResource("hexagon_blue_checked") as Texture2D;
+                case TypeTexture.FieldFree: return Resources.GetResource("hexagon_gray") as Texture2D;
+                case TypeTexture.FieldMarked: return Resources.GetResource("hexagon_white") as Texture2D;
+                case TypeTexture.SysButton: return Resources.GetResource("user_button") as Texture2D;
                 default: throw new Exception("Texture not found");
             }
         }
@@ -81,7 +56,7 @@ namespace HexagonLibrary.Entity.GameObjects
         {
             switch(typeFont)
             {
-                case TypeFonts.TextHexagon: return GameObject.Fonts[0];
+                case TypeFonts.TextHexagon: return Resources.GetResource("defaultFont") as SpriteFont;
                 default: throw new Exception("Font not found");
             }
         }
@@ -97,10 +72,6 @@ namespace HexagonLibrary.Entity.GameObjects
             set { this.defaultTexture = value; this.Texture = this.defaultTexture; }
         }
 
-        virtual public string Text { get { return String.Empty; } }
-        public SpriteFont Font { get; set; }
-        public Color ForeColor { get; set; } = Color.Black;
-
         public GameObject()
         {
             
@@ -111,12 +82,6 @@ namespace HexagonLibrary.Entity.GameObjects
             this.Texture = this.DefaultTexture;
         }
 
-        public override void Draw()
-        {
-            base.Draw();
-
-            Vector2 position = new Vector2(this.Position.X + 10, this.Position.Y + 10);
-            GraphicsSingleton.GetInstance().GetSpriteBatch().DrawString(this.Font, this.Text, position, this.ForeColor);
-        }
+        
     }
 }

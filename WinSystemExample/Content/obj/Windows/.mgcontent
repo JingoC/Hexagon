@@ -14,5 +14,8 @@
     <File>D:/gitclone/Hexagon/WinSystemExample/Content/hexagon_white.png</File>
     <File>D:/gitclone/Hexagon/WinSystemExample/Content/hexagon_yellow.png</File>
     <File>D:/gitclone/Hexagon/WinSystemExample/Content/LifeFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/WinSystemExample/Content/defaultButton.png</File>
+    <File>D:/gitclone/Hexagon/WinSystemExample/Content/defaultFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/WinSystemExample/Content/user_button.png</File>
   </SourceFiles>
 </SourceFileCollection>

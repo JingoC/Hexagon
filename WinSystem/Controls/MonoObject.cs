@@ -28,16 +28,56 @@ namespace WinSystem.Controls
 
     public class MonoObject : IControl
     {
-        public Texture2D Texture { get; set; }
+        bool IsLazyLoadedTexture = false;
+        bool visible = true;
+        int drawOrder = 0;
+
+        protected string defaultTexture = String.Empty;
+
+        public event EventHandler OnClick;
+        public event EventHandler OnPressed;
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
+
+        public virtual string Text { get; set; } = String.Empty;
+        public Color ForeColor { get; set; } = Color.Black;
+
+        public SpriteFont Font { get; set; }
+        public Texture2D Texture { get; set; } = null;
         virtual public Vector2 Position { get; set; }
         public Color Color { get; set; } = Color.White;
         public string Name { get; set; }
 
-        public int Width { get => this.Texture.Width; }
-        public int Height { get => this.Texture.Height; }
+        public int Width { get => this.Texture != null ? this.Texture.Width : 0; }
+        public int Height { get => this.Texture != null ? this.Texture.Height : 0; }
 
-        public event EventHandler Click;
-
+        public int DrawOrder
+        {
+            get => this.drawOrder;
+            set
+            {
+                if (this.drawOrder != value)
+                {
+                    this.drawOrder = value;
+                    if (this.DrawOrderChanged != null)
+                        this.DrawOrderChanged(this, EventArgs.Empty);
+                }
+            }
+        }
+        public bool Visible
+        {
+            get => this.visible;
+            set
+            {
+                if (this.visible != value)
+                {
+                    this.visible = value;
+                    if (this.VisibleChanged != null)
+                        this.VisibleChanged(this, EventArgs.Empty);
+                }
+            }
+        }
+        
         public MonoObject()
         {
 
@@ -55,15 +95,46 @@ namespace WinSystem.Controls
 
         public void CheckEntry(float x, float y)
         {
-            if (this.IsEntry(x, y) && (this.Click != null))
+            if (this.Visible)
             {
-                this.Click(this, EventArgs.Empty);
+                if (this.IsEntry(x, y) && (this.OnClick != null))
+                {
+                    this.OnClick(this, EventArgs.Empty);
+                }
             }
         }
 
-        virtual public void Draw()
+        public void CheckEntryPressed(float x, float y)
         {
-            GraphicsSingleton.GetInstance().GetSpriteBatch().Draw(this.Texture, this.Position, this.Color);
+            if (this.Visible)
+            {
+                if (this.IsEntry(x, y) && (this.OnPressed != null))
+                    this.OnPressed(this, EventArgs.Empty);
+            }
+        }
+
+        virtual public void Draw(GameTime gameTime)
+        {
+            if (!this.IsLazyLoadedTexture)
+            {
+                this.IsLazyLoadedTexture = true;
+                if ((this.Texture == null) && (!this.defaultTexture.Equals(String.Empty)))
+                    this.Texture = Resources.GetResource(this.defaultTexture) as Texture2D;
+                if (this.Font == null)
+                    this.Font = Resources.GetResource("defaultFont") as SpriteFont;
+            }
+
+            if (this.Visible)
+            {
+                if (this.Texture != null)
+                    GraphicsSingleton.GetInstance().GetSpriteBatch().Draw(this.Texture, this.Position, this.Color);
+
+                if ((this.Font != null) && !this.Text.Equals(String.Empty))
+                {
+                    Vector2 position = new Vector2(this.Position.X + 10, this.Position.Y + 10);
+                    GraphicsSingleton.GetInstance().GetSpriteBatch().DrawString(this.Font, this.Text, position, this.ForeColor);
+                }
+            }
         }
     }
 }

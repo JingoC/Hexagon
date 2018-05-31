@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace WinSystem.Controls
 {
-    public interface IControl
+    public interface IControl : IDrawable
     {
-        void Draw();
+        event EventHandler OnClick;
+        event EventHandler OnPressed;
+
         void CheckEntry(float x, float y);
+        void CheckEntryPressed(float x, float y);
     }
 }

@@ -6,6 +6,7 @@ using WinSystem;
 using WinSystem.Controls;
 using HexagonLibrary;
 using HexagonLibrary.Entity.GameObjects;
+using HexagonLibrary.Model.GameMode;
 
 namespace HexagonWin
 {
@@ -23,7 +24,7 @@ namespace HexagonWin
         {
             using (var winSystem = new WSystem())
             {
-                Core core = new Core();
+                Core core = new Core(new GameSettings());
                 Activity coreActivity = new Activity();
                                 
                 winSystem.ActivitySelected.Items.Add(core);
@@ -31,28 +32,35 @@ namespace HexagonWin
                 Button endStepButton = new Button();
                 endStepButton.Text = "End Step";
                 endStepButton.Position = new Vector2(600, 20);
-                endStepButton.Click += (s, e)=> core.EndStep();
+                endStepButton.OnClick += (s, e)=> core.GameModeStrategy.EndStep();
                 winSystem.ActivitySelected.Items.Add(endStepButton);
 
                 Button nextStepButton = new Button();
                 nextStepButton.Text = "Next Step";
                 nextStepButton.Position = new Vector2(600, 60);
-                nextStepButton.Click += (s, e) => core.NextStep();
+                nextStepButton.OnClick += (s, e) => core.GameModeStrategy.NextStep();
                 winSystem.ActivitySelected.Items.Add(nextStepButton);
+
+                string nl = Environment.NewLine;
+                var labelInfo = new Label();
+                labelInfo.Name = "labelInfo";
+                labelInfo.Position = new Vector2(600, 100);
+                labelInfo.ForeColor = Color.White;
+                winSystem.ActivitySelected.Items.Add(labelInfo);
 
                 winSystem.LoadContentEvent += delegate (object sender, EventArgs e)
                 {
                     core.LoadContent();
-
-                    endStepButton.Font = GameObject.GetFont(TypeFonts.TextHexagon);
-                    endStepButton.Texture = GameObject.GetTexture(TypeTexture.SysButton);
-                    nextStepButton.Font = GameObject.GetFont(TypeFonts.TextHexagon);
-                    nextStepButton.Texture = GameObject.GetTexture(TypeTexture.SysButton);
                 };
 
                 winSystem.UpdateEvent += delegate (object sender, EventArgs e)
                 {
                     core.Update();
+                    string text = string.Format("Step: {1}{0}LootPoint: {2}{0}",
+                        Environment.NewLine,
+                        core.GameModeStrategy.Step,
+                        core.GameModeStrategy.User.LootPoints);
+                    labelInfo.Text = text;
                 };
 
                 winSystem.Graphics.Run();

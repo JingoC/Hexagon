@@ -24,12 +24,12 @@ namespace WinSystem
             countActivity++;
         }
 
-        public override void Draw()
+        public override void Draw(GameTime gameTime)
         {
             GraphicsSingleton.GetInstance().GraphicsDevice.Clear(this.Background);
 
             GraphicsSingleton.GetInstance().GetSpriteBatch().Begin();
-            base.Draw();
+            base.Draw(gameTime);
             GraphicsSingleton.GetInstance().GetSpriteBatch().End();
         }
     }

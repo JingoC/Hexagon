@@ -37,7 +37,7 @@ namespace HexagonLibrary.Entity.GameObjects
 
         public bool Equals(HexagonObject other)
         {
-            return this.SectorId == other.SectorId;
+            return (other != null) && (this.SectorId == other.SectorId);
         }
     }
 }

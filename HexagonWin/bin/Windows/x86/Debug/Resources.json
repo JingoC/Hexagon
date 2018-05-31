@@ -1,0 +1,17 @@
+[
+	{"Name": "defaultButton", "Type": "Texture2D"},
+	{"Name": "defaultButtonPressed", "Type": "Texture2D"},
+	{"Name": "defaultFont", "Type": "Font"},
+	
+	{"Name": "hexagon_blue", "Type": "Texture2D"},
+	{"Name": "hexagon_green", "Type": "Texture2D"},
+	{"Name": "hexagon_red", "Type": "Texture2D"},
+	{"Name": "hexagon_yellow", "Type": "Texture2D"},
+	
+	{"Name": "hexagon_blue_checked", "Type": "Texture2D"},
+	
+	{"Name": "hexagon_gray", "Type": "Texture2D"},
+	{"Name": "hexagon_white", "Type": "Texture2D"},
+	
+	{"Name": "user_button", "Type": "Texture2D"}
+]
