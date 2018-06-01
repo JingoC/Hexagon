@@ -68,9 +68,9 @@ namespace HexagonLibrary.Model.GameMode
             }
 
             this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle0), BelongUser = 0, Life = 2, Loot = 4 }, 1, 0);
-            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle1), Life = 4, Loot = 2 }, 2, 8);
-            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle2), Life = 2, Loot = 2 }, 8, 2);
-            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle3), Life = 16, Loot = 2 }, 9, 7);
+            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle1), BelongUser = 1, Life = 4, Loot = 2 }, 2, 8);
+            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle2), BelongUser = 2, Life = 2, Loot = 2 }, 8, 2);
+            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle3), BelongUser = 3, Life = 16, Loot = 2 }, 9, 7);
         }
 
         public virtual void EndStep() { }
