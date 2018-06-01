@@ -6,7 +6,6 @@ namespace HexagonLibrary.Entity.GameObjects
 {
     public enum TypeHexagon
     {
-        User = 1,
         Free = 2,
         Blocked = 3,
         Enemy = 4
@@ -17,6 +16,7 @@ namespace HexagonLibrary.Entity.GameObjects
         public static HexagonObject Empty { get { return new HexagonObject(); } }
 
         public int SectorId { get; set; }
+        public int MaxLife { get; set; } = 100;
         public int Life { get; set; } = 0;
         public int BelongUser { get; set; } = -1;
         public TypeHexagon Type { get; set; } = TypeHexagon.Free;

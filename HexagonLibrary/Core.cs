@@ -18,12 +18,23 @@ namespace HexagonLibrary
 
     public class Core : Container
     {
+        private GameSettings gameSettings;
+
         public GameModeStrategy GameModeStrategy;
 
         public Core(GameSettings gameSettings)
         {
-            this.GameModeStrategy = GameModeFactory.Create(gameSettings);
+            this.gameSettings = gameSettings;
 
+            this.Reset();
+        }
+
+        public void Reset()
+        {
+            this.GameModeStrategy = GameModeFactory.Create(this.gameSettings);
+            this.GameModeStrategy.LoadContent();
+
+            this.Items.Clear();
             this.Items.Add(this.GameModeStrategy.Map);
         }
 

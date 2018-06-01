@@ -50,7 +50,7 @@ namespace HexagonLibrary.Model.GameMode
         private void StateMachine_ClickAddLootPoint(object sender, StateMachineEventArgs e)
         {
             Player p = sender as Player;
-            if (p.LootPoints > 0)
+            if ((p.LootPoints > 0) && (e.CurrentObject.Life < e.CurrentObject.MaxLife))
             {
                 e.CurrentObject.Life++;
                 p.LootPoints--;
@@ -64,28 +64,7 @@ namespace HexagonLibrary.Model.GameMode
 
         private void StateMachine_ClickAroundObject(object sender, StateMachineEventArgs e)
         {
-            Player player = sender as Player;
-            HexagonObject lo = e.LastObject;
-            HexagonObject co = e.CurrentObject;
-
-            if (lo.Life > 0)
-            {
-                if (co.Life > lo.Life)
-                {
-                    co.Life -= lo.Life;
-                    lo.Life = 0;
-                }
-                else
-                {
-                    co.Life = lo.Life - (co.Life == 0 ? 1 : co.Life);
-                    lo.Life = 0;
-                    co.BelongUser = player.ID;
-                    co.DefaultTexture = GameObject.GetTexture((TypeTexture)player.ID);
-                    lo.RestoreDefaultTexture();
-                    co.Texture = GameObject.GetTexture((TypeTexture)(TypeTexture.UserActive0 + player.ID));
-                    co.Type = TypeHexagon.User;
-                }
-            }
+            this.Map.Attack(e.LastObject as HexagonObject, e.CurrentObject as HexagonObject);
         }
 
         private void StateMachine_ClickOutOfRange(object sender, StateMachineEventArgs e)
@@ -110,21 +89,31 @@ namespace HexagonLibrary.Model.GameMode
             this.IsReady = false;
 
             this.stateMachine.SetGameState(TypeGameState.Cpu);
-
+#if true
+            // multi threading
             this.threadActionCpu = new Thread(new ThreadStart(delegate ()
             {
                 foreach (var item in this.CPUs)
                 {
                     item.Strategy.Calculate(this.Map, item);
                 }
+                
+                this.stateMachine.SetGameState(TypeGameState.Play);
 
                 this.IsReady = true;
                 this.Step++;
-                this.stateMachine.SetGameState(TypeGameState.Play);
-
-                this.threadActionCpu.Abort();
             }));
             this.threadActionCpu.Start();
-        }
+#else
+            foreach (var item in this.CPUs)
+            {
+                item.Strategy.Calculate(this.Map, item);
+            }
+
+            this.IsReady = true;
+            this.Step++;
+            this.stateMachine.SetGameState(TypeGameState.Play);
+#endif
+            }
     }
 }

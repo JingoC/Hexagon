@@ -24,8 +24,12 @@ namespace HexagonLibrary.Entity.Players.Strategy
             this.map = map;
             this.cpu = cpu;
 
-            
-            var hex = this.map.Items.OfType<HexagonObject>().ToList().Where<HexagonObject>((x) => x.BelongUser == cpu.ID);
+
+            var hex = this.map.Items.OfType<HexagonObject>()
+                .Where((x) => x.BelongUser == cpu.ID)
+                .Where((x) => x.Life > 0)
+                .Where((x) => this.map.GetPositionInfo(x).AroundObjects.Count((y) => (y.BelongUser != cpu.ID) && (y.Type != TypeHexagon.Blocked)) > 0)
+                .ToList();
 
             if (hex != null)
             {
@@ -33,54 +37,58 @@ namespace HexagonLibrary.Entity.Players.Strategy
                 {
                     if (item.Life > 0)
                         this.Attack(item);
+
+                    //System.Threading.Thread.Sleep(200);
                 }
             }
 
             this.EnpStep();
-
         }
 
         void Attack(HexagonObject h)
         {
             var around = this.map.GetPositionInfo(h);
 
-            
-            HexagonObject hitem = around.AroundObjects.Where((x)=>x.BelongUser != this.cpu.ID).OrderBy((x) => x.Life).FirstOrDefault();
+            HexagonObject hitem = around.AroundObjects
+                .Where((x) => (x.BelongUser != this.cpu.ID) && (x.Type != TypeHexagon.Blocked))
+                .OrderBy((x) => x.Life)
+                .FirstOrDefault();
 
-            if (hitem != null)
-            {
-                if (hitem.Life > h.Life)
-                {
-                    hitem.Life -= h.Life;
-                    h.Life = 0;
-                }
-                else
-                {
-                    hitem.Life = h.Life - (hitem.Life == 0 ? 1 : hitem.Life);
-                    h.Life = 0;
-                    hitem.BelongUser = this.cpu.ID;
-                    hitem.DefaultTexture = GameObject.GetTexture((TypeTexture)(TypeTexture.UserIdle0 + this.cpu.ID));
-                    hitem.Type = TypeHexagon.Enemy;
-                }
-            }
+            this.map.Attack(h, hitem);
         }
 
         void EnpStep()
         {
-            var hex = this.map.Items.OfType<HexagonObject>().ToList().Where<HexagonObject>((x) => x.BelongUser == cpu.ID);
-            this.cpu.LootPoints += hex.Sum((x) => x.Loot);
+            var hex = this.map.Items.OfType<HexagonObject>()
+                .Where((x) => x.BelongUser == cpu.ID)
+                .Where((x) => x.Life < x.MaxLife)
+                .ToList();
 
-            int points = 0;
+            if (hex.Count() <= 0)
+                return;
+
+            this.cpu.LootPoints += hex.Sum((x) => x.Loot);
+            
             do
             {
+                bool allFull = true;
+
                 foreach (var item in hex)
                 {
-                    if (points == this.cpu.LootPoints)
+                    if (item.Life == item.MaxLife)
+                        continue;
+
+                    allFull = false;
+
+                    if (this.cpu.LootPoints == 0)
                         return;
 
                     item.Life++;
-                    points++;
+                    this.cpu.LootPoints--;
                 }
+
+                if (allFull)
+                    break;
             } while (true);
         }
     }

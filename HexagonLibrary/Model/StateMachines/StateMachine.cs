@@ -154,6 +154,10 @@ namespace HexagonLibrary.Model.StateMachines
                                 this.SetState(TypeState.Click_Background);
                             }
                             break;
+                        case TypeHexagon.Enemy:
+                            {
+                                this.SetState(TypeState.Click2_EnemyObject);
+                            }break;
                         default: this.SetState(TypeState.Click_Background); break;
                     }
                 }
@@ -213,6 +217,7 @@ namespace HexagonLibrary.Model.StateMachines
                 case TypeState.Click_Background: this.EventExecute(this.ClickOutOfRange); break;
                 case TypeState.Click_HisObject: this.EventExecute(this.ClickHisObject); break;
                 case TypeState.Click2_FreeObject: this.EventExecute(this.ClickAroundObject); break;
+                case TypeState.Click2_EnemyObject: this.EventExecute(this.ClickAroundObject); break;
                 default: this.EventExecute(this.ClickNotAroundObject); break;
             }
 

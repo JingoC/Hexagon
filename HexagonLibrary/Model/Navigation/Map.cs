@@ -82,7 +82,7 @@ namespace HexagonLibrary.Model.Navigation
             bool isColumnLeft = column == 0;
             bool isColumnRight = column == this.Width - 1;
 
-            var empty = new HexagonObject(-1);
+            var empty = new HexagonObject(-1) { Type = TypeHexagon.Blocked, Life = 1000 };
             if ((row % 2) == 0)
             {
                 pi.AroundObjects.Add(!isRowTop && !isColumnLeft ? this.Rows[row - 1][column - 1] : empty);
@@ -103,6 +103,52 @@ namespace HexagonLibrary.Model.Navigation
             }
             
             return pi;
+        }
+
+        public void Attack(HexagonObject src, HexagonObject dst)
+        {
+            Random r = new Random((int) DateTime.Now.Ticks);
+            if (((src == null) || (dst == null)) ||
+                ((src.SectorId < 0) || (dst.SectorId < 0))
+                )
+                return;
+            
+            if (src.Life >= dst.Life)
+            {
+                int diff = src.Life - dst.Life;
+
+                int percent = 0;
+                switch(diff)
+                {
+                    case 0: { percent = 30; } break;
+                    case 1: { percent = 60; } break;
+                    case 2: { percent = 80; } break;
+                    default: { percent = 100; } break;
+                }
+
+                bool IsHold = r.Next(101) < percent;
+
+                if (IsHold)
+                {
+                    dst.Life = src.Life - (dst.Life == 0 ? 1 : dst.Life);
+                    dst.BelongUser = src.BelongUser;
+                    dst.DefaultTexture = GameObject.GetTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
+                    dst.Type = TypeHexagon.Enemy;
+                    src.Life = 0;
+                }
+                else
+                {
+                    dst.Life = 0;
+                    src.Life = 0;
+                }
+                
+            }
+            else
+            {
+                dst.Life -= src.Life;
+                src.Life = 0;
+            }
+
         }
     }
 }
