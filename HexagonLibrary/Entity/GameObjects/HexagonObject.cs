@@ -6,9 +6,9 @@ namespace HexagonLibrary.Entity.GameObjects
 {
     public enum TypeHexagon
     {
-        Free = 2,
-        Blocked = 3,
-        Enemy = 4
+        Free = 0,
+        Blocked = 1,
+        Enemy = 2
     }
 
     public class HexagonObject : GameObject, IEquatable<HexagonObject>
@@ -27,12 +27,18 @@ namespace HexagonLibrary.Entity.GameObjects
 
         public HexagonObject() : this(0)
         {
-
+            
         }
-
+        
         public HexagonObject(int sectorId)
         {
             this.SectorId = sectorId;
+            this.Designer();
+        }
+
+        public override void Designer()
+        {
+            base.Designer();
         }
 
         public bool Equals(HexagonObject other)

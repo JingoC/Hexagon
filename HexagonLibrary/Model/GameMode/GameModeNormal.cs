@@ -40,7 +40,7 @@ namespace HexagonLibrary.Model.GameMode
                 e.DestinationObject.BelongUser = -1;
                 e.DestinationObject.Type = TypeHexagon.Blocked;
                 e.DestinationObject.Visible = false;
-                e.DestinationObject.DefaultTexture = GameObject.GetTexture(TypeTexture.FieldMarked);
+                e.DestinationObject.SetDefaultTexture(TypeTexture.FieldMarked);
 
                 p.LootPoints -= e.DestinationObject.Life;
                 e.DestinationObject.Life = 0;
@@ -75,7 +75,7 @@ namespace HexagonLibrary.Model.GameMode
         private void StateMachine_ClickHisObject(object sender, StateMachineEventArgs e)
         {
             this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
-            e.DestinationObject.Texture = GameObject.GetTexture(TypeTexture.UserActive0);
+            e.DestinationObject.SetDefaultTexture(TypeTexture.UserActive0);
         }
 
         public override void EndStep()

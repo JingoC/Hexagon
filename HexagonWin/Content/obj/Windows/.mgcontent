@@ -19,5 +19,7 @@
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_red.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_white.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_yellow.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultToggleOff.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultToggleOn.png</File>
   </SourceFiles>
 </SourceFileCollection>

@@ -28,12 +28,11 @@ namespace WinSystem.Controls
 
     public class MonoObject : IControl
     {
-        bool IsLazyLoadedTexture = false;
         bool visible = true;
         int drawOrder = 0;
 
-        protected string defaultTexture = String.Empty;
-
+        public TextureContainer TextureManager { get; set; } = new TextureContainer();
+        
         public event EventHandler OnClick;
         public event EventHandler OnPressed;
         public event EventHandler<EventArgs> DrawOrderChanged;
@@ -41,13 +40,13 @@ namespace WinSystem.Controls
 
         public virtual string Text { get; set; } = String.Empty;
         public Color ForeColor { get; set; } = Color.Black;
-
-        public SpriteFont Font { get; set; }
-        public Texture2D Texture { get; set; } = null;
+        
         virtual public Vector2 Position { get; set; }
         public Color Color { get; set; } = Color.White;
         public string Name { get; set; }
 
+        public Texture2D Texture { get => this.TextureManager.Textures.Current; }
+        public SpriteFont Font { get => this.TextureManager.Fonts.Current; }
         public int Width { get => this.Texture != null ? this.Texture.Width : 0; }
         public int Height { get => this.Texture != null ? this.Texture.Height : 0; }
 
@@ -104,6 +103,14 @@ namespace WinSystem.Controls
             }
         }
 
+        public virtual void Designer()
+        {
+            if (this.Font == null)
+            {
+                this.TextureManager.Fonts.Add(Resources.GetResource("defaultFont") as SpriteFont);
+            }
+        }
+
         public void CheckEntryPressed(float x, float y)
         {
             if (this.Visible)
@@ -115,15 +122,6 @@ namespace WinSystem.Controls
 
         virtual public void Draw(GameTime gameTime)
         {
-            if (!this.IsLazyLoadedTexture)
-            {
-                this.IsLazyLoadedTexture = true;
-                if ((this.Texture == null) && (!this.defaultTexture.Equals(String.Empty)))
-                    this.Texture = Resources.GetResource(this.defaultTexture) as Texture2D;
-                if (this.Font == null)
-                    this.Font = Resources.GetResource("defaultFont") as SpriteFont;
-            }
-
             if (this.Visible)
             {
                 if (this.Texture != null)

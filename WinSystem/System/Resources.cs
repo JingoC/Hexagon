@@ -46,7 +46,27 @@ namespace WinSystem.System
                 return false;
             }
 #else
-            string json = "[{\"Name\": \"defaultButton\", \"Type\": \"Texture2D\"},{\"Name\": \"defaultButtonPressed\", \"Type\": \"Texture2D\"},{\"Name\": \"defaultFont\", \"Type\": \"Font\"},{\"Name\": \"hexagon_blue\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_green\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_red\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_yellow\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_blue_checked\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_gray\", \"Type\": \"Texture2D\"},{\"Name\": \"hexagon_white\", \"Type\": \"Texture2D\"},{\"Name\": \"user_button\", \"Type\": \"Texture2D\"}]";
+           // { "Name": "defaultButton", "Type": "Texture2D"},
+            string json = "[" +
+                "{\"Name\": \"defaultButton\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"defaultButtonPressed\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"defaultToggleOn\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"defaultToggleOff\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_green\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_red\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_yellow\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_brown\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_purple\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_orange\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_limegreen\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_blue\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_aqua\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_aqua_checked\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_gray\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_white\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"defaultFont\", \"Type\": \"Font\"}," +
+                "]";
+            
             try
             {
                 var json_list = JsonConvert.DeserializeObject<List<ResoureceInfo>>(json);
@@ -56,7 +76,7 @@ namespace WinSystem.System
                 }
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
                 return false;
             }
@@ -78,6 +98,21 @@ namespace WinSystem.System
         public static Object GetResource(string name)
         {
             return resources.Keys.Any((x)=>x.Equals(name)) ? resources[name] : null;
+        }
+        
+        public static List<Object> GetResources(List<string> names)
+        {
+            List<Object> getResources = new List<object>();
+
+            foreach(var item in names)
+            {
+                if (resources.Any((x) => x.Key.Equals(item)))
+                {
+                    getResources.Add(resources.FirstOrDefault((x) => x.Key.Equals(item)).Value);
+                }
+            }
+
+            return getResources;
         }
     }
 }

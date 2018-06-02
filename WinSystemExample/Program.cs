@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace WinSystemExample
 {
@@ -30,47 +32,33 @@ namespace WinSystemExample
         {
             using (var winSystem = new WSystem())
             {
-                Core core = new Core(new GameSettings());
+                List<Color> colors = new List<Color>() { Color.White, Color.Red, Color.Green, Color.Blue, Color.Yellow };
+                
+                var label_example = new Label();
+                label_example.Text = "Toggle Off";
+                label_example.Position = new Vector2(20, 130);
+                label_example.ForeColor = Color.White;
+                winSystem.ActivitySelected.Items.Add(label_example);
 
+                var btn_example = new Button();
+                btn_example.Position = new Vector2(20, 80);
+                btn_example.Text = "Example0";
+                btn_example.OnClick += (s, ev) => { counter++; btn_example.Text = $"Example{counter}"; label_example.ForeColor = colors[counter % colors.Count]; };
+                winSystem.ActivitySelected.Items.Add(btn_example);
+                
+                var toggle_example = new Toggle();
+                toggle_example.Position = new Vector2(20, 170);
+                toggle_example.IsChanged += (s, e) => label_example.Text = "Toggle " + (toggle_example.IsChecked ? "On" : "Off"); 
+                winSystem.ActivitySelected.Items.Add(toggle_example);
+                
                 winSystem.LoadContentEvent += delegate (object sender, EventArgs e)
                 {
-                    Resources.AddResource("test_button", TypeResource.Texture2D);
-
-                    var btn = new Button();
-                    btn.Texture = Resources.GetResource("test_button") as Texture2D;
-                    btn.OnClick += delegate (object s, EventArgs ev)
-                    {
-                        btn.Text = counter.ToString();
-                        counter++;
-                    };
-
-                    var btn_next = new Button();
-                    btn_next.Position = new Vector2(0, 80);
-                    btn_next.Text = "Start game";
-                    btn_next.Texture = Resources.GetResource("test_button") as Texture2D;
-                    btn_next.OnClick += (s, ev) => winSystem.SelectActivity("gameActivity");
                     
-                    var defBtn = new Button();
-                    defBtn.Position = new Vector2(0, 160);
-                    defBtn.Text = "Default";
-                    defBtn.OnClick += (s, ev) => winSystem.SelectActivity("gameActivity");
-                    
-                    winSystem.ActivitySelected.Items.Add(btn);
-                    winSystem.ActivitySelected.Items.Add(btn_next);
-                    winSystem.ActivitySelected.Items.Add(defBtn);
-                    
-                    Activity coreActivity = new Activity();
-                    coreActivity.Items.Add(core);
-                    coreActivity.Name = "gameActivity";
-                    coreActivity.Background = Color.Aqua;
-                    winSystem.Activities.Add(coreActivity);
-
-                    core.LoadContent();
                 };
                 
                 winSystem.UpdateEvent += delegate (object sender, EventArgs e)
                 {
-                    core.Update();
+                    
                 };
 
                 winSystem.Graphics.Run();

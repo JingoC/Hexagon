@@ -15,10 +15,22 @@ namespace WinSystem.Controls
     {
         public Button()
         {
-            this.defaultTexture = "defaultButton";
+            this.OnPressed += (s, e) => this.TextureManager.Textures.Change(1);
+            this.OnClick += (s, e) => this.TextureManager.Textures.RestoreDefault();
+        }
 
-            this.OnPressed += (s, e) => this.Texture = Resources.GetResource("defaultButtonPressed") as Texture2D;
-            this.OnClick += (s, e) => this.Texture = Resources.GetResource("defaultButton") as Texture2D;
+        public override void Designer()
+        {
+            if (this.Texture == null)
+            {
+                this.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
+                {
+                    "defaultButton",
+                    "defaultButtonPressed"
+                }).OfType<Texture2D>());
+            }
+
+            base.Designer();
         }
     }
 }

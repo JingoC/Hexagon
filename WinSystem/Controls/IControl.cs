@@ -12,6 +12,7 @@ namespace WinSystem.Controls
         event EventHandler OnClick;
         event EventHandler OnPressed;
 
+        void Designer();
         void CheckEntry(float x, float y);
         void CheckEntryPressed(float x, float y);
     }

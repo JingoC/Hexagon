@@ -32,7 +32,6 @@ namespace HexagonView.View
         public GameActivity()
         {
             Core core = new Core(new GameSettings() { MapSize = new Size() { Width = 10, Height = 10 } });
-            Activity coreActivity = new Activity();
             
             endStepButton.OnClick += (s, e) => core.GameModeStrategy.EndStep();
             nextStepButton.OnClick += (s, e) => core.GameModeStrategy.NextStep();
@@ -105,22 +104,20 @@ namespace HexagonView.View
 
         public override void Designer()
         {
-            base.Designer();
-
-            int w = (Resources.GetResource("defaultButton") as Texture2D).Width;
-            int h = (Resources.GetResource("defaultButton") as Texture2D).Height;
-            
             this.endStepButton.Position = new Vector2(600, 20);
             this.nextStepButton.Position = new Vector2(600, 60);
             this.startModelButton.Position = new Vector2(600, 240);
             this.newGameButton.Position = new Vector2(600, 300);
             this.labelInfo.Position = new Vector2(600, 100);
+
+            base.Designer();
         }
 
         public void SetSettings(GameSettings settings)
         {
             this.Items.Remove(this.core);
             this.core = new Core(settings);
+            this.core.LoadContent();
             this.Items.Add(this.core);
         }
 

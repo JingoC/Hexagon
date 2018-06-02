@@ -49,6 +49,8 @@
     <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\Label.cs" />
     <Compile Include="Controls\MonoObject.cs" />
+    <Compile Include="Controls\TextureContainer.cs" />
+    <Compile Include="Controls\Toggle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Graphics.cs" />
     <Compile Include="System\Input.cs" />

@@ -12,6 +12,7 @@ namespace HexagonLibrary.Model.GameMode
     using Entity.Players.Strategy;
     using Entity.GameObjects;
     using Model.StateMachines;
+    using WinSystem.Controls;
 
     public class GameModeStrategy
     {
@@ -92,14 +93,10 @@ namespace HexagonLibrary.Model.GameMode
                     column = r.Next(this.Map.Height);
                 } while (this.Map.Rows[row][column].Type != TypeHexagon.Free);
 
-                this.Map.SetItem(new HexagonObject()
-                {
-                    DefaultTexture = GameObject.GetTexture((TypeTexture)(TypeTexture.UserIdle0 + cpu.ID)),
-                    MaxLife = 8,
-                    BelongUser = cpu.ID,
-                    Life = 2,
-                    Loot = 2
-                }, row, column);
+                var hex = new HexagonObject() { MaxLife = 8, BelongUser = cpu.ID, Life = 2, Loot = 2 };
+                hex.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + cpu.ID));
+                
+                this.Map.SetItem(hex, row, column);
             }
         }
 
@@ -109,23 +106,26 @@ namespace HexagonLibrary.Model.GameMode
 
             if (r.Next(101) < percentBlock)
             {
-                return new HexagonObject()
+                HexagonObject hex = new HexagonObject()
                 {
-                    DefaultTexture = GameObject.GetTexture(TypeTexture.FieldFree),
                     Visible = false,
                     Type = TypeHexagon.Blocked
                 };
+                hex.SetDefaultTexture(TypeTexture.FieldFree);
+
+                return hex;
             }
             else
             {
-                return new HexagonObject()
+                var hex = new HexagonObject()
                 {
-                    DefaultTexture = GameObject.GetTexture(TypeTexture.FieldFree),
                     Loot = r.Next(0, 2),
                     Life = r.Next(0, 2),
-                    MaxLife = r.Next(8, 8),
-                    Font = GameObject.GetFont(TypeFonts.TextHexagon)
+                    MaxLife = r.Next(8, 8)
                 };
+                hex.SetDefaultTexture(TypeTexture.FieldFree);
+
+                return hex;
             }
         }
 

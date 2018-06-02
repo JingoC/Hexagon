@@ -36,7 +36,7 @@ namespace HexagonView
             sttg_btn.OnClick += (s, e) => this.ActivitySelected = settingsPage;
             this.Activities.Add(startPage);
 
-            gamePage.SetSettings(new GameSettings() { CountPlayers = 3, PlayerMode = TypePlayerMode.Modeling });
+            gamePage.SetSettings(new GameSettings() { CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling });
             this.ActivitySelected = gamePage;
         }
     }

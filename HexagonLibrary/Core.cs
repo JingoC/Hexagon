@@ -40,9 +40,14 @@ namespace HexagonLibrary
 
         public void LoadContent()
         {
-            this.GameModeStrategy.LoadContent();
+            this.Reset();
         }
 
+        public override void Designer()
+        {
+            base.Designer();
+            this.LoadContent();
+        }
         public void Update()
         {
             // my logic

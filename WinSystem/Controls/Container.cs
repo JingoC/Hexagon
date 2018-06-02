@@ -25,6 +25,11 @@ namespace WinSystem.Controls
 
         }
 
+        public virtual void Designer()
+        {
+            this.Items.ForEach(x => x.Designer());
+        }
+
         public virtual void Draw(GameTime gameTime)
         {
             if (this.Visible)

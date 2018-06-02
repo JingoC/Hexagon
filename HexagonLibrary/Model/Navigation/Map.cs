@@ -44,11 +44,10 @@ namespace HexagonLibrary.Model.Navigation
         public void SetItem(HexagonObject item, int row, int column)
         {
             //49,38
-            int x = item.Width * column + ((row % 2 == 0) ? 0 : 24);
-            int y = item.Height * row + row * (-12);
+            int x = /*item.Width*/ 50 * column + ((row % 2 == 0) ? 0 : 24);
+            int y = /*item.Height*/ 50 * row + row * (-12);
             item.Position = new Microsoft.Xna.Framework.Vector2(x, y);
             item.SectorId = row * this.Height + column;
-            item.Font = GameObject.GetFont(TypeFonts.TextHexagon);
             this.Items[row * this.Height + column] = item;
             this.Rows[row][column] = item;
             this.Columns[column][row] = item;
@@ -132,7 +131,7 @@ namespace HexagonLibrary.Model.Navigation
                 {
                     dst.Life = src.Life - (dst.Life == 0 ? 1 : dst.Life);
                     dst.BelongUser = src.BelongUser;
-                    dst.DefaultTexture = GameObject.GetTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
+                    dst.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
                     dst.Type = TypeHexagon.Enemy;
                     src.Life = 0;
 

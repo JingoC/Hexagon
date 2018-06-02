@@ -27,9 +27,9 @@ namespace WinSystem
             countActivity++;
         }
 
-        public virtual void Designer()
+        public override void Designer()
         {
-            
+            base.Designer();
         }
 
         public virtual void Update(GameTime gameTime)

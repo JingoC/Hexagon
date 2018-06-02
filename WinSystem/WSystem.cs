@@ -47,12 +47,13 @@ namespace WinSystem
             this.Graphics.LoadContentEvent += delegate (object s, EventArgs e)
             {
                 Resources.LoadResource();
-
-                this.Activities.ForEach(x => x.Designer());
+                
                 if (this.LoadContentEvent != null)
                 {
                     this.LoadContentEvent(s, e);
                 }
+
+                this.Activities.ForEach(x => x.Designer());
             };
         }
 
