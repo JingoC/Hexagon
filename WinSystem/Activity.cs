@@ -16,12 +16,25 @@ namespace WinSystem
     {
         static int countActivity = 0;
         
+        public int Width { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Width; }
+        public int Height { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Height; }
+
         public Color Background { get; set; }
         public string Name { get; set; } = $"Activity{countActivity}";
 
         public Activity()
         {
             countActivity++;
+        }
+
+        public virtual void Designer()
+        {
+            
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+
         }
 
         public override void Draw(GameTime gameTime)

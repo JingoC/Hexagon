@@ -17,8 +17,6 @@ namespace WinSystem.System
         {
             return (graphics != null) ? graphics : (graphics = new Graphics());
         }
-
-
     }
     
     public class Graphics : Game

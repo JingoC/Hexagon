@@ -26,6 +26,8 @@ namespace HexagonWin
         [STAThread]
         static void Main()
         {
+
+#if false
             using (var winSystem = new WSystem())
             {
                 Core core = new Core(new GameSettings() { MapSize = new Size() { Width = 10, Height = 10 } });
@@ -135,7 +137,13 @@ namespace HexagonWin
 
                 winSystem.Graphics.Run();
             }
+#else
+            using (var winSystem = new View.GameView())
+            {
+                winSystem.Graphics.Run();
+            }
+#endif
         }
 #endif
-                }
+        }
 }

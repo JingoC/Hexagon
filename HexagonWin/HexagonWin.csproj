@@ -44,6 +44,10 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\GameActivity.cs" />
+    <Compile Include="View\GameView.cs" />
+    <Compile Include="View\SettingsActivity.cs" />
+    <Compile Include="View\StartPageActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

@@ -38,15 +38,17 @@ namespace WinSystem
             {
                 this.Input.Update();
 
+                if (this.ActivitySelected != null)
+                    this.ActivitySelected.Update(s as GameTime);
+
                 if (this.UpdateEvent != null)
-                {
                     this.UpdateEvent(s, e);
-                }
             };
             this.Graphics.LoadContentEvent += delegate (object s, EventArgs e)
             {
                 Resources.LoadResource();
 
+                this.Activities.ForEach(x => x.Designer());
                 if (this.LoadContentEvent != null)
                 {
                     this.LoadContentEvent(s, e);
