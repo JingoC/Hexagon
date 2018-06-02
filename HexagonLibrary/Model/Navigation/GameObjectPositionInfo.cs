@@ -17,5 +17,20 @@ namespace HexagonLibrary.Model.Navigation
         {
 
         }
+
+        public int CountEnemy()
+        {
+            return this.AroundObjects.Count(x => (x.Type == TypeHexagon.Enemy) && (x.BelongUser != this.Current.BelongUser));
+        }
+
+        public int CountFree()
+        {
+            return this.AroundObjects.Count(x => x.Type == TypeHexagon.Free);
+        }
+
+        public int CountAvailableToAttack()
+        {
+            return this.AroundObjects.Count(x => ((x.Type == TypeHexagon.Free) || ((x.Type == TypeHexagon.Enemy) && (x.BelongUser != this.Current.BelongUser))));
+        }
     }
 }

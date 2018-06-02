@@ -35,24 +35,24 @@ namespace HexagonLibrary.Model.GameMode
         private void StateMachine_ClickModifyFreeOjbect(object sender, StateMachineEventArgs e)
         {
             Player p = sender as Player;
-            if (p.LootPoints >= e.CurrentObject.Life)
+            if (p.LootPoints >= e.DestinationObject.Life)
             {
-                e.CurrentObject.BelongUser = -1;
-                e.CurrentObject.Type = TypeHexagon.Blocked;
-                e.CurrentObject.Visible = false;
-                e.CurrentObject.DefaultTexture = GameObject.GetTexture(TypeTexture.FieldMarked);
+                e.DestinationObject.BelongUser = -1;
+                e.DestinationObject.Type = TypeHexagon.Blocked;
+                e.DestinationObject.Visible = false;
+                e.DestinationObject.DefaultTexture = GameObject.GetTexture(TypeTexture.FieldMarked);
 
-                p.LootPoints -= e.CurrentObject.Life;
-                e.CurrentObject.Life = 0;
+                p.LootPoints -= e.DestinationObject.Life;
+                e.DestinationObject.Life = 0;
             }
         }
 
         private void StateMachine_ClickAddLootPoint(object sender, StateMachineEventArgs e)
         {
             Player p = sender as Player;
-            if ((p.LootPoints > 0) && (e.CurrentObject.Life < e.CurrentObject.MaxLife))
+            if ((p.LootPoints > 0) && (e.DestinationObject.Life < e.DestinationObject.MaxLife))
             {
-                e.CurrentObject.Life++;
+                e.DestinationObject.Life++;
                 p.LootPoints--;
             }
         }
@@ -64,7 +64,7 @@ namespace HexagonLibrary.Model.GameMode
 
         private void StateMachine_ClickAroundObject(object sender, StateMachineEventArgs e)
         {
-            this.Map.Attack(e.LastObject as HexagonObject, e.CurrentObject as HexagonObject);
+            this.Map.Attack(e.SourceObject as HexagonObject, e.DestinationObject as HexagonObject);
         }
 
         private void StateMachine_ClickOutOfRange(object sender, StateMachineEventArgs e)
@@ -75,7 +75,7 @@ namespace HexagonLibrary.Model.GameMode
         private void StateMachine_ClickHisObject(object sender, StateMachineEventArgs e)
         {
             this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
-            e.CurrentObject.Texture = GameObject.GetTexture(TypeTexture.UserActive0);
+            e.DestinationObject.Texture = GameObject.GetTexture(TypeTexture.UserActive0);
         }
 
         public override void EndStep()

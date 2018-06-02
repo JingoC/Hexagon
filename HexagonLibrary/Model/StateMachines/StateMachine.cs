@@ -43,13 +43,45 @@ namespace HexagonLibrary.Model.StateMachines
         
         public Map Map { get; set; }
 
+        public void SetActivePlayer(Player player)
+        {
+            this.player = player;
+        }
+
+        public void SetGameState(TypeGameState state)
+        {
+            this.gameState = state;
+        }
+
+        #region События во время state == TypeState.Play
+        /// <summary>
+        /// Событие, когда произведен первичный клик по собственному объекту
+        /// </summary>
         public event StateMachineEventHandler ClickHisObject;
+
+        /// <summary>
+        /// Событие, когда произведен первичный клик по соседнему объекту
+        /// </summary>
         public event StateMachineEventHandler ClickAroundObject;
+
+        /// <summary>
+        /// Событие, когда произведен первичный клик по отдаленному объекту
+        /// </summary>
         public event StateMachineEventHandler ClickNotAroundObject;
+
+        /// <summary>
+        /// Событие, когда произведен клик по участку за пределами карты
+        /// </summary>
         public event StateMachineEventHandler ClickOutOfRange;
+
+        #endregion
+
+        #region События во время state == TypeState.EndStep
 
         public event StateMachineEventHandler ClickAddLootPoint;
         public event StateMachineEventHandler ClickModifyFreeOjbect;
+
+        #endregion
 
         public StateMachine()
         {
@@ -172,17 +204,7 @@ namespace HexagonLibrary.Model.StateMachines
                 this.SetState(TypeState.Click_Background);
             }
         }
-
-        public void SetActivePlayer(Player player)
-        {
-            this.player = player;
-        }
-
-        public void SetGameState(TypeGameState state)
-        {
-            this.gameState = state;
-        }
-
+        
         void SetState(TypeState state)
         {
             switch(this.gameState)
@@ -229,8 +251,8 @@ namespace HexagonLibrary.Model.StateMachines
             if (eventObject != null)
             {
                 StateMachineEventArgs sm = new StateMachineEventArgs();
-                sm.LastObject = this.lastObject;
-                sm.CurrentObject = this.currentObject;
+                sm.SourceObject = this.lastObject;
+                sm.DestinationObject = this.currentObject;
 
                 eventObject(this.player, sm);
             }

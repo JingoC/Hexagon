@@ -10,6 +10,7 @@ namespace HexagonLibrary.Model.Navigation
 
     public class Map : Container
     {
+        Random r = new Random((int) DateTime.Now.Ticks);
         public List<List<HexagonObject>> Rows { get; private set; } = new List<List<HexagonObject>>();
         public List<List<HexagonObject>> Columns { get; private set; } = new List<List<HexagonObject>>();
 
@@ -23,13 +24,13 @@ namespace HexagonLibrary.Model.Navigation
 
         public Map(int row, int column)
         {
-            this.Width = row;
-            this.Height = column;
+            this.Width = column;
+            this.Height = row;
 
-            for(int i = 0; i < row; i++)
+            for(int i = 0; i < this.Height; i++)
             {
                 this.Rows.Add(new List<HexagonObject>());
-                for(int j = 0; j < column; j++)
+                for(int j = 0; j < this.Width; j++)
                 {
                     if (i == 0)
                     {
@@ -105,13 +106,12 @@ namespace HexagonLibrary.Model.Navigation
             return pi;
         }
 
-        public void Attack(HexagonObject src, HexagonObject dst)
+        public bool Attack(HexagonObject src, HexagonObject dst)
         {
-            Random r = new Random((int) DateTime.Now.Ticks);
             if (((src == null) || (dst == null)) ||
                 ((src.SectorId < 0) || (dst.SectorId < 0))
                 )
-                return;
+                return false;
             
             if (src.Life >= dst.Life)
             {
@@ -135,6 +135,8 @@ namespace HexagonLibrary.Model.Navigation
                     dst.DefaultTexture = GameObject.GetTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
                     dst.Type = TypeHexagon.Enemy;
                     src.Life = 0;
+
+                    return true;
                 }
                 else
                 {
@@ -149,6 +151,7 @@ namespace HexagonLibrary.Model.Navigation
                 src.Life = 0;
             }
 
+            return false;
         }
     }
 }

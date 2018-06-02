@@ -28,7 +28,7 @@ namespace HexagonWin
         {
             using (var winSystem = new WSystem())
             {
-                Core core = new Core(new GameSettings());
+                Core core = new Core(new GameSettings() { MapSize = new Size() { Width = 10, Height = 10 } });
                 Activity coreActivity = new Activity();
                                 
                 winSystem.ActivitySelected.Items.Add(core);

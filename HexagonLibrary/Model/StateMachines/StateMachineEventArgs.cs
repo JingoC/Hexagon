@@ -15,8 +15,20 @@ namespace HexagonLibrary.Model.StateMachines
 
     public class StateMachineEventArgs : EventArgs
     {
-        public HexagonObject LastObject { get; set; }
-        public HexagonObject CurrentObject { get; set; }
+        /// <summary>
+        /// Объект по котором произведен первичный клик
+        /// </summary>
+        public HexagonObject SourceObject { get; set; }
+
+        /// <summary>
+        /// Объект по которому произведен вторичный клик после первичного
+        /// </summary>
+        public HexagonObject DestinationObject { get; set; }
+
+        /// <summary>
+        /// Объект по которому произведен повторный клик
+        /// </summary>
+        public HexagonObject DoubleObject { get; set; }
 
         public StateMachineEventArgs()
         {

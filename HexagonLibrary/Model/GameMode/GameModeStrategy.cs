@@ -64,9 +64,9 @@ namespace HexagonLibrary.Model.GameMode
 
         public void LoadContent()
         {
-            for (int row = 0; row < this.Map.Width; row++)
+            for (int row = 0; row < this.Map.Height; row++)
             {
-                for (int col = 0; col < this.Map.Height; col++)
+                for (int col = 0; col < this.Map.Width; col++)
                 {
                     this.Map.SetItem(this.GetMapItem(), row, col);
                 }
@@ -80,7 +80,7 @@ namespace HexagonLibrary.Model.GameMode
 
         private HexagonObject GetMapItem()
         {
-            int percentBlock = 5;
+            int percentBlock = 20;
 
             if (r.Next(101) < percentBlock)
             {
