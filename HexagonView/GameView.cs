@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexagonWin.View
+namespace HexagonView
 {
+    using View;
+
     using WinSystem;
     using WinSystem.Controls;
     using WinSystem.System;
+
+    using HexagonLibrary.Model.GameMode;
 
     public class GameView : WSystem
     {
@@ -32,7 +36,8 @@ namespace HexagonWin.View
             sttg_btn.OnClick += (s, e) => this.ActivitySelected = settingsPage;
             this.Activities.Add(startPage);
 
-            this.ActivitySelected = startPage;
+            gamePage.SetSettings(new GameSettings() { CountPlayers = 3, PlayerMode = TypePlayerMode.Modeling });
+            this.ActivitySelected = gamePage;
         }
     }
 }

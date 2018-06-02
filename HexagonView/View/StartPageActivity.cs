@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexagonWin.View
+namespace HexagonView.View
 {
     using WinSystem;
     using WinSystem.Controls;

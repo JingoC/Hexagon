@@ -4,16 +4,20 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_blue.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_gray.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_blue_checked.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_white.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_green.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_red.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_yellow.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/user_button.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultFont.spritefont</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultButton.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultButtonPressed.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_aqua.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_aqua_checked.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_blue.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_brown.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_gray.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_green.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_limegreen.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_orange.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_purple.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_red.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_white.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_yellow.png</File>
   </SourceFiles>
 </SourceFileCollection>

@@ -95,6 +95,10 @@
       <Project>{4bf6e92f-62c0-484c-9c52-4d17f58db286}</Project>
       <Name>HexagonLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HexagonView\HexagonView.csproj">
+      <Project>{6e8d0d7c-135a-4dc6-a223-57a072b166f7}</Project>
+      <Name>HexagonView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WinSystem\WinSystem.csproj">
       <Project>{e79636e5-6697-4ee2-937a-d78aacafcff9}</Project>
       <Name>WinSystem</Name>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexagonWin.View
+namespace HexagonView.View
 {
     using WinSystem;
     using WinSystem.Controls;
@@ -21,7 +21,7 @@ namespace HexagonWin.View
 
         public GameSettings GetSettings()
         {
-            return new GameSettings();
+            return new GameSettings() { CountPlayers = 2 };
         }
     }
 }

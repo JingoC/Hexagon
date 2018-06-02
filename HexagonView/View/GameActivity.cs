@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexagonWin.View
+namespace HexagonView.View
 {
     using WinSystem;
     using WinSystem.Controls;
@@ -54,35 +54,17 @@ namespace HexagonWin.View
 
             if (this.core != null)
                 core.Update();
+            
+            StringBuilder sb = new StringBuilder();
+            foreach(var item in this.core.GameModeStrategy.Players)
+            {
+                int lootPoints = item.LootPoints;
+                int id = item.ID;
+                int sumLoot = core.GameModeStrategy.Map.Items.OfType<HexagonObject>().Where((x) => x.BelongUser == item.ID).Sum((x) => x.Loot);
+                sb.AppendLine($"{id}, LootPoints: {lootPoints} [{sumLoot}]");
+            }
 
-            string text = string.Format("Step: {1}{0}LootPoint0: {2} [{3}]{0}LootPoint1: {4} [{5}]{0}LootPoint2: {6} [{7}]{0}LootPoint3: {8} [{9}]{0}",
-                Environment.NewLine,
-                core.GameModeStrategy.Step,
-#if MODEL
-                        core.GameModeStrategy.CPUs[3].LootPoints,
-                core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
-                            .Where<HexagonObject>((x) => x.BelongUser == core.GameModeStrategy.CPUs[3].ID)
-                            .Sum((x) => x.Loot),
-#else
-                        core.GameModeStrategy.User.LootPoints,
-                        core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
-                                    .Where<HexagonObject>((x)=>x.BelongUser == core.GameModeStrategy.User.ID)
-                                    .Sum((x) => x.Loot),
-#endif
-                        core.GameModeStrategy.CPUs[0].LootPoints,
-                core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
-                            .Where<HexagonObject>((x) => x.BelongUser == core.GameModeStrategy.CPUs[0].ID)
-                            .Sum((x) => x.Loot),
-                core.GameModeStrategy.CPUs[1].LootPoints,
-                core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
-                            .Where<HexagonObject>((x) => x.BelongUser == core.GameModeStrategy.CPUs[1].ID)
-                            .Sum((x) => x.Loot),
-                core.GameModeStrategy.CPUs[2].LootPoints,
-                core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
-                            .Where<HexagonObject>((x) => x.BelongUser == core.GameModeStrategy.CPUs[2].ID)
-                            .Sum((x) => x.Loot)
-                );
-            labelInfo.Text = text;
+            labelInfo.Text = $"Step: {core.GameModeStrategy.Step}{Environment.NewLine}{sb.ToString()}";
 
 
             base.Update(gameTime);

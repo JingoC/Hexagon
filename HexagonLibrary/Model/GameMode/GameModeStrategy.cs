@@ -26,6 +26,7 @@ namespace HexagonLibrary.Model.GameMode
         public Map Map { get; set; }
         public TypeGameMode Mode { get; set; }
 
+        public List<Player> Players { get; set; } = new List<Player>();
         public User User { get; set; }
         public List<CPU> CPUs { get; set; }
 
@@ -39,27 +40,35 @@ namespace HexagonLibrary.Model.GameMode
             this.Step = 0;
             this.Mode = gameSettings.GameMode;
 
-            this.CPUs = new List<CPU>();
-
-#if MODEL
-            this.CPUs.Add(new CPU() { ID = 0, Strategy = new FirstStrategy() });
-#else
-            this.User = new User() { ID = 0 };
-#endif
-            
-            this.CPUs.Add(new CPU() { ID = 1, Strategy = new FirstStrategy() });
-            this.CPUs.Add(new CPU() { ID = 2, Strategy = new FirstStrategy() });
-            this.CPUs.Add(new CPU() { ID = 3, Strategy = new FirstStrategy() });
-
             this.Map = new Map(gameSettings.MapSize.Width, gameSettings.MapSize.Height);
-            
             this.stateMachine = new StateMachine() { Map = this.Map };
 
-#if MODEL
-            this.stateMachine.SetActivePlayer(this.CPUs[0]);
-#else
-            this.stateMachine.SetActivePlayer(this.User);
-#endif
+            this.CPUs = new List<CPU>();
+
+            if (gameSettings.PlayerMode == TypePlayerMode.Normal)
+            {
+                this.User = new User() { ID = 0 };
+                
+                for (int i = 1; i < gameSettings.CountPlayers; i++)
+                {
+                    this.CPUs.Add(new CPU() { ID = i, Strategy = new FirstStrategy() });
+                }
+
+                this.stateMachine.SetActivePlayer(this.User);
+                this.Players.Add(this.User);
+                this.Players.AddRange(this.CPUs);
+            }
+            else if (gameSettings.PlayerMode == TypePlayerMode.Modeling)
+            {
+                for (int i = 0; i < gameSettings.CountPlayers; i++)
+                {
+                    this.CPUs.Add(new CPU() { ID = i, Strategy = new FirstStrategy() });
+                }
+
+                this.stateMachine.SetActivePlayer(this.CPUs[0]);
+                
+                this.Players.AddRange(this.CPUs);
+            }
         }
 
         public void LoadContent()
@@ -72,10 +81,26 @@ namespace HexagonLibrary.Model.GameMode
                 }
             }
 
-            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle0), MaxLife = 8, BelongUser = 0, Life = 2, Loot = 2 }, 1, 0);
-            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle1), MaxLife = 8, BelongUser = 1, Life = 2, Loot = 2 }, 2, 8);
-            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle2), MaxLife = 8, BelongUser = 2, Life = 2, Loot = 2 }, 8, 2);
-            this.Map.SetItem(new HexagonObject() { DefaultTexture = GameObject.GetTexture(TypeTexture.UserIdle3), MaxLife = 8, BelongUser = 3, Life = 2, Loot = 2 }, 9, 7);
+            foreach(var cpu in this.CPUs)
+            {
+                int row = 0;
+                int column = 0;
+
+                do
+                {
+                    row = r.Next(this.Map.Width);
+                    column = r.Next(this.Map.Height);
+                } while (this.Map.Rows[row][column].Type != TypeHexagon.Free);
+
+                this.Map.SetItem(new HexagonObject()
+                {
+                    DefaultTexture = GameObject.GetTexture((TypeTexture)(TypeTexture.UserIdle0 + cpu.ID)),
+                    MaxLife = 8,
+                    BelongUser = cpu.ID,
+                    Life = 2,
+                    Loot = 2
+                }, row, column);
+            }
         }
 
         private HexagonObject GetMapItem()

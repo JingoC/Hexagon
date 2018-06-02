@@ -1,0 +1,14 @@
+D:\gitclone\Hexagon\HexagonView\bin\Debug\HexagonView.dll
+D:\gitclone\Hexagon\HexagonView\bin\Debug\HexagonView.pdb
+D:\gitclone\Hexagon\HexagonView\bin\Debug\HexagonLibrary.dll
+D:\gitclone\Hexagon\HexagonView\bin\Debug\MonoGame.Framework.dll
+D:\gitclone\Hexagon\HexagonView\bin\Debug\WinSystem.dll
+D:\gitclone\Hexagon\HexagonView\bin\Debug\Newtonsoft.Json.dll
+D:\gitclone\Hexagon\HexagonView\bin\Debug\HexagonLibrary.pdb
+D:\gitclone\Hexagon\HexagonView\bin\Debug\WinSystem.pdb
+D:\gitclone\Hexagon\HexagonView\bin\Debug\MonoGame.Framework.xml
+D:\gitclone\Hexagon\HexagonView\obj\Debug\HexagonView.csprojResolveAssemblyReference.cache
+D:\gitclone\Hexagon\HexagonView\obj\Debug\HexagonView.csproj.CoreCompileInputs.cache
+D:\gitclone\Hexagon\HexagonView\obj\Debug\HexagonView.csproj.CopyComplete
+D:\gitclone\Hexagon\HexagonView\obj\Debug\HexagonView.dll
+D:\gitclone\Hexagon\HexagonView\obj\Debug\HexagonView.pdb
