@@ -17,21 +17,20 @@ namespace HexagonView.View
 
     public class SettingsActivity : Activity
     {
-        int minPlayer = 2;
-        int maxPlayer = 10;
-        int valuePlayer = 4;
-
-        Changer players = new Changer();
+        Changer players = new Changer(new ValueRange(2, 10)) { Step = 1 };
         Label playersInfo = new Label() { Text = "Count Player ", ForeColor = Color.White };
 
         Toggle modeling = new Toggle(false);
         Label modelInfo = new Label() { Text = "Modeling", ForeColor = Color.White };
+        
+        Changer modelTiming = new Changer(new ValueRange(0, 1000)) { Step = 50 };
+        Label modelTimingInfo = new Label() { Text = "StepTime (ms)", ForeColor = Color.White };
 
-        int minModelTiming = 0;
-        int maxModelTiming = 1000;
-        int valueModelTiming = 50;
-        Changer modelTiming = new Changer();
-        Label modelTimingInfo = new Label() { Text = "Model step (ms)", ForeColor = Color.White };
+        Changer rows = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "RowChanger" };
+        Label rowsInfo = new Label() { Text = "Rows", ForeColor = Color.White };
+
+        Changer columns = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "ColumnChanger" };
+        Label columnsInfo = new Label() { Text = "Columns", ForeColor = Color.White };
 
         Button returnButton = new Button() { Text = "Return" };
 
@@ -39,15 +38,11 @@ namespace HexagonView.View
 
         public SettingsActivity()
         {
-            this.players.ClickToDown += (s, e) => { if (this.valuePlayer > this.minPlayer) { this.valuePlayer--; } this.players.Text = this.valuePlayer.ToString(); };
-            this.players.ClickToUp += (s, e) => { if (this.valuePlayer < this.maxPlayer) { this.valuePlayer++; } this.players.Text = this.valuePlayer.ToString(); };
-            this.players.Text = this.valuePlayer.ToString();
-
-            this.modelTiming.ClickToDown += (s, e) => { if (this.valueModelTiming > this.minModelTiming) { this.valueModelTiming-=50; } this.modelTiming.Text = this.valueModelTiming.ToString(); };
-            this.modelTiming.ClickToUp += (s, e) => { if (this.valueModelTiming < this.maxModelTiming) { this.valueModelTiming+=50; } this.modelTiming.Text = this.valueModelTiming.ToString(); };
-            this.modelTiming.Text = this.valueModelTiming.ToString();
-            
             this.returnButton.OnClick += (s, e) => { if (this.ExitActivity != null) { this.ExitActivity(s, e); } };
+
+            this.modelTiming.Current.Value = 50;
+            this.rows.Current.Value = 10;
+            this.columns.Current.Value = 10;
 
             this.Items.Add(this.players);
             this.Items.Add(this.playersInfo);
@@ -56,7 +51,10 @@ namespace HexagonView.View
             this.Items.Add(this.modeling);
             this.Items.Add(this.modelTiming);
             this.Items.Add(this.modelTimingInfo);
-
+            this.Items.Add(this.rows);
+            this.Items.Add(this.rowsInfo);
+            this.Items.Add(this.columns);
+            this.Items.Add(this.columnsInfo);
         }
 
         public override void Designer()
@@ -69,18 +67,30 @@ namespace HexagonView.View
 
             this.modelTimingInfo.Position = new Vector2(30, 140);
             this.modelTiming.Position = new Vector2(150, 140);
-            
+
+            this.rowsInfo.Position = new Vector2(300, 30);
+            this.rows.Position = new Vector2(420, 30);
+
+            this.columnsInfo.Position = new Vector2(300, 90);
+            this.columns.Position = new Vector2(420, 90);
+
             this.returnButton.Position = new Vector2(30, 300);
 
             base.Designer();
+        }
+
+        public void SetSize(int row, int column)
+        {
+
         }
 
         public GameSettings GetSettings()
         {
             return new GameSettings()
             {
-                CountPlayers = this.valuePlayer,
-                ModelStepTiming = this.valueModelTiming,
+                CountPlayers = (int)this.players.Current.Value,
+                ModelStepTiming = (int)this.modelTiming.Current.Value,
+                MapSize = new Size() { Width = (int)this.rows.Current.Value, Height = (int) this.columns.Current.Value },
                 GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : TypeGameMode.Normal,
                 PlayerMode = this.modeling.IsChecked ? TypePlayerMode.Modeling : TypePlayerMode.Normal
                 

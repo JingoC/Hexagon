@@ -34,7 +34,7 @@ namespace WinSystem.System
 
         public SpriteBatch GetSpriteBatch() { return this.spriteBatch; }
         public GraphicsDeviceManager GetGraphics() { return this.graphics; }
-
+        
         public event EventHandler LoadContentEvent;
         public event EventHandler UpdateEvent;
         public event EventHandler DrawEvent;
@@ -61,7 +61,7 @@ namespace WinSystem.System
             if (this.UpdateEvent != null)
                 this.UpdateEvent(gameTime, EventArgs.Empty);
         }
-
+        
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);

@@ -70,9 +70,11 @@ namespace HexagonLibrary.Model.GameMode
                 
                 this.Players.AddRange(this.CPUs);
             }
+
+            this.Generate();
         }
 
-        public void LoadContent()
+        void Generate()
         {
             for (int row = 0; row < this.Map.Row; row++)
             {
@@ -86,7 +88,7 @@ namespace HexagonLibrary.Model.GameMode
             {
                 int row = 0;
                 int column = 0;
-
+                
                 do
                 {
                     row = r.Next(this.Map.Row);

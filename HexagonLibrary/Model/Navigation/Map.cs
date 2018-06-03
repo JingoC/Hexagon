@@ -8,6 +8,8 @@ namespace HexagonLibrary.Model.Navigation
     using Entity.GameObjects;
     using WinSystem.Controls;
 
+    using Microsoft.Xna.Framework;
+
     public class Map : Container
     {
         Random r = new Random((int) DateTime.Now.Ticks);
@@ -43,10 +45,9 @@ namespace HexagonLibrary.Model.Navigation
 
         public void SetItem(HexagonObject item, int row, int column)
         {
-            //49,38
             int x = /*item.Width*/ 50 * column + ((row % 2 == 0) ? 0 : 24);
             int y = /*item.Height*/ 50 * row + row * (-12);
-            item.Position = new Microsoft.Xna.Framework.Vector2(x, y);
+            item.Position = new Vector2(x, y);
             item.SectorId = row * this.Column + column;
             this.Items[row * this.Column + column] = item;
             this.Rows[row][column] = item;

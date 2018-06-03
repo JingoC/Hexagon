@@ -20,8 +20,8 @@ namespace HexagonView.View
     
     public class GameActivity : Activity
     {
-        Core core = new Core(new GameSettings());
-        GameSettings gameSettings = new GameSettings() { MapSize = new Size() { Width = 10, Height = 10 } };
+        Core core;
+        GameSettings gameSettings;
 
         Button endStepButton = new Button() { Name = "endStepButton", Text = "End Step" };
         Button nextStepButton = new Button() { Name = "nextStepButton", Text = "Next Step" };
@@ -36,23 +36,19 @@ namespace HexagonView.View
 
         public GameActivity()
         {
-            this.core = new Core(this.gameSettings);
-            
-            endStepButton.OnClick += (s, e) => this.core.GameModeStrategy.EndStep();
-            nextStepButton.OnClick += (s, e) => this.core.GameModeStrategy.NextStep();
-            newGameButton.OnClick += (s, e) => this.core.Reset();
-            startModelButton.OnClick += StartModelButton_OnClick;
+            this.endStepButton.OnClick += (s, e) => this.core.GameModeStrategy.EndStep();
+            this.nextStepButton.OnClick += (s, e) => this.core.GameModeStrategy.NextStep();
+            this.newGameButton.OnClick += (s, e) => this.core.Reset();
+            this.startModelButton.OnClick += StartModelButton_OnClick;
 
             this.returnButton.OnClick += (s, e) => { if (this.ExitActivity != null) { this.ExitActivity(s, e); } };
 
-            this.Items.Add(endStepButton);
-            this.Items.Add(nextStepButton);
-            this.Items.Add(newGameButton);        
-            this.Items.Add(startModelButton);
-            this.Items.Add(labelInfo);
+            this.Items.Add(this.endStepButton);
+            this.Items.Add(this.nextStepButton);
+            this.Items.Add(this.newGameButton);        
+            this.Items.Add(this.startModelButton);
+            this.Items.Add(this.labelInfo);
             this.Items.Add(this.returnButton);
-            
-            this.Items.Add(this.core);
         }
 
         public override void Update(GameTime gameTime)
@@ -135,7 +131,6 @@ namespace HexagonView.View
             this.nextStepButton.Position = new Vector2(180, 440);
             this.startModelButton.Position = new Vector2(340, 400);
             
-
             base.Designer();
         }
 
@@ -144,7 +139,6 @@ namespace HexagonView.View
             this.gameSettings = settings;
             this.Items.Remove(this.core);
             this.core = new Core(settings);
-            this.core.LoadContent();
             this.Items.Add(this.core);
         }
 

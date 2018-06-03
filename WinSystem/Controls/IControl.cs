@@ -9,6 +9,7 @@ namespace WinSystem.Controls
 {
     public interface IControl : IDrawable
     {
+        string Name { get; set; }
         Vector2 Position { get; set; }
         TextureContainer TextureManager { get; set; }
 

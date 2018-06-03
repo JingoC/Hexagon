@@ -46,7 +46,7 @@ namespace WinSystem.System
                 return false;
             }
 #else
-           // { "Name": "defaultButton", "Type": "Texture2D"},
+            // { "Name": "defaultButton", "Type": "Texture2D"},
             string json = "[" +
                 "{\"Name\": \"defaultButton\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultButtonPressed\", \"Type\": \"Texture2D\"}," +
@@ -68,25 +68,19 @@ namespace WinSystem.System
                 "{\"Name\": \"hexagon_white\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultFont\", \"Type\": \"Font\"}," +
                 "]";
-            
-            try
+
+            var json_list = JsonConvert.DeserializeObject<List<ResoureceInfo>>(json);
+            foreach (var item in json_list)
             {
-                var json_list = JsonConvert.DeserializeObject<List<ResoureceInfo>>(json);
-                foreach(var item in json_list)
-                {
-                    AddResource(item.Name, item.Type);
-                }
-                return true;
+                Resources.AddResource(item.Name, item.Type);
             }
-            catch(Exception ex)
-            {
-                return false;
-            }
+            return true;
 #endif
         }
 
         static public void AddResource(string name, TypeResource type)
         {
+            var graphics = GraphicsSingleton.GetInstance();
             var content = GraphicsSingleton.GetInstance().Content;
 
             switch (type)

@@ -12,38 +12,40 @@ namespace HexagonView
     using WinSystem.Controls;
     using WinSystem.System;
 
+    using HexagonLibrary;
+    using HexagonLibrary.Model.Navigation;
     using HexagonLibrary.Model.GameMode;
+    using HexagonLibrary.Entity.GameObjects;
 
     public class GameView : WSystem
     {
         List<Activity> views = new List<Activity>();
 
-        public GameView()
-        {
-            GameActivity gamePage = new GameActivity();
-            gamePage.Name = "GamePage";
-            this.Activities.Add(gamePage);
+        GameActivity gamePage = new GameActivity() { Name = "GamePage" };
+        SettingsActivity settingsPage = new SettingsActivity() { Name = "SettingsPage" };
+        StartPageActivity startPage = new StartPageActivity() { Name = "StartPage" };
 
-            SettingsActivity settingsPage = new SettingsActivity();
-            settingsPage.Name = "SettingsPage";
-            this.Activities.Add(settingsPage);
+        public GameView() : base()
+        {   
+            this.Activities.Add(this.gamePage);
+            this.Activities.Add(this.settingsPage);
+            this.Activities.Add(this.startPage);
             
-            StartPageActivity startPage = new StartPageActivity();
-            startPage.Name = "StartPage";
-            var newgame_btn = startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("newGameButton"));
-            
-            var sttg_btn = startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("settingsGameButton"));
-            
-            this.Activities.Add(startPage);
+            this.settingsPage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
+            this.gamePage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
 
-            settingsPage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
-            gamePage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
+            var sttg_btn = this.startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("settingsGameButton"));
             sttg_btn.OnClick += (s, e) => this.ActivitySelected = settingsPage;
-            newgame_btn.OnClick += (s, e) => { gamePage.SetSettings(settingsPage.GetSettings()); this.ActivitySelected = gamePage; };
 
+            var newgame_btn = this.startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("newGameButton"));
+            newgame_btn.OnClick += delegate (Object sender, EventArgs e)
+            {
+                gamePage.SetSettings(settingsPage.GetSettings());
+                this.ActivitySelected = gamePage;
+            };
 
-            gamePage.SetSettings(new GameSettings() { GameMode = TypeGameMode.Modeling, CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling, MapSize = new Size() { Width = 10, Height = 12 } });
-            this.ActivitySelected = gamePage;
+            //gamePage.SetSettings(new GameSettings() { GameMode = TypeGameMode.Modeling, CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling, MapSize = new Size() { Width = row, Height = column } });
+            this.ActivitySelected = startPage;
         }
     }
 }

@@ -31,26 +31,29 @@ namespace HexagonLibrary
 
         public void Reset()
         {
+            this.Name = "CoreHexagon";
+
+            if (this.GameModeStrategy != null)
+            {
+                this.GameModeStrategy.Map.Items.Clear();
+                this.GameModeStrategy.CPUs.Clear();
+            }
+                
             this.GameModeStrategy = GameModeFactory.Create(this.gameSettings);
-            this.GameModeStrategy.LoadContent();
+
 
             this.Items.Clear();
             this.Items.Add(this.GameModeStrategy.Map);
         }
-
-        public void LoadContent()
-        {
-            this.Reset();
-        }
-
+        
         public override void Designer()
         {
             base.Designer();
-            this.LoadContent();
         }
+
         public void Update()
         {
-            // my logic
+
         }
     }
 }

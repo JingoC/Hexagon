@@ -11,6 +11,7 @@ namespace WinSystem.Controls
     {
         Vector2 position;
 
+        public string Name { get; set; }
         public TextureContainer TextureManager { get; set; }
         public List<IControl> Items { get; set; } = new List<IControl>();
 

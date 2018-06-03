@@ -19,10 +19,9 @@ namespace WinSystem
         public List<Activity> Activities { get; private set; } = new List<Activity>();
 
         public Activity ActivitySelected;
-
-        public event EventHandler LoadContentEvent;
-        public event EventHandler UpdateEvent;
         
+        public event EventHandler UpdateEvent;
+
         public WSystem()
         {
             this.Input.ClickTouch += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntry(e.X, e.Y));
@@ -33,7 +32,7 @@ namespace WinSystem
             this.Activities.Last().Background = Color.Black;
             this.ActivitySelected = this.Activities.Last();
 
-            this.Graphics.DrawEvent += (s, e) => this.ActivitySelected.Draw(s as GameTime);
+            this.Graphics.DrawEvent += (s, e) => { if (this.ActivitySelected != null) { this.ActivitySelected.Draw(s as GameTime); } };
             this.Graphics.UpdateEvent += delegate (object s, EventArgs e)
             {
                 this.Input.Update();
@@ -44,17 +43,15 @@ namespace WinSystem
                 if (this.UpdateEvent != null)
                     this.UpdateEvent(s, e);
             };
-            this.Graphics.LoadContentEvent += delegate (object s, EventArgs e)
-            {
-                //Resources.LoadResource();
-                
-                if (this.LoadContentEvent != null)
-                {
-                    this.LoadContentEvent(s, e);
-                }
 
-                this.Activities.ForEach(x => x.Designer());
-            };
+                this.Graphics.LoadContentEvent += (s, e) => { Resources.LoadResource(); this.Activities.ForEach(x => x.Designer()); };
+                //this.Graphics.RunOneFrame();
+            }
+
+        public void Run()
+        {
+            this.Graphics.Run();
+            //this.Activities.ForEach(x => x.Designer());
         }
 
         public void SelectActivity(String name)

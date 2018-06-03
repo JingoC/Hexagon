@@ -28,10 +28,9 @@ namespace HexagonWin
         [STAThread]
         static void Main()
         {
-            Resources.LoadResource();
             using (var winSystem = new GameView())
             {
-                winSystem.Graphics.Run();
+                winSystem.Run();
             }
         }
     }

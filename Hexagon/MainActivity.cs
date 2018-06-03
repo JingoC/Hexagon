@@ -32,10 +32,8 @@ namespace Hexagon
             base.OnCreate(bundle);
 
             var winSystem = new GameView();
-            var g = winSystem.Graphics;
-            SetContentView((View)g.Services.GetService(typeof(View)));
-            g.Run();
+            SetContentView((View)winSystem.Graphics.Services.GetService(typeof(View)));
+            winSystem.Run();
         }
     }
 }
-

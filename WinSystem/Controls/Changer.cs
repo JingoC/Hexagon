@@ -11,20 +11,62 @@ namespace WinSystem.Controls
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework;
 
+    public class ValueRange
+    {
+        private double value;
+        
+        public double Min { get; set; }
+        public double Max { get; set; }
+        public double Value
+        {
+            get { return Math.Round(this.value, 2); }
+            set
+            {
+                if (value >= this.Max)
+                    this.value = this.Max;
+                else if (value < this.Min)
+                    this.value = this.Min;
+                else
+                    this.value = value;
+            }
+        }
+        
+        public ValueRange(double min, double max)
+        {
+            if (min > max)
+                throw new Exception("ValueRange error: min not will be more max");
+
+            this.Min = min;
+            this.Max = max;
+
+            this.Value = Math.Round((this.Max - this.Min) / 2 + this.Min);
+        }
+    }
+
     public class Changer : Container
     {
         Button btnDown = new Button();
         Button btnUp = new Button();
         Label labelValue = new Label();
 
+        public ValueRange Current { get; set; }
+        public double Step { get; set; }
+
         public event EventHandler ClickToDown;
         public event EventHandler ClickToUp;
 
         public string Text { get => this.labelValue.Text; set => this.labelValue.Text = value; }
         public Color ForeColor { get => this.labelValue.ForeColor; set => this.labelValue.ForeColor = value; }
-
-        public Changer()
+        
+        public Changer() : this(new ValueRange(-10000, 10000))
         {
+
+        }
+
+        public Changer(ValueRange current)
+        {
+            this.Current = current;
+
             this.Items.Add(this.btnDown);
             this.Items.Add(this.labelValue);
             this.Items.Add(this.btnUp);
@@ -35,18 +77,33 @@ namespace WinSystem.Controls
             this.btnDown.Name = "Down";
             this.btnDown.Position = new Vector2(0, 0);
             this.btnDown.TextureManager.Textures.Add(Resources.GetResource("defaultChangerDown") as Texture2D);
-            this.btnDown.OnClick += (s, e) => this.ClickExecute(this.ClickToDown);
+            this.btnDown.OnClick += this.OnClickDown_Handler;
 
             this.labelValue.Name = "Value";
             this.labelValue.ForeColor = Color.White;
             this.labelValue.Position = new Vector2(this.btnDown.Width + 2, 0);
+            this.labelValue.Text = this.Current.Value.ToString();
 
             this.btnUp.Name = "Up";
             this.btnUp.Position = new Vector2(this.labelValue.Position.X + 26, 0);
             this.btnUp.TextureManager.Textures.Add(Resources.GetResource("defaultChangerUp") as Texture2D);
-            this.btnUp.OnClick += (s, e) => this.ClickExecute(this.ClickToUp);
+            this.btnUp.OnClick += this.OnClickUp_Handler;
             
             base.Designer();
+        }
+
+        private void OnClickDown_Handler(Object sender, EventArgs e)
+        {
+            this.Current.Value -= this.Step;
+            this.labelValue.Text = this.Current.Value.ToString();
+            this.ClickExecute(this.ClickToDown);
+        }
+
+        private void OnClickUp_Handler(Object sender, EventArgs e)
+        {
+            this.Current.Value += this.Step;
+            this.labelValue.Text = this.Current.Value.ToString();
+            this.ClickExecute(this.ClickToUp);
         }
 
         private void ClickExecute(EventHandler click)
