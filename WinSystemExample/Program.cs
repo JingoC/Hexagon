@@ -50,7 +50,17 @@ namespace WinSystemExample
                 toggle_example.Position = new Vector2(20, 170);
                 toggle_example.IsChanged += (s, e) => label_example.Text = "Toggle " + (toggle_example.IsChecked ? "On" : "Off"); 
                 winSystem.ActivitySelected.Items.Add(toggle_example);
-                
+
+                int value = 5;
+                int valueMin = 0;
+                int valueMax = 10;
+                var changer_example = new Changer();
+                changer_example.Text = "5";
+                changer_example.Position = new Vector2(20, 220);
+                changer_example.ClickToDown += (s, e) => { if (value > valueMin) { value--; } changer_example.Text = value.ToString(); };
+                changer_example.ClickToUp += (s, e) => { if (value < valueMax) { value++; } changer_example.Text = value.ToString(); };
+                winSystem.ActivitySelected.Items.Add(changer_example);
+
                 winSystem.LoadContentEvent += delegate (object sender, EventArgs e)
                 {
                     

@@ -6,13 +6,22 @@
   <SourceFiles>
     <File>D:/gitclone/Hexagon/Hexagon/Content/defaultButton.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/defaultButtonPressed.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultChangerDown.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultChangerUp.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultToggleOff.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultToggleOn.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_aqua.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_aqua_checked.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_blue.png</File>
-    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_blue_checked.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_brown.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_gray.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_green.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_limegreen.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_orange.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_purple.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_red.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_white.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_yellow.png</File>
-    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultFont.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

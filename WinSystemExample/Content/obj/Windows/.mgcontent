@@ -21,5 +21,7 @@
     <File>D:/gitclone/Hexagon/WinSystemExample/Content/hexagon_yellow.png</File>
     <File>D:/gitclone/Hexagon/WinSystemExample/Content/defaultToggleOff.png</File>
     <File>D:/gitclone/Hexagon/WinSystemExample/Content/defaultToggleOn.png</File>
+    <File>D:/gitclone/Hexagon/WinSystemExample/Content/defaultChangerDown.png</File>
+    <File>D:/gitclone/Hexagon/WinSystemExample/Content/defaultChangerUp.png</File>
   </SourceFiles>
 </SourceFileCollection>

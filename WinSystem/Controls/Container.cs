@@ -9,7 +9,27 @@ namespace WinSystem.Controls
 {
     public class Container : IControl
     {
+        Vector2 position;
+
         public List<IControl> Items { get; set; } = new List<IControl>();
+
+        public Vector2 Position
+        {
+            get => this.position;
+            set
+            {
+                if (value != null)
+                {
+                    this.position = value;
+                    foreach(var item in this.Items)
+                    {
+                        float x = this.position.X + item.Position.X;
+                        float y = this.position.Y + item.Position.Y;
+                        item.Position = new Vector2(x, y);
+                    }
+                }
+            }
+        }
 
         public int DrawOrder { get; set; }
 

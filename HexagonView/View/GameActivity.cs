@@ -29,6 +29,10 @@ namespace HexagonView.View
 
         Label labelInfo = new Label() { Name = "labelInfo", ForeColor = Color.White };
 
+        Button returnButton = new Button() { Text = "Return" };
+
+        public event EventHandler ExitActivity;
+
         public GameActivity()
         {
             Core core = new Core(new GameSettings() { MapSize = new Size() { Width = 10, Height = 10 } });
@@ -38,11 +42,14 @@ namespace HexagonView.View
             newGameButton.OnClick += (s, e) => this.core.Reset();
             startModelButton.OnClick += StartModelButton_OnClick;
 
+            this.returnButton.OnClick += (s, e) => { if (this.ExitActivity != null) { this.ExitActivity(s, e); } };
+
             this.Items.Add(endStepButton);
             this.Items.Add(nextStepButton);
             this.Items.Add(newGameButton);        
             this.Items.Add(startModelButton);
             this.Items.Add(labelInfo);
+            this.Items.Add(this.returnButton);
             
             this.Items.Add(this.core);
         }
@@ -109,6 +116,8 @@ namespace HexagonView.View
             this.startModelButton.Position = new Vector2(600, 240);
             this.newGameButton.Position = new Vector2(600, 300);
             this.labelInfo.Position = new Vector2(600, 100);
+
+            this.returnButton.Position = new Vector2(20, 400);
 
             base.Designer();
         }

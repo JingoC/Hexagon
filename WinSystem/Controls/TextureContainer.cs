@@ -45,7 +45,7 @@ namespace WinSystem.Controls
 
         public void SetDefault(int number)
         {
-            if (number < this.items.Count)
+            if ((number < this.items.Count) && (number >= 0))
                 this.defaultItem = this.items[number];
         }
 

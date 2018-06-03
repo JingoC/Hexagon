@@ -13,9 +13,13 @@ namespace WinSystem.Controls
 
     public class Label : MonoObject
     {
+        public override int Width { get => (int) this.Font.MeasureString(this.Text).X; }
+        
         public Label()
         {
             
         }
+
+        
     }
 }

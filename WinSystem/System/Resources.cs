@@ -52,6 +52,8 @@ namespace WinSystem.System
                 "{\"Name\": \"defaultButtonPressed\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultToggleOn\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultToggleOff\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"defaultChangerDown\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"defaultChangerUp\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"hexagon_green\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"hexagon_red\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"hexagon_yellow\", \"Type\": \"Texture2D\"}," +

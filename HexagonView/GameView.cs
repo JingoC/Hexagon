@@ -31,13 +31,19 @@ namespace HexagonView
             StartPageActivity startPage = new StartPageActivity();
             startPage.Name = "StartPage";
             var newgame_btn = startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("newGameButton"));
-            newgame_btn.OnClick += (s, e) => { gamePage.SetSettings(settingsPage.GetSettings()); this.ActivitySelected = gamePage; };
+            
             var sttg_btn = startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("settingsGameButton"));
-            sttg_btn.OnClick += (s, e) => this.ActivitySelected = settingsPage;
+            
             this.Activities.Add(startPage);
 
-            gamePage.SetSettings(new GameSettings() { CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling });
-            this.ActivitySelected = gamePage;
+            settingsPage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
+            gamePage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
+            sttg_btn.OnClick += (s, e) => this.ActivitySelected = settingsPage;
+            newgame_btn.OnClick += (s, e) => { gamePage.SetSettings(settingsPage.GetSettings()); this.ActivitySelected = gamePage; };
+
+
+            //gamePage.SetSettings(new GameSettings() { CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling });
+            this.ActivitySelected = startPage;
         }
     }
 }

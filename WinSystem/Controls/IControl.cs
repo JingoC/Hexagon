@@ -9,6 +9,8 @@ namespace WinSystem.Controls
 {
     public interface IControl : IDrawable
     {
+        Vector2 Position { get; set; }
+
         event EventHandler OnClick;
         event EventHandler OnPressed;
 

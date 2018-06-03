@@ -47,8 +47,8 @@ namespace WinSystem.Controls
 
         public Texture2D Texture { get => this.TextureManager.Textures.Current; }
         public SpriteFont Font { get => this.TextureManager.Fonts.Current; }
-        public int Width { get => this.Texture != null ? this.Texture.Width : 0; }
-        public int Height { get => this.Texture != null ? this.Texture.Height : 0; }
+        public virtual int Width { get => this.Texture != null ? this.Texture.Width : 0; }
+        public virtual int Height { get => this.Texture != null ? this.Texture.Height : 0; }
 
         public int DrawOrder
         {
