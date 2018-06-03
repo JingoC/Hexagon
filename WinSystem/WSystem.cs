@@ -46,7 +46,7 @@ namespace WinSystem
             };
             this.Graphics.LoadContentEvent += delegate (object s, EventArgs e)
             {
-                Resources.LoadResource();
+                //Resources.LoadResource();
                 
                 if (this.LoadContentEvent != null)
                 {

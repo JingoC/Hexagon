@@ -42,8 +42,8 @@ namespace HexagonView
             newgame_btn.OnClick += (s, e) => { gamePage.SetSettings(settingsPage.GetSettings()); this.ActivitySelected = gamePage; };
 
 
-            //gamePage.SetSettings(new GameSettings() { CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling });
-            this.ActivitySelected = startPage;
+            gamePage.SetSettings(new GameSettings() { GameMode = TypeGameMode.Modeling, CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling, MapSize = new Size() { Width = 10, Height = 12 } });
+            this.ActivitySelected = gamePage;
         }
     }
 }

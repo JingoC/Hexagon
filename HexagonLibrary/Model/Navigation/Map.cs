@@ -14,8 +14,8 @@ namespace HexagonLibrary.Model.Navigation
         public List<List<HexagonObject>> Rows { get; private set; } = new List<List<HexagonObject>>();
         public List<List<HexagonObject>> Columns { get; private set; } = new List<List<HexagonObject>>();
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Column { get; private set; }
+        public int Row { get; private set; }
 
         public Map() : this(10, 10)
         {
@@ -24,13 +24,13 @@ namespace HexagonLibrary.Model.Navigation
 
         public Map(int row, int column)
         {
-            this.Width = column;
-            this.Height = row;
-
-            for(int i = 0; i < this.Height; i++)
+            this.Row = row;
+            this.Column = column;
+            
+            for(int i = 0; i < this.Row; i++)
             {
                 this.Rows.Add(new List<HexagonObject>());
-                for(int j = 0; j < this.Width; j++)
+                for(int j = 0; j < this.Column; j++)
                 {
                     if (i == 0)
                     {
@@ -47,8 +47,8 @@ namespace HexagonLibrary.Model.Navigation
             int x = /*item.Width*/ 50 * column + ((row % 2 == 0) ? 0 : 24);
             int y = /*item.Height*/ 50 * row + row * (-12);
             item.Position = new Microsoft.Xna.Framework.Vector2(x, y);
-            item.SectorId = row * this.Height + column;
-            this.Items[row * this.Height + column] = item;
+            item.SectorId = row * this.Column + column;
+            this.Items[row * this.Column + column] = item;
             this.Rows[row][column] = item;
             this.Columns[column][row] = item;
         }
@@ -62,8 +62,8 @@ namespace HexagonLibrary.Model.Navigation
 
         public GameObjectPositionInfo GetPositionInfo(HexagonObject hObj)
         {
-            int row = hObj.SectorId / this.Width;
-            int column = hObj.SectorId - (row * this.Height);
+            int row = hObj.SectorId / this.Column;
+            int column = hObj.SectorId - (row * this.Column);
             return this.GetPositionInfo(row, column);
         }
 
@@ -78,9 +78,9 @@ namespace HexagonLibrary.Model.Navigation
             pi.Current = this.Rows[row][column];
 
             bool isRowTop = row == 0;
-            bool isRowBotton = row == this.Height - 1;
+            bool isRowBotton = row == this.Row - 1;
             bool isColumnLeft = column == 0;
-            bool isColumnRight = column == this.Width - 1;
+            bool isColumnRight = column == this.Column - 1;
 
             var empty = new HexagonObject(-1) { Type = TypeHexagon.Blocked, Life = 1000 };
             if ((row % 2) == 0)

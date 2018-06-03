@@ -15,7 +15,7 @@ using HexagonLibrary.Model.GameMode;
 namespace HexagonWin
 {
     using HexagonView;
-
+    using WinSystem.System;
 #if WINDOWS || LINUX
     /// <summary>
     /// The main class.
@@ -28,6 +28,7 @@ namespace HexagonWin
         [STAThread]
         static void Main()
         {
+            Resources.LoadResource();
             using (var winSystem = new GameView())
             {
                 winSystem.Graphics.Run();

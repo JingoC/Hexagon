@@ -54,6 +54,7 @@
     <Compile Include="Entity\Players\User.cs" />
     <Compile Include="Model\GameMode\GameModeBuildMap.cs" />
     <Compile Include="Model\GameMode\GameModeFactory.cs" />
+    <Compile Include="Model\GameMode\GameModeModeling.cs" />
     <Compile Include="Model\GameMode\GameModeNormal.cs" />
     <Compile Include="Model\GameMode\GameModeStrategy.cs" />
     <Compile Include="Model\GameMode\GameSettings.cs" />

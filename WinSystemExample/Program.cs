@@ -61,6 +61,13 @@ namespace WinSystemExample
                 changer_example.ClickToUp += (s, e) => { if (value < valueMax) { value++; } changer_example.Text = value.ToString(); };
                 winSystem.ActivitySelected.Items.Add(changer_example);
 
+                var form_example = new Form();
+
+                var btn_messageBox = new Button();
+                btn_messageBox.Text = "ShowMessage";
+                btn_messageBox.OnClick += (s, e) => form_example.Show();
+                winSystem.ActivitySelected.Items.Add(btn_messageBox);
+
                 winSystem.LoadContentEvent += delegate (object sender, EventArgs e)
                 {
                     

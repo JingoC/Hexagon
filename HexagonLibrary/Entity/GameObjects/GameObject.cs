@@ -47,7 +47,7 @@ namespace HexagonLibrary.Entity.GameObjects
                 "hexagon_brown",
                 "hexagon_purple",
                 "hexagon_limegreen",
-                "hexagon_purple",
+                "hexagon_orange",
                 "hexagon_blue",
                 "hexagon_white",
                 "hexagon_aqua_checked",

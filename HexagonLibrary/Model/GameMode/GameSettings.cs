@@ -15,7 +15,8 @@ namespace HexagonLibrary.Model.GameMode
     public enum TypeGameMode
     {
         Normal = 1,
-        BuildMap = 2
+        BuildMap = 2,
+        Modeling = 3
     }
 
     public class Size
@@ -30,6 +31,7 @@ namespace HexagonLibrary.Model.GameMode
         public int CountPlayers { get; set; } = 4;
         public TypeGameMode GameMode { get; set; } = TypeGameMode.Normal;
         public TypePlayerMode PlayerMode { get; set; } = TypePlayerMode.Normal;
+        public int ModelStepTiming { get; set; } = 50;
 
         public GameSettings()
         {

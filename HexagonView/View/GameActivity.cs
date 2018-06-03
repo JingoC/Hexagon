@@ -21,6 +21,7 @@ namespace HexagonView.View
     public class GameActivity : Activity
     {
         Core core = new Core(new GameSettings());
+        GameSettings gameSettings = new GameSettings() { MapSize = new Size() { Width = 10, Height = 10 } };
 
         Button endStepButton = new Button() { Name = "endStepButton", Text = "End Step" };
         Button nextStepButton = new Button() { Name = "nextStepButton", Text = "Next Step" };
@@ -35,10 +36,10 @@ namespace HexagonView.View
 
         public GameActivity()
         {
-            Core core = new Core(new GameSettings() { MapSize = new Size() { Width = 10, Height = 10 } });
+            this.core = new Core(this.gameSettings);
             
-            endStepButton.OnClick += (s, e) => core.GameModeStrategy.EndStep();
-            nextStepButton.OnClick += (s, e) => core.GameModeStrategy.NextStep();
+            endStepButton.OnClick += (s, e) => this.core.GameModeStrategy.EndStep();
+            nextStepButton.OnClick += (s, e) => this.core.GameModeStrategy.NextStep();
             newGameButton.OnClick += (s, e) => this.core.Reset();
             startModelButton.OnClick += StartModelButton_OnClick;
 
@@ -60,7 +61,8 @@ namespace HexagonView.View
 
             if (this.core != null)
                 core.Update();
-            
+
+#if false
             StringBuilder sb = new StringBuilder();
             foreach(var item in this.core.GameModeStrategy.Players)
             {
@@ -71,59 +73,75 @@ namespace HexagonView.View
             }
 
             labelInfo.Text = $"Step: {core.GameModeStrategy.Step}{Environment.NewLine}{sb.ToString()}";
-
+#else
+            if (this.core.GameModeStrategy.GameSettings.PlayerMode == TypePlayerMode.Normal)
+            {
+                int Points = this.core.GameModeStrategy.User.LootPoints;
+                int NewPoints = this.core.GameModeStrategy.Map.Items.OfType<HexagonObject>().Where((x) => x.BelongUser == 0).Sum((x) => x.Loot);
+                labelInfo.Text = $"Step: {this.core.GameModeStrategy.Step}{Environment.NewLine}{Points} [{NewPoints}]";
+            }
+            else
+            {
+                labelInfo.Text = $"Step: {this.core.GameModeStrategy.Step}";
+            }
+#endif
 
             base.Update(gameTime);
         }
 
         private void StartModelButton_OnClick(object sender, EventArgs e)
         {
-            System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ThreadStart(delegate ()
+            if (this.gameSettings.PlayerMode == TypePlayerMode.Modeling)
             {
-                bool isGameOver = false;
-                while (!isGameOver)
+                System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ThreadStart(delegate ()
                 {
-                    int curStep = core.GameModeStrategy.Step;
-                    System.Threading.Thread.Sleep(50);
-                    core.GameModeStrategy.NextStep();
-                    while (curStep == core.GameModeStrategy.Step) { }
-
-                    List<int> items = new List<int>();
-                    var allItems = core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
-                                .Where((x) => x.BelongUser >= 0);
-
-                    foreach (var item in allItems)
+                    bool isGameOver = false;
+                    while (!isGameOver)
                     {
-                        if (items.All(x => x != item.BelongUser))
+                        int curStep = core.GameModeStrategy.Step;
+                        System.Threading.Thread.Sleep(this.core.GameModeStrategy.GameSettings.ModelStepTiming);
+                        this.core.GameModeStrategy.NextStep();
+                        while (curStep == this.core.GameModeStrategy.Step) { }
+
+                        List<int> items = new List<int>();
+                        var allItems = this.core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
+                                    .Where((x) => x.BelongUser >= 0);
+
+                        foreach (var item in allItems)
                         {
-                            items.Add(item.BelongUser);
+                            if (items.All(x => x != item.BelongUser))
+                            {
+                                items.Add(item.BelongUser);
 
-                            if (items.Count > 1)
-                                break;
+                                if (items.Count > 1)
+                                    break;
+                            }
                         }
-                    }
 
-                    isGameOver = items.Count == 1;
-                }
-            }));
-            th.Start();
+                        isGameOver = items.Count == 1;
+                    }
+                }));
+                th.Start();
+            }
         }
 
         public override void Designer()
         {
-            this.endStepButton.Position = new Vector2(600, 20);
-            this.nextStepButton.Position = new Vector2(600, 60);
-            this.startModelButton.Position = new Vector2(600, 240);
-            this.newGameButton.Position = new Vector2(600, 300);
-            this.labelInfo.Position = new Vector2(600, 100);
+            this.labelInfo.Position = new Vector2(500, 400);
 
             this.returnButton.Position = new Vector2(20, 400);
+            this.newGameButton.Position = new Vector2(20, 440);
+            this.endStepButton.Position = new Vector2(180, 400);
+            this.nextStepButton.Position = new Vector2(180, 440);
+            this.startModelButton.Position = new Vector2(340, 400);
+            
 
             base.Designer();
         }
 
         public void SetSettings(GameSettings settings)
         {
+            this.gameSettings = settings;
             this.Items.Remove(this.core);
             this.core = new Core(settings);
             this.core.LoadContent();

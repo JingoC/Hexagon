@@ -47,6 +47,8 @@ namespace HexagonLibrary.Entity.Players.Strategy
                             .Where((x) => this.map.GetPositionInfo(x).CountAvailableToAttack() > 0)
                             .ToList();
 
+                    //System.Threading.Thread.Sleep(400);
+
                 } while (IsAttacks);
             }
 

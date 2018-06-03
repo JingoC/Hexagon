@@ -14,6 +14,7 @@ namespace HexagonLibrary.Model.GameMode
             {
                 case TypeGameMode.Normal: return new GameModeNormal(gameSettings);
                 case TypeGameMode.BuildMap: return new GameModeBuildMap(gameSettings);
+                case TypeGameMode.Modeling: return new GameModeModeling(gameSettings);
                 default: throw new Exception("Type GameMode undefined");
             }
         }

@@ -53,6 +53,11 @@ namespace HexagonLibrary.Model.StateMachines
             this.gameState = state;
         }
 
+        public TypeGameState GetGameState()
+        {
+            return this.gameState;
+        }
+
         #region События во время state == TypeState.Play
         /// <summary>
         /// Событие, когда произведен первичный клик по собственному объекту

@@ -45,15 +45,27 @@ namespace HexagonLibrary.Model.GameMode
                 p.LootPoints -= e.DestinationObject.Life;
                 e.DestinationObject.Life = 0;
             }
+
+            if (p.LootPoints == 0)
+            {
+                this.NextStep();
+            }
         }
 
         private void StateMachine_ClickAddLootPoint(object sender, StateMachineEventArgs e)
         {
             Player p = sender as Player;
+
             if ((p.LootPoints > 0) && (e.DestinationObject.Life < e.DestinationObject.MaxLife))
             {
                 e.DestinationObject.Life++;
                 p.LootPoints--;
+            }
+
+
+            if (p.LootPoints == 0)
+            {
+                this.NextStep();
             }
         }
 
@@ -64,7 +76,14 @@ namespace HexagonLibrary.Model.GameMode
 
         private void StateMachine_ClickAroundObject(object sender, StateMachineEventArgs e)
         {
-            this.Map.Attack(e.SourceObject as HexagonObject, e.DestinationObject as HexagonObject);
+            var src = e.SourceObject as HexagonObject;
+            var dst = e.DestinationObject as HexagonObject;
+
+            if (this.Map.Attack(src, dst))
+            {
+                src.RestoreDefaultTexture();
+                dst.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
+            }
         }
 
         private void StateMachine_ClickOutOfRange(object sender, StateMachineEventArgs e)
@@ -75,45 +94,43 @@ namespace HexagonLibrary.Model.GameMode
         private void StateMachine_ClickHisObject(object sender, StateMachineEventArgs e)
         {
             this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
-            e.DestinationObject.SetDefaultTexture(TypeTexture.UserActive0);
+            e.DestinationObject.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
         }
 
         public override void EndStep()
         {
-            this.stateMachine.SetGameState(TypeGameState.EndStep);
-            this.User.LootPoints += this.Map.Items.Where((x) => (x as HexagonObject).BelongUser == this.User.ID).Sum((x) => (x as HexagonObject).Loot);
+            if (this.stateMachine.GetGameState() == TypeGameState.Play)
+            {
+                this.Map.Items.OfType<HexagonObject>().Where(x => x.BelongUser == this.User.ID).ToList<HexagonObject>().ForEach(x => x.RestoreDefaultTexture());
+                this.stateMachine.SetGameState(TypeGameState.EndStep);
+                this.User.LootPoints += this.Map.Items.Where((x) => (x as HexagonObject).BelongUser == this.User.ID).Sum((x) => (x as HexagonObject).Loot);
+            }
         }
 
         public override void NextStep()
         {
-            this.IsReady = false;
 
-            this.stateMachine.SetGameState(TypeGameState.Cpu);
-#if true
-            // multi threading
-            this.threadActionCpu = new Thread(new ThreadStart(delegate ()
+            if (this.stateMachine.GetGameState() == TypeGameState.EndStep)
             {
-                foreach (var item in this.CPUs)
+                this.IsReady = false;
+
+                this.stateMachine.SetGameState(TypeGameState.Cpu);
+
+                // multi threading
+                this.threadActionCpu = new Thread(new ThreadStart(delegate ()
                 {
-                    item.Strategy.Calculate(this.Map, item);
-                }
-                
-                this.stateMachine.SetGameState(TypeGameState.Play);
+                    foreach (var item in this.CPUs)
+                    {
+                        item.Strategy.Calculate(this.Map, item);
+                    }
 
-                this.IsReady = true;
-                this.Step++;
-            }));
-            this.threadActionCpu.Start();
-#else
-            foreach (var item in this.CPUs)
-            {
-                item.Strategy.Calculate(this.Map, item);
-            }
+                    this.stateMachine.SetGameState(TypeGameState.Play);
 
-            this.IsReady = true;
-            this.Step++;
-            this.stateMachine.SetGameState(TypeGameState.Play);
-#endif
+                    this.IsReady = true;
+                    this.Step++;
+                }));
+                this.threadActionCpu.Start();
             }
+        }
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>D:/gitclone/Hexagon/WinSystemExample/Content/defaultChangerUp.png</SourceFile>
-  <SourceTime>2018-06-03T10:42:53.4030183+03:00</SourceTime>
+  <SourceTime>2018-06-03T14:10:36.0547582+03:00</SourceTime>
   <DestFile>D:/gitclone/Hexagon/WinSystemExample/Content/bin/Windows/defaultChangerUp.xnb</DestFile>
-  <DestTime>2018-06-03T10:44:19.9633427+03:00</DestTime>
+  <DestTime>2018-06-03T15:17:01.8797242+03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T18:05:36+03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

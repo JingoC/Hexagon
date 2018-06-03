@@ -25,7 +25,7 @@ namespace HexagonLibrary.Model.GameMode
         public bool IsReady { get; protected set; }
         public int Step { get; protected set; }
         public Map Map { get; set; }
-        public TypeGameMode Mode { get; set; }
+        public GameSettings GameSettings { get; private set; }
 
         public List<Player> Players { get; set; } = new List<Player>();
         public User User { get; set; }
@@ -39,7 +39,7 @@ namespace HexagonLibrary.Model.GameMode
         public GameModeStrategy(GameSettings gameSettings)
         {
             this.Step = 0;
-            this.Mode = gameSettings.GameMode;
+            this.GameSettings = gameSettings;
 
             this.Map = new Map(gameSettings.MapSize.Width, gameSettings.MapSize.Height);
             this.stateMachine = new StateMachine() { Map = this.Map };
@@ -74,27 +74,27 @@ namespace HexagonLibrary.Model.GameMode
 
         public void LoadContent()
         {
-            for (int row = 0; row < this.Map.Height; row++)
+            for (int row = 0; row < this.Map.Row; row++)
             {
-                for (int col = 0; col < this.Map.Width; col++)
+                for (int col = 0; col < this.Map.Column; col++)
                 {
                     this.Map.SetItem(this.GetMapItem(), row, col);
                 }
             }
 
-            foreach(var cpu in this.CPUs)
+            foreach(var player in this.Players)
             {
                 int row = 0;
                 int column = 0;
 
                 do
                 {
-                    row = r.Next(this.Map.Width);
-                    column = r.Next(this.Map.Height);
+                    row = r.Next(this.Map.Row);
+                    column = r.Next(this.Map.Column);
                 } while (this.Map.Rows[row][column].Type != TypeHexagon.Free);
 
-                var hex = new HexagonObject() { MaxLife = 8, BelongUser = cpu.ID, Life = 2, Loot = 2 };
-                hex.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + cpu.ID));
+                var hex = new HexagonObject() { MaxLife = 8, BelongUser = player.ID, Life = 2, Loot = 2 };
+                hex.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + player.ID));
                 
                 this.Map.SetItem(hex, row, column);
             }
