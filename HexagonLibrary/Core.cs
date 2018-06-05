@@ -22,6 +22,14 @@ namespace HexagonLibrary
 
         public GameModeStrategy GameModeStrategy;
 
+        public int Width
+        {
+            get
+            {
+                return this.GameModeStrategy.Map.Rows[0].Sum(x => x.Width);
+            }
+        }
+
         public Core(GameSettings gameSettings)
         {
             this.gameSettings = gameSettings;

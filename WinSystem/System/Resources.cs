@@ -7,6 +7,7 @@ using System.IO;
 
 namespace WinSystem.System
 {
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Newtonsoft.Json;
     
@@ -85,7 +86,12 @@ namespace WinSystem.System
 
             switch (type)
             {
-                case TypeResource.Texture2D: resources.Add(name, content.Load<Texture2D>(name)); break;
+                case TypeResource.Texture2D:
+                    {
+                        var tex = content.Load<Texture2D>(name);
+                        resources.Add(name, tex);
+                    }
+                    break;
                 case TypeResource.Font: resources.Add(name, content.Load<SpriteFont>(name)); break;
                 default: throw new Exception("Undefined resource type");
             }

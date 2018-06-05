@@ -32,6 +32,8 @@ namespace HexagonLibrary.Entity.GameObjects
     
     public partial class GameObject : MonoObject
     {
+        //public override Vector2 Position { get; set; }
+
         public GameObject()
         {
             

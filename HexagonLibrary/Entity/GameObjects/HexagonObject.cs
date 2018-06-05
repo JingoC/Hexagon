@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace HexagonLibrary.Entity.GameObjects
 {
@@ -13,6 +14,15 @@ namespace HexagonLibrary.Entity.GameObjects
 
     public class HexagonObject : GameObject, IEquatable<HexagonObject>
     {
+        public override Vector2 Position
+        {
+            get => base.Position;
+            set
+            {
+                base.Position = value;
+                this.TextPosition = new Vector2(value.X + this.Width / 4, value.Y + this.Height / 4);
+            }
+        }
         public static HexagonObject Empty { get { return new HexagonObject(); } }
 
         public int SectorId { get; set; }

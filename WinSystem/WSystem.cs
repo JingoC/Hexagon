@@ -51,7 +51,6 @@ namespace WinSystem
         public void Run()
         {
             this.Graphics.Run();
-            //this.Activities.ForEach(x => x.Designer());
         }
 
         public void SelectActivity(String name)

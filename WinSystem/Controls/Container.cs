@@ -15,6 +15,18 @@ namespace WinSystem.Controls
         public TextureContainer TextureManager { get; set; }
         public List<IControl> Items { get; set; } = new List<IControl>();
 
+        public int Width
+        {
+            get => this.Items.Count > 0 ? (int) this.Items.Max(x => x.Width + x.Position.X) : 0;
+            set { }
+        }
+
+        public int Height
+        {
+            get => this.Items.Count > 0 ? (int)this.Items.Max(x => x.Height + x.Position.Y) : 0;
+            set { }
+        }
+
         public Vector2 Position
         {
             get => this.position;

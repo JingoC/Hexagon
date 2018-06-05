@@ -31,6 +31,7 @@ namespace WinSystem.Controls
         bool visible = true;
         int drawOrder = 0;
 
+        public float Scale { get; set; } = 1.5f;
         public TextureContainer TextureManager { get; set; } = new TextureContainer();
         
         public event EventHandler OnClick;
@@ -42,13 +43,14 @@ namespace WinSystem.Controls
         public Color ForeColor { get; set; } = Color.Black;
         
         virtual public Vector2 Position { get; set; }
+        virtual protected Vector2 TextPosition { get; set; }
         public Color Color { get; set; } = Color.White;
         public string Name { get; set; }
 
         public Texture2D Texture { get => this.TextureManager.Textures.Current; }
         public SpriteFont Font { get => this.TextureManager.Fonts.Current; }
-        public virtual int Width { get => this.Texture != null ? this.Texture.Width : 0; }
-        public virtual int Height { get => this.Texture != null ? this.Texture.Height : 0; }
+        virtual public int Width { get => this.Texture != null ? (int) (this.Texture.Width * this.Scale) : 0; }
+        virtual public int Height { get => this.Texture != null ? (int) (this.Texture.Height * this.Scale) : 0; }
 
         public int DrawOrder
         {
@@ -119,18 +121,28 @@ namespace WinSystem.Controls
                     this.OnPressed(this, EventArgs.Empty);
             }
         }
-
+        
         virtual public void Draw(GameTime gameTime)
         {
             if (this.Visible)
             {
                 if (this.Texture != null)
-                    GraphicsSingleton.GetInstance().GetSpriteBatch().Draw(this.Texture, this.Position, this.Color);
+                {
+                    SpriteBatch sb = GraphicsSingleton.GetInstance().GetSpriteBatch();
+                    int x = (int) this.Position.X;
+                    int y = (int) this.Position.Y;
+                    int w = this.Width;
+                    int h = this.Height;
+
+                    //sb.Draw(this.Texture, this.Position, this.Color);
+                    sb.Draw(this.Texture, new Rectangle(x, y, w, h), this.Color);
+                    //sb.Draw(this.Texture, position: this.Position, color: this.Color, scale: new Vector2((float)2.0));
+                }
+                    
 
                 if ((this.Font != null) && !this.Text.Equals(String.Empty))
                 {
-                    Vector2 position = new Vector2(this.Position.X + 10, this.Position.Y + 10);
-                    GraphicsSingleton.GetInstance().GetSpriteBatch().DrawString(this.Font, this.Text, position, this.ForeColor);
+                    GraphicsSingleton.GetInstance().GetSpriteBatch().DrawString(this.Font, this.Text, this.TextPosition, this.ForeColor);
                 }
             }
         }

@@ -12,6 +12,8 @@ namespace WinSystem.Controls
         string Name { get; set; }
         Vector2 Position { get; set; }
         TextureContainer TextureManager { get; set; }
+        int Width { get; }
+        int Height { get; }
 
         event EventHandler OnClick;
         event EventHandler OnPressed;

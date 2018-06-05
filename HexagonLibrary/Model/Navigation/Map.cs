@@ -45,8 +45,8 @@ namespace HexagonLibrary.Model.Navigation
 
         public void SetItem(HexagonObject item, int row, int column)
         {
-            int x = /*item.Width*/ 50 * column + ((row % 2 == 0) ? 0 : 24);
-            int y = /*item.Height*/ 50 * row + row * (-12);
+            int x = item.Width * column + ((row % 2 == 0) ? 0 : (int)(24 * item.Scale));
+            int y = item.Height * row + row * (int)(-12 * item.Scale);
             item.Position = new Vector2(x, y);
             item.SectorId = row * this.Column + column;
             this.Items[row * this.Column + column] = item;

@@ -32,6 +32,8 @@ namespace HexagonView.View
 
         Button returnButton = new Button() { Text = "Return" };
 
+        Container menu = new Container();
+
         public event EventHandler ExitActivity;
 
         public GameActivity()
@@ -42,13 +44,37 @@ namespace HexagonView.View
             this.startModelButton.OnClick += StartModelButton_OnClick;
 
             this.returnButton.OnClick += (s, e) => { if (this.ExitActivity != null) { this.ExitActivity(s, e); } };
-
-            this.Items.Add(this.endStepButton);
-            this.Items.Add(this.nextStepButton);
-            this.Items.Add(this.newGameButton);        
-            this.Items.Add(this.startModelButton);
+            
             this.Items.Add(this.labelInfo);
-            this.Items.Add(this.returnButton);
+
+            this.menu.Items.Add(this.endStepButton);
+            this.menu.Items.Add(this.nextStepButton);
+            this.menu.Items.Add(this.newGameButton);
+            this.menu.Items.Add(this.startModelButton);
+            this.menu.Items.Add(this.returnButton);
+
+            this.Items.Add(this.menu);
+        }
+
+        public override void Designer()
+        {
+            base.Designer();
+
+            this.labelInfo.Position = new Vector2(600, 700);
+
+            this.returnButton.Position = new Vector2(10, 100);
+            this.newGameButton.Position = new Vector2(10, this.returnButton.Position.Y + this.returnButton.Height + 20);
+            this.endStepButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 20);
+            this.nextStepButton.Position = new Vector2(10, this.endStepButton.Position.Y + this.endStepButton.Height + 20);
+            this.startModelButton.Position = new Vector2(10, this.nextStepButton.Position.Y + this.nextStepButton.Height + 20);
+
+            int w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
+            this.menu.Position = new Vector2(w - this.menu.Width - 10, 10);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
@@ -120,25 +146,13 @@ namespace HexagonView.View
                 th.Start();
             }
         }
-
-        public override void Designer()
-        {
-            this.labelInfo.Position = new Vector2(500, 400);
-
-            this.returnButton.Position = new Vector2(20, 400);
-            this.newGameButton.Position = new Vector2(20, 440);
-            this.endStepButton.Position = new Vector2(180, 400);
-            this.nextStepButton.Position = new Vector2(180, 440);
-            this.startModelButton.Position = new Vector2(340, 400);
-            
-            base.Designer();
-        }
-
+        
         public void SetSettings(GameSettings settings)
         {
             this.gameSettings = settings;
             this.Items.Remove(this.core);
             this.core = new Core(settings);
+            
             this.Items.Add(this.core);
         }
 
@@ -146,5 +160,7 @@ namespace HexagonView.View
         {
             this.core.Reset();
         }
+
+
     }
 }

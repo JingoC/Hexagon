@@ -59,24 +59,26 @@ namespace HexagonView.View
 
         public override void Designer()
         {
-            this.playersInfo.Position = new Vector2(30, 30);
-            this.players.Position = new Vector2(150, 20);
-
-            this.modelInfo.Position = new Vector2(30, 80);
-            this.modeling.Position = new Vector2(150, 80);
-
-            this.modelTimingInfo.Position = new Vector2(30, 140);
-            this.modelTiming.Position = new Vector2(150, 140);
-
-            this.rowsInfo.Position = new Vector2(300, 30);
-            this.rows.Position = new Vector2(420, 30);
-
-            this.columnsInfo.Position = new Vector2(300, 90);
-            this.columns.Position = new Vector2(420, 90);
-
-            this.returnButton.Position = new Vector2(30, 300);
-
             base.Designer();
+
+            int space = 400;
+
+            this.players.Position = new Vector2(space - this.players.Width, 20);
+            this.playersInfo.Position = new Vector2(30, this.players.Position.Y + this.players.Height / 2 - this.playersInfo.Height / 2);
+
+            this.modeling.Position = new Vector2(space - this.modeling.Width, this.players.Position.Y + this.players.Height + 20);
+            this.modelInfo.Position = new Vector2(30, this.modeling.Position.Y + this.modeling.Height / 2 - this.modelInfo.Height / 2);
+
+            this.modelTiming.Position = new Vector2(space - this.modelTiming.Width, this.modeling.Position.Y + this.modeling.Height + 20);
+            this.modelTimingInfo.Position = new Vector2(30, this.modelTiming.Position.Y + this.modelTiming.Height / 2 - this.modelTimingInfo.Height / 2);
+
+            this.rows.Position = new Vector2(this.players.Position.X + this.players.Width + space - this.rows.Width + 20, 20);
+            this.rowsInfo.Position = new Vector2(this.players.Position.X + this.players.Width + 20, this.rows.Position.Y + this.rows.Height / 2 - this.rowsInfo.Height / 2);
+
+            this.columns.Position = new Vector2(this.modeling.Position.X + this.modeling.Width + space - this.columns.Width + 20, this.rows.Position.Y + this.rows.Height + 20);
+            this.columnsInfo.Position = new Vector2(this.modeling.Position.X + this.modeling.Width + 20, this.columns.Position.Y + this.columns.Height / 2 - this.columnsInfo.Height / 2);
+            
+            this.returnButton.Position = new Vector2(30, this.modelTiming.Position.Y + this.modelTiming.Height);
         }
 
         public void SetSize(int row, int column)

@@ -34,7 +34,7 @@ namespace HexagonView.View
             int h = (Resources.GetResource("defaultButton") as Texture2D).Height;
 
             newGame.Position = new Vector2(this.Width / 2 - w / 2, 100);
-            settingsGame.Position = new Vector2(this.Width / 2 - w / 2, 150);
+            settingsGame.Position = new Vector2(this.Width / 2 - w / 2, 200);
         }
         
     }

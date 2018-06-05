@@ -30,6 +30,10 @@ namespace HexagonWin
         {
             using (var winSystem = new GameView())
             {
+                winSystem.Graphics.GetGraphics().PreferredBackBufferWidth = 1300;
+                winSystem.Graphics.GetGraphics().PreferredBackBufferHeight = 800;
+                winSystem.Graphics.GetGraphics().ApplyChanges();
+
                 winSystem.Run();
             }
         }
