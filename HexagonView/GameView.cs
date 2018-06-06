@@ -21,12 +21,16 @@ namespace HexagonView
     {
         List<Activity> views = new List<Activity>();
 
-        GameActivity gamePage = new GameActivity() { Name = "GamePage" };
-        SettingsActivity settingsPage = new SettingsActivity() { Name = "SettingsPage" };
-        StartPageActivity startPage = new StartPageActivity() { Name = "StartPage" };
+        StartPageActivity startPage = new StartPageActivity(null) { Name = "StartPage" };
+        GameActivity gamePage = new GameActivity(null) { Name = "GamePage" };
+        SettingsActivity settingsPage = new SettingsActivity(null) { Name = "SettingsPage" };
+        
 
         public GameView() : base()
-        {   
+        {
+            this.gamePage.Parent = this.startPage;
+            this.settingsPage.Parent = this.startPage;
+
             this.Activities.Add(this.gamePage);
             this.Activities.Add(this.settingsPage);
             this.Activities.Add(this.startPage);

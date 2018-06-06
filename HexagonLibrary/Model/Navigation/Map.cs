@@ -147,8 +147,31 @@ namespace HexagonLibrary.Model.Navigation
             }
             else
             {
-                dst.Life -= src.Life;
-                src.Life = 0;
+                int diff = dst.Life - src.Life;
+
+                int percent = 50;
+                switch(diff)
+                {
+                    case 1: percent = 25; break;
+                    case 2: percent = 10; break;
+                    default: percent = 0; break;
+                }
+
+                bool isHold = r.Next(101) < percent;
+
+                if (isHold)
+                {
+                    dst.Life = 0;
+                    dst.BelongUser = src.BelongUser;
+                    dst.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
+                    dst.Type = TypeHexagon.Enemy;
+                    src.Life = 0;
+                }
+                else
+                {
+                    dst.Life -= src.Life;
+                    src.Life = 0;
+                }
             }
 
             return false;

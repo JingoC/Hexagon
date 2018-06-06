@@ -46,6 +46,8 @@ namespace WinSystem.System
         public event DeviceEventHandler PressedMouse;
         public event DeviceEventHandler UnPressedMouse;
 
+        public event DeviceEventHandler BackKeyboard;
+
         private bool mouseIsPressed;
         private bool mouseIsPressedEvent;
         private bool keyboardIsPressed;
@@ -54,6 +56,7 @@ namespace WinSystem.System
         public bool Enable { get; set; } = true;
         public bool MouseEnable { get; set; } = true;
         public bool TouchEnable { get; set; } = true;
+        public bool KeyboardEnable { get; set; } = true;
 
         public Input()
         {
@@ -73,6 +76,9 @@ namespace WinSystem.System
 
                 if (this.TouchEnable)
                     this.UpdateTouch();
+
+                if (this.KeyboardEnable)
+                    this.UpdateKeyboard();
             }
         }
 
@@ -93,7 +99,6 @@ namespace WinSystem.System
                                 e.Y = Mouse.GetState().Y;
                                 this.PressedMouse(this, e);
                             }
-                                
                         }
                     } break;
                 case ButtonState.Released:
@@ -124,18 +129,33 @@ namespace WinSystem.System
 
                 switch (touch.State)
                 {
-                    case TouchLocationState.Pressed: { this.touchIsPressed = true; } break;
+                    case TouchLocationState.Pressed:
+                        {
+                            if (!this.touchIsPressed)
+                            {
+                                this.touchIsPressed = true;
+                                if (this.PressedMouse != null)
+                                {
+                                    DeviceEventArgs e = new DeviceEventArgs();
+                                    e.X = Mouse.GetState().X;
+                                    e.Y = Mouse.GetState().Y;
+                                    this.PressedTouch(this, e);
+                                }
+                            }
+                        } break;
                     case TouchLocationState.Released:
                         {
                             if (this.touchIsPressed)
                             {
                                 this.touchIsPressed = false;
-                                DeviceEventArgs e = new DeviceEventArgs();
-                                e.X = touch.Position.X;
-                                e.Y = touch.Position.Y;
-
+                                
                                 if (this.ClickTouch != null)
+                                {
+                                    DeviceEventArgs e = new DeviceEventArgs();
+                                    e.X = touch.Position.X;
+                                    e.Y = touch.Position.Y;
                                     this.ClickTouch(this, e);
+                                }
                             }
                         }
                         break;
@@ -147,6 +167,17 @@ namespace WinSystem.System
         void UpdateKeyboard()
         {
             var state = Keyboard.GetState();
+
+            if (!this.keyboardIsPressed && state.IsKeyDown(Keys.Back))
+            {
+                this.keyboardIsPressed = true;
+            }
+
+            if (this.keyboardIsPressed && state.IsKeyUp(Keys.Back))
+            {
+                if (this.BackKeyboard != null)
+                    this.BackKeyboard(this, new DeviceEventArgs());
+            }
         }
     }
 }

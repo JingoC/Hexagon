@@ -36,7 +36,7 @@ namespace HexagonView.View
 
         public event EventHandler ExitActivity;
 
-        public SettingsActivity()
+        public SettingsActivity(Activity parent) : base(parent)
         {
             this.returnButton.OnClick += (s, e) => { if (this.ExitActivity != null) { this.ExitActivity(s, e); } };
 

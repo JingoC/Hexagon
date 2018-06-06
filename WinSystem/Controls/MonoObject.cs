@@ -138,11 +138,11 @@ namespace WinSystem.Controls
                     sb.Draw(this.Texture, new Rectangle(x, y, w, h), this.Color);
                     //sb.Draw(this.Texture, position: this.Position, color: this.Color, scale: new Vector2((float)2.0));
                 }
-                    
-
+                
                 if ((this.Font != null) && !this.Text.Equals(String.Empty))
                 {
-                    GraphicsSingleton.GetInstance().GetSpriteBatch().DrawString(this.Font, this.Text, this.TextPosition, this.ForeColor);
+                    GraphicsSingleton.GetInstance().GetSpriteBatch().DrawString(this.Font, 
+                        this.Text, this.TextPosition, this.ForeColor);
                 }
             }
         }

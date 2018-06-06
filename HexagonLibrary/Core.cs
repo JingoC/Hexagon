@@ -22,7 +22,7 @@ namespace HexagonLibrary
 
         public GameModeStrategy GameModeStrategy;
 
-        public int Width
+        public override int Width
         {
             get
             {

@@ -121,9 +121,9 @@ namespace HexagonLibrary.Model.GameMode
             {
                 var hex = new HexagonObject()
                 {
-                    Loot = r.Next(0, 2),
-                    Life = r.Next(0, 2),
-                    MaxLife = r.Next(8, 8)
+                    Loot = r.Next(this.GameSettings.ScatterLoot.Min, this.GameSettings.ScatterLoot.Max),
+                    Life = r.Next(this.GameSettings.ScatterLife.Min, this.GameSettings.ScatterLife.Max),
+                    MaxLife = this.GameSettings.IsAllEqualLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max)
                 };
                 hex.SetDefaultTexture(TypeTexture.FieldFree);
 

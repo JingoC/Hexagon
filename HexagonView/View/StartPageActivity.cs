@@ -18,7 +18,7 @@ namespace HexagonView.View
         Button newGame = new Button() { Name = "newGameButton", Text = "New game" };
         Button settingsGame = new Button() { Name = "settingsGameButton", Text = "Settings" };
 
-        public StartPageActivity()
+        public StartPageActivity(Activity parent) : base(parent)
         {
             var graphics = GraphicsSingleton.GetInstance();
             

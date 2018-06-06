@@ -25,6 +25,18 @@ namespace HexagonLibrary.Model.GameMode
         public int Height { get; set; } = 0;
     }
 
+    public class Range
+    {
+        public int Min { get; set; }
+        public int Max { get; set; }
+
+        public Range(int min, int max)
+        {
+            this.Min = min;
+            this.Max = max;
+        }
+    }
+
     public class GameSettings
     {
         public Size MapSize { get; set; } = new Size() { Width = 10, Height = 10 };
@@ -32,6 +44,13 @@ namespace HexagonLibrary.Model.GameMode
         public TypeGameMode GameMode { get; set; } = TypeGameMode.Normal;
         public TypePlayerMode PlayerMode { get; set; } = TypePlayerMode.Normal;
         public int ModelStepTiming { get; set; } = 50;
+        public Range ScatterLoot { get; set; } = new Range(0, 2);
+        public Range ScatterLife { get; set; } = new Range(0, 2);
+        public bool IsAllEqualLife { get; set; } = false;
+        public Range ScatterMaxLife { get; set; } = new Range(4, 8);
+        public bool ViewLootEnable { get; set; } = true;
+        public bool ViewLifeEnable { get; set; } = true;
+        public bool ViewMaxLife { get; set; } = true;
 
         public GameSettings()
         {

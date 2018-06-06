@@ -65,6 +65,11 @@ namespace HexagonLibrary.Model.StateMachines
         public event StateMachineEventHandler ClickHisObject;
 
         /// <summary>
+        /// Событие, когда произведен повторный клик по собственному объекту
+        /// </summary>
+        public event StateMachineEventHandler DoubleClickHisObject;
+
+        /// <summary>
         /// Событие, когда произведен первичный клик по соседнему объекту
         /// </summary>
         public event StateMachineEventHandler ClickAroundObject;
@@ -176,6 +181,7 @@ namespace HexagonLibrary.Model.StateMachines
                                             }
                                         }
                                         break;
+                                    case TypeState.Click2_HisObject:
                                     case TypeState.Click_HisObject:
                                         {
                                             this.SetState(this.Map.IsLinkedObjects(this.lastObject, this.currentObject) ?
@@ -245,6 +251,7 @@ namespace HexagonLibrary.Model.StateMachines
                 case TypeState.Click_HisObject: this.EventExecute(this.ClickHisObject); break;
                 case TypeState.Click2_FreeObject: this.EventExecute(this.ClickAroundObject); break;
                 case TypeState.Click2_EnemyObject: this.EventExecute(this.ClickAroundObject); break;
+                case TypeState.Click2_HisObject: this.EventExecute(this.DoubleClickHisObject); break;
                 default: this.EventExecute(this.ClickNotAroundObject); break;
             }
 

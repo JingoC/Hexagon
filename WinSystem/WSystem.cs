@@ -27,8 +27,15 @@ namespace WinSystem
             this.Input.ClickTouch += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntry(e.X, e.Y));
             this.Input.ClickMouse += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntry(e.X, e.Y));
             this.Input.PressedMouse += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntryPressed(e.X, e.Y));
+            this.Input.PressedTouch += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntryPressed(e.X, e.Y));
 
-            this.Activities.Add(new Activity());
+            this.Input.BackKeyboard += delegate (Object sender, DeviceEventArgs e)
+            {
+                if ((this.ActivitySelected != null) && (this.ActivitySelected.Parent != null))
+                    this.ActivitySelected = this.ActivitySelected.Parent;
+            };
+
+            this.Activities.Add(new Activity(null));
             this.Activities.Last().Background = Color.Black;
             this.ActivitySelected = this.Activities.Last();
 

@@ -16,14 +16,16 @@ namespace WinSystem
     {
         static int countActivity = 0;
         
-        public int Width { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Width; }
-        public int Height { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Height; }
+        public Activity Parent { get; set; }
+        public override int Width { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Width; }
+        public override int Height { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Height; }
 
         public Color Background { get; set; }
-        public string Name { get; set; } = $"Activity{countActivity}";
 
-        public Activity()
+        public Activity(Activity parent)
         {
+            this.Parent = parent;
+            this.Name = $"Activity{countActivity}";
             countActivity++;
         }
 

@@ -36,7 +36,7 @@ namespace HexagonView.View
 
         public event EventHandler ExitActivity;
 
-        public GameActivity()
+        public GameActivity(Activity parent) : base(parent)
         {
             this.endStepButton.OnClick += (s, e) => this.core.GameModeStrategy.EndStep();
             this.nextStepButton.OnClick += (s, e) => this.core.GameModeStrategy.NextStep();

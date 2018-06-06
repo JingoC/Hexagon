@@ -27,14 +27,17 @@ namespace HexagonLibrary.Model.GameMode
             this.stateMachine.ClickOutOfRange += StateMachine_ClickOutOfRange;
             this.stateMachine.ClickAroundObject += StateMachine_ClickAroundObject;
             this.stateMachine.ClickNotAroundObject += StateMachine_ClickNotAroundObject;
+            this.stateMachine.DoubleClickHisObject += StateMachine_DoubleClickHisObject;
 
             this.stateMachine.ClickAddLootPoint += StateMachine_ClickAddLootPoint;
             this.stateMachine.ClickModifyFreeOjbect += StateMachine_ClickModifyFreeOjbect;
-        }
 
+        }
+        
         private void StateMachine_ClickModifyFreeOjbect(object sender, StateMachineEventArgs e)
         {
             Player p = sender as Player;
+#if false
             if (p.LootPoints >= e.DestinationObject.Life)
             {
                 e.DestinationObject.BelongUser = -1;
@@ -45,7 +48,7 @@ namespace HexagonLibrary.Model.GameMode
                 p.LootPoints -= e.DestinationObject.Life;
                 e.DestinationObject.Life = 0;
             }
-
+#endif
             if (p.LootPoints == 0)
             {
                 this.NextStep();
@@ -61,8 +64,7 @@ namespace HexagonLibrary.Model.GameMode
                 e.DestinationObject.Life++;
                 p.LootPoints--;
             }
-
-
+            
             if (p.LootPoints == 0)
             {
                 this.NextStep();
@@ -92,6 +94,12 @@ namespace HexagonLibrary.Model.GameMode
         }
 
         private void StateMachine_ClickHisObject(object sender, StateMachineEventArgs e)
+        {
+            this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
+            e.DestinationObject.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
+        }
+
+        private void StateMachine_DoubleClickHisObject(object sender, StateMachineEventArgs e)
         {
             this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
             e.DestinationObject.TextureManager.Textures.Change((int)TypeTexture.UserActive0);

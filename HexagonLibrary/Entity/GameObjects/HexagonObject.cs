@@ -33,7 +33,7 @@ namespace HexagonLibrary.Entity.GameObjects
         public int Loot { get; set; } = 0;
         public int Level { get; set; } = 0;
 
-        public override string Text => this.Type != TypeHexagon.Blocked ? this.Life.ToString() : String.Empty;
+        public override string Text => this.Type != TypeHexagon.Blocked ? $"{this.Life} | {this.Loot} {Environment.NewLine}{this.MaxLife} | " : String.Empty;
 
         public HexagonObject() : this(0)
         {
