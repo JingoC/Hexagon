@@ -49,6 +49,12 @@ namespace WinSystem.System
 #else
             // { "Name": "defaultButton", "Type": "Texture2D"},
             string json = "[" +
+                "{\"Name\": \"btn_newgame_idle\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"btn_newgame_click\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"btn_settings_idle\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"btn_settings_click\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"btn_idle_tmp\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"btn_click_tmp\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultButton\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultButtonPressed\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultToggleOn\", \"Type\": \"Texture2D\"}," +

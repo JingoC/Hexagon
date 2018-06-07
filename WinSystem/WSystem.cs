@@ -26,8 +26,8 @@ namespace WinSystem
         {
             this.Input.ClickTouch += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntry(e.X, e.Y));
             this.Input.ClickMouse += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntry(e.X, e.Y));
-            this.Input.PressedMouse += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntryPressed(e.X, e.Y));
-            this.Input.PressedTouch += (s, e) => this.ActivitySelected.Items.ForEach((x) => x.CheckEntryPressed(e.X, e.Y));
+            this.Input.PressedMouse += this.Input_Pressed;
+            this.Input.PressedTouch += this.Input_Pressed;
 
             this.Input.BackKeyboard += delegate (Object sender, DeviceEventArgs e)
             {
@@ -51,9 +51,20 @@ namespace WinSystem
                     this.UpdateEvent(s, e);
             };
 
-                this.Graphics.LoadContentEvent += (s, e) => { Resources.LoadResource(); this.Activities.ForEach(x => x.Designer()); };
-                //this.Graphics.RunOneFrame();
+            this.Graphics.LoadContentEvent += (s, e) => { Resources.LoadResource(); this.Activities.ForEach(x => x.Designer()); };
+            //this.Graphics.RunOneFrame();
+        }
+
+        private void Input_Pressed(Object sender, DeviceEventArgs e)
+        {
+            foreach(var item in this.ActivitySelected.Items)
+            {
+                if ((item.TextureManager != null) && (item.TextureManager.Textures != null) && 
+                        (item.TextureManager.Textures.Count() > 0))
+                    item.TextureManager.Textures.RestoreDefault();
+                item.CheckEntryPressed(e.X, e.Y);
             }
+        }
 
         public void Run()
         {

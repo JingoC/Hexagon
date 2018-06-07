@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>D:/gitclone/Hexagon/Hexagon/Content/defaultFont.spritefont</SourceFile>
-  <SourceTime>2017-03-01T18:05:30+03:00</SourceTime>
+  <SourceTime>2018-06-06T21:05:08.3934815+03:00</SourceTime>
   <DestFile>D:/gitclone/Hexagon/Hexagon/Content/bin/Android/defaultFont.xnb</DestFile>
-  <DestTime>2018-06-04T01:07:28.786696+03:00</DestTime>
+  <DestTime>2018-06-07T20:45:50.1203215+03:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2017-03-01T18:05:36+03:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

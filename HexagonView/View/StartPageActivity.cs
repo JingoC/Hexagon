@@ -15,8 +15,8 @@ namespace HexagonView.View
 
     public class StartPageActivity : Activity
     {
-        Button newGame = new Button() { Name = "newGameButton", Text = "New game" };
-        Button settingsGame = new Button() { Name = "settingsGameButton", Text = "Settings" };
+        Button newGame = new Button() { Name = "newGameButton", Scale = 2f };
+        Button settingsGame = new Button() { Name = "settingsGameButton", ForeColor = Color.White, Scale = 2f };
 
         public StartPageActivity(Activity parent) : base(parent)
         {
@@ -28,13 +28,22 @@ namespace HexagonView.View
 
         public override void Designer()
         {
+            this.newGame.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
+            {
+                "btn_newgame_idle",
+                "btn_newgame_click"
+            }).OfType<Texture2D>());
+
+            this.settingsGame.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
+            {
+                "btn_settings_idle",
+                "btn_settings_click"
+            }).OfType<Texture2D>());
+
             base.Designer();
-
-            int w = (Resources.GetResource("defaultButton") as Texture2D).Width;
-            int h = (Resources.GetResource("defaultButton") as Texture2D).Height;
-
-            newGame.Position = new Vector2(this.Width / 2 - w / 2, 100);
-            settingsGame.Position = new Vector2(this.Width / 2 - w / 2, 200);
+            
+            newGame.Position = new Vector2(this.Width / 2 - this.newGame.Width / 2, 100);
+            settingsGame.Position = new Vector2(this.Width / 2 - this.settingsGame.Width / 2, this.newGame.Position.Y + this.newGame.Height + 60);
         }
         
     }

@@ -23,5 +23,11 @@
     <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultToggleOn.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultChangerDown.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultChangerUp.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/btn_click_tmp.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/btn_idle_tmp.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/btn_newgame_click.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/btn_newgame_idle.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/btn_settings_click.png</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/btn_settings_idle.png</File>
   </SourceFiles>
 </SourceFileCollection>

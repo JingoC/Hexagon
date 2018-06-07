@@ -23,14 +23,14 @@ namespace HexagonView.View
         Core core;
         GameSettings gameSettings;
 
-        Button endStepButton = new Button() { Name = "endStepButton", Text = "End Step" };
-        Button nextStepButton = new Button() { Name = "nextStepButton", Text = "Next Step" };
-        Button newGameButton = new Button() { Name = "newGameButton", Text = "New game" };
-        Button startModelButton = new Button() { Name = "startModeButton", Text = "Modeling" };
+        Button endStepButton = new Button() { Name = "endStepButton", Text = "End Step", ForeColor = Color.White };
+        Button nextStepButton = new Button() { Name = "nextStepButton", Text = "Next Step", ForeColor = Color.White };
+        Button newGameButton = new Button() { Name = "newGameButton", Text = "New game", ForeColor = Color.White };
+        Button startModelButton = new Button() { Name = "startModeButton", Text = "Modeling", ForeColor = Color.White };
 
         Label labelInfo = new Label() { Name = "labelInfo", ForeColor = Color.White };
 
-        Button returnButton = new Button() { Text = "Return" };
+        Button returnButton = new Button() { Text = "Return", ForeColor = Color.White };
 
         Container menu = new Container();
 
@@ -63,10 +63,10 @@ namespace HexagonView.View
             this.labelInfo.Position = new Vector2(600, 700);
 
             this.returnButton.Position = new Vector2(10, 100);
-            this.newGameButton.Position = new Vector2(10, this.returnButton.Position.Y + this.returnButton.Height + 20);
-            this.endStepButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 20);
-            this.nextStepButton.Position = new Vector2(10, this.endStepButton.Position.Y + this.endStepButton.Height + 20);
-            this.startModelButton.Position = new Vector2(10, this.nextStepButton.Position.Y + this.nextStepButton.Height + 20);
+            this.newGameButton.Position = new Vector2(10, this.returnButton.Position.Y + this.returnButton.Height + 40);
+            this.endStepButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 40);
+            this.nextStepButton.Position = new Vector2(10, this.endStepButton.Position.Y + this.endStepButton.Height + 40);
+            this.startModelButton.Position = new Vector2(10, this.nextStepButton.Position.Y + this.nextStepButton.Height + 40);
 
             int w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
             this.menu.Position = new Vector2(w - this.menu.Width - 10, 10);

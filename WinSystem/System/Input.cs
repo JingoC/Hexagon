@@ -137,8 +137,9 @@ namespace WinSystem.System
                                 if (this.PressedMouse != null)
                                 {
                                     DeviceEventArgs e = new DeviceEventArgs();
-                                    e.X = Mouse.GetState().X;
-                                    e.Y = Mouse.GetState().Y;
+
+                                    e.X = touch.Position.X;
+                                    e.Y = touch.Position.Y;
                                     this.PressedTouch(this, e);
                                 }
                             }
@@ -175,6 +176,7 @@ namespace WinSystem.System
 
             if (this.keyboardIsPressed && state.IsKeyUp(Keys.Back))
             {
+                this.keyboardIsPressed = false;
                 if (this.BackKeyboard != null)
                     this.BackKeyboard(this, new DeviceEventArgs());
             }

@@ -23,5 +23,11 @@
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_red.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_white.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/hexagon_yellow.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/btn_click_tmp.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/btn_idle_tmp.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/btn_newgame_click.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/btn_newgame_idle.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/btn_settings_click.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/btn_settings_idle.png</File>
   </SourceFiles>
 </SourceFileCollection>

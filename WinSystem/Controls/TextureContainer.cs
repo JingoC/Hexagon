@@ -43,6 +43,11 @@ namespace WinSystem.Controls
             }
         }
 
+        public int Count()
+        {
+            return this.items.Count;
+        }
+
         public void SetDefault(int number)
         {
             if ((number < this.items.Count) && (number >= 0))

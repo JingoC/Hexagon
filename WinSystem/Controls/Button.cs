@@ -35,8 +35,8 @@ namespace WinSystem.Controls
             {
                 this.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
                 {
-                    "defaultButton",
-                    "defaultButtonPressed"
+                    "btn_idle_tmp",
+                    "btn_click_tmp"
                 }).OfType<Texture2D>());
             }
 
