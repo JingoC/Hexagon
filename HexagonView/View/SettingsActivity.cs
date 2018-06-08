@@ -61,24 +61,33 @@ namespace HexagonView.View
         {
             base.Designer();
 
-            int space = 400;
+            float stX = 30;
+            int space = 450;
 
-            this.players.Position = new Vector2(space - this.players.Width, 20);
-            this.playersInfo.Position = new Vector2(30, this.players.Position.Y + this.players.Height / 2 - this.playersInfo.Height / 2);
+            float GetXOfs(IControl ctlr, float ofs) => ofs - ctlr.Width;
+            float GetY(IControl ctlr, IControl depCtrl) => depCtrl.Height / 2 + depCtrl.Position.Y - ctlr.Height / 2;
+            float GetYDepY(IControl depCtrl, float sH) => depCtrl.Height + depCtrl.Position.Y + sH;
 
-            this.modeling.Position = new Vector2(space - this.modeling.Width, this.players.Position.Y + this.players.Height + 20);
-            this.modelInfo.Position = new Vector2(30, this.modeling.Position.Y + this.modeling.Height / 2 - this.modelInfo.Height / 2);
+            Vector2 GetPositionV(IControl ctrl, IControl dctrl, float sW, float sH) => new Vector2(GetXOfs(ctrl, sW), GetYDepY(dctrl, sH));
+            Vector2 GetPositionH(IControl ctrl, IControl dctrl, float sx) => new Vector2(sx, GetY(ctrl, dctrl));
 
-            this.modelTiming.Position = new Vector2(space - this.modelTiming.Width, this.modeling.Position.Y + this.modeling.Height + 20);
-            this.modelTimingInfo.Position = new Vector2(30, this.modelTiming.Position.Y + this.modelTiming.Height / 2 - this.modelTimingInfo.Height / 2);
+            this.players.Position = new Vector2(GetXOfs(this.players, space), 10);
+            this.playersInfo.Position = GetPositionH(this.playersInfo, this.players, stX);
 
-            this.rows.Position = new Vector2(this.players.Position.X + this.players.Width + space - this.rows.Width + 20, 20);
-            this.rowsInfo.Position = new Vector2(this.players.Position.X + this.players.Width + 20, this.rows.Position.Y + this.rows.Height / 2 - this.rowsInfo.Height / 2);
+            this.modeling.Position = GetPositionV(this.modeling, this.players, space, 10);
+            this.modelInfo.Position = GetPositionH(this.modelInfo, this.modeling, stX);
 
-            this.columns.Position = new Vector2(this.modeling.Position.X + this.modeling.Width + space - this.columns.Width + 20, this.rows.Position.Y + this.rows.Height + 20);
-            this.columnsInfo.Position = new Vector2(this.modeling.Position.X + this.modeling.Width + 20, this.columns.Position.Y + this.columns.Height / 2 - this.columnsInfo.Height / 2);
-            
-            this.returnButton.Position = new Vector2(30, this.modelTiming.Position.Y + this.modelTiming.Height);
+            this.modelTiming.Position = GetPositionV(this.modelTiming, this.modeling, space, 10);
+            this.modelTimingInfo.Position = GetPositionH(this.modelTimingInfo, this.modelTiming, stX);
+
+            this.rows.Position = new Vector2(GetXOfs(this.rows, space * 2), 60);
+            this.rowsInfo.Position = GetPositionH(this.rowsInfo, this.rows, space + stX);
+
+            this.columns.Position = GetPositionV(this.columns, this.rows, space * 2, 10);
+            this.columnsInfo.Position = GetPositionH(this.columnsInfo, this.columns, space + stX);
+
+            float h = GraphicsSingleton.GetInstance().Window.ClientBounds.Height;
+            this.returnButton.Position = new Vector2(stX, h - this.returnButton.Height - 30);
         }
 
         public void SetSize(int row, int column)

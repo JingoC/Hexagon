@@ -59,9 +59,6 @@ namespace WinSystem
         {
             foreach(var item in this.ActivitySelected.Items)
             {
-                if ((item.TextureManager != null) && (item.TextureManager.Textures != null) && 
-                        (item.TextureManager.Textures.Count() > 0))
-                    item.TextureManager.Textures.RestoreDefault();
                 item.CheckEntryPressed(e.X, e.Y);
             }
         }
