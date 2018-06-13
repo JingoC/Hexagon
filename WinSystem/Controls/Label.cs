@@ -14,7 +14,7 @@ namespace WinSystem.Controls
     public class Label : MonoObject
     {
         public override int Width { get => (int) this.Font.MeasureString(this.Text).X; }
-        public override int Height => this.Font.Texture.Height;
+        public override int Height => this.Font.GetGlyphs().First(x => x.Value.Character == '0').Value.BoundsInTexture.Height;
 
         public override Vector2 Position
         {

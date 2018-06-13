@@ -116,8 +116,9 @@ namespace WinSystem.Controls
         {
             float ofsX = this.Position.X;
             float ofsY = this.Position.Y;
+            
             this.btnDown.Position = new Vector2(ofsX, ofsY);
-            this.labelValue.Position = new Vector2(this.btnDown.Position.X + this.btnDown.Width, ofsY + (this.btnDown.Height / 4) - 6);
+            this.labelValue.Position = new Vector2(this.btnDown.Position.X + this.btnDown.Width + 20, ofsY + (this.btnDown.Height / 2) - (this.labelValue.Height / 2));
             this.btnUp.Position = new Vector2(this.labelValue.Position.X + this.labelValue.Width + 20, ofsY);
             base.Draw(gameTime);
         }
