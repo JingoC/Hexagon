@@ -104,7 +104,6 @@ namespace HexagonView.View
                 MapSize = new Size() { Width = (int)this.rows.Current.Value, Height = (int) this.columns.Current.Value },
                 GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : TypeGameMode.Normal,
                 PlayerMode = this.modeling.IsChecked ? TypePlayerMode.Modeling : TypePlayerMode.Normal
-                
             };
         }
     }

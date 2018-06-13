@@ -20,7 +20,7 @@ namespace HexagonLibrary.Entity.GameObjects
             set
             {
                 base.Position = value;
-                this.TextPosition = new Vector2(value.X + this.Width / 4, value.Y + this.Height / 4);
+                this.TextPosition = new Vector2(value.X + this.Width / 4 + 1, value.Y + this.Height / 4 - 1);
             }
         }
         public static HexagonObject Empty { get { return new HexagonObject(); } }
