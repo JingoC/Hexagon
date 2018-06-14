@@ -5,8 +5,6 @@
   <Config />
   <SourceFiles>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultFont.spritefont</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultButton.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/defaultButtonPressed.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_aqua.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_aqua_checked.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_blue.png</File>

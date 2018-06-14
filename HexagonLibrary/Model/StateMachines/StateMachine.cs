@@ -162,6 +162,10 @@ namespace HexagonLibrary.Model.StateMachines
                 }
                 else
                 {
+                    bool isLinked = false;
+                    if ((this.lastObject != null) && (this.currentObject != null))
+                        isLinked = this.Map.IsLinkedObjects(this.lastObject, this.currentObject);
+
                     switch (this.currentObject.Type)
                     {
                         case TypeHexagon.Free:
@@ -172,8 +176,7 @@ namespace HexagonLibrary.Model.StateMachines
                                         {
                                             if (this.lastObject.BelongUser == this.player.ID)
                                             {
-                                                this.SetState(this.Map.IsLinkedObjects(this.lastObject, this.currentObject) ?
-                                                    TypeState.Click2_FreeObject : TypeState.Click_FreeObject);
+                                                this.SetState(isLinked ? TypeState.Click2_FreeObject : TypeState.Click_FreeObject);
                                             }
                                             else
                                             {
@@ -184,8 +187,7 @@ namespace HexagonLibrary.Model.StateMachines
                                     case TypeState.Click2_HisObject:
                                     case TypeState.Click_HisObject:
                                         {
-                                            this.SetState(this.Map.IsLinkedObjects(this.lastObject, this.currentObject) ?
-                                                TypeState.Click2_FreeObject : TypeState.Click_FreeObject);
+                                            this.SetState(isLinked ? TypeState.Click2_FreeObject : TypeState.Click_FreeObject);
                                         }
                                         break;
                                     default: this.SetState(TypeState.Click_FreeObject); break;
@@ -199,7 +201,7 @@ namespace HexagonLibrary.Model.StateMachines
                             break;
                         case TypeHexagon.Enemy:
                             {
-                                this.SetState(TypeState.Click2_EnemyObject);
+                                this.SetState(isLinked ? TypeState.Click2_EnemyObject : TypeState.Click_EnemyObject);
                             }break;
                         default: this.SetState(TypeState.Click_Background); break;
                     }
