@@ -55,8 +55,6 @@ namespace WinSystem.System
                 "{\"Name\": \"btn_settings_click\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"btn_idle_tmp\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"btn_click_tmp\", \"Type\": \"Texture2D\"}," +
-                "{\"Name\": \"defaultButton\", \"Type\": \"Texture2D\"}," +
-                "{\"Name\": \"defaultButtonPressed\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultToggleOn\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultToggleOff\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultChangerDown\", \"Type\": \"Texture2D\"}," +

@@ -14,6 +14,10 @@ namespace HexagonLibrary.Entity.GameObjects
 
     public class HexagonObject : GameObject, IEquatable<HexagonObject>
     {
+        static public bool LifeEnable { get; set; } = true;
+        static public bool LootEnable { get; set; } = true;
+        static public bool MaxLifeEnable { get; set; } = true;
+
         public override Vector2 Position
         {
             get => base.Position;
@@ -33,7 +37,17 @@ namespace HexagonLibrary.Entity.GameObjects
         public int Loot { get; set; } = 0;
         public int Level { get; set; } = 0;
 
-        public override string Text => this.Type != TypeHexagon.Blocked ? $"{this.Life} | {this.Loot} {Environment.NewLine}{this.MaxLife} | " : String.Empty;
+        public override string Text
+        {
+            get
+            {
+                string c00 = HexagonObject.LifeEnable ? $"{this.Life}" : " ";
+                string c01 = HexagonObject.LootEnable ? $"   {this.Loot}" : String.Empty;
+                string c10 = HexagonObject.MaxLifeEnable ? $"{this.MaxLife}" : " ";
+
+                return $"{c00}{c01}{Environment.NewLine}{c10}";
+            }
+        }
 
         public HexagonObject() : this(0)
         {

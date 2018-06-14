@@ -48,6 +48,7 @@ namespace WinSystem.Controls
                     "defaultToggleOff",
                     "defaultToggleOn"
                 }).OfType<Texture2D>());
+                this.TextureManager.Textures.Change(this.IsChecked ? 1 : 0);
             }
 
             base.Designer();

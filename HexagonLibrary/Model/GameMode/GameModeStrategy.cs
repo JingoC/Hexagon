@@ -41,6 +41,10 @@ namespace HexagonLibrary.Model.GameMode
             this.Step = 0;
             this.GameSettings = gameSettings;
 
+            HexagonObject.LifeEnable = gameSettings.ViewLifeEnable;
+            HexagonObject.LootEnable = gameSettings.ViewLootEnable;
+            HexagonObject.MaxLifeEnable = gameSettings.ViewMaxLife;
+
             this.Map = new Map(gameSettings.MapSize.Width, gameSettings.MapSize.Height);
             this.stateMachine = new StateMachine() { Map = this.Map };
 

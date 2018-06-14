@@ -5,8 +5,6 @@
   <Config />
   <SourceFiles>
     <File>D:/gitclone/Hexagon/Hexagon/Content/defaultFont.spritefont</File>
-    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultButton.png</File>
-    <File>D:/gitclone/Hexagon/Hexagon/Content/defaultButtonPressed.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/defaultChangerDown.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/defaultChangerUp.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/defaultToggleOff.png</File>
