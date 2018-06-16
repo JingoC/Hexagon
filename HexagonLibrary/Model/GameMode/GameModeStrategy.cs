@@ -16,7 +16,7 @@ namespace HexagonLibrary.Model.GameMode
 
     public class GameModeStrategy
     {
-        Random r = new Random((int)DateTime.Now.Ticks);
+        protected Random r = new Random((int)DateTime.Now.Ticks);
 
         protected Thread threadActionCpu;
         protected GameObjectPositionInfo lastPosInfo = new GameObjectPositionInfo();
@@ -50,7 +50,7 @@ namespace HexagonLibrary.Model.GameMode
 
             this.CPUs = new List<CPU>();
 
-            if (gameSettings.PlayerMode == TypePlayerMode.Normal)
+            if (gameSettings.GameMode == TypeGameMode.Normal)
             {
                 this.User = new User() { ID = 0 };
                 
@@ -62,13 +62,24 @@ namespace HexagonLibrary.Model.GameMode
                 this.Players.Add(this.User);
                 this.Players.AddRange(this.CPUs);
             }
-            else if (gameSettings.PlayerMode == TypePlayerMode.Modeling)
+            else if (gameSettings.GameMode == TypeGameMode.Modeling)
             {
                 for (int i = 0; i < gameSettings.CountPlayers; i++)
                 {
                     this.CPUs.Add(new CPU() { ID = i, Strategy = new FirstStrategy() });
                 }
                 
+                this.Players.AddRange(this.CPUs);
+            }else if (gameSettings.GameMode == TypeGameMode.BuildMap)
+            {
+                this.User = new User() { ID = 0 };
+
+                for (int i = 1; i < gameSettings.CountPlayers; i++)
+                {
+                    this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy() });
+                }
+
+                this.Players.Add(this.User);
                 this.Players.AddRange(this.CPUs);
             }
 
@@ -77,62 +88,43 @@ namespace HexagonLibrary.Model.GameMode
 
         void Generate()
         {
-            if (this.GameSettings.GameMode != TypeGameMode.BuildMap)
+            for (int row = 0; row < this.Map.Row; row++)
             {
-                for (int row = 0; row < this.Map.Row; row++)
+                for (int col = 0; col < this.Map.Column; col++)
                 {
-                    for (int col = 0; col < this.Map.Column; col++)
-                    {
-                        this.Map.SetItem(this.GetMapItem(), row, col);
-                    }
+                    this.Map.SetItem(this.GetMapItem(), row, col);
                 }
             }
-            
-            foreach(var player in this.Players)
+
+            foreach (var player in this.Players)
             {
                 int row = 0;
                 int column = 0;
-                
+
                 do
                 {
                     row = r.Next(this.Map.Row);
                     column = r.Next(this.Map.Column);
-                } while (this.Map.Rows[row][column].Type != TypeHexagon.Free);
+                } while (this.Map.Rows[row][column].Type == TypeHexagon.Enemy);
 
-                var hex = new HexagonObject() { MaxLife = 8, BelongUser = player.ID, Life = 2, Loot = 2 };
+                var hex = new HexagonObject() { MaxLife = 8, BelongUser = player.ID, Life = 2, Loot = 2, Type = TypeHexagon.Enemy };
                 hex.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + player.ID));
-                
+
                 this.Map.SetItem(hex, row, column);
             }
         }
 
-        private HexagonObject GetMapItem()
+        protected virtual HexagonObject GetMapItem()
         {
-            int percentBlock = 20;
-
-            if (r.Next(101) < percentBlock)
+            var hex = new HexagonObject()
             {
-                HexagonObject hex = new HexagonObject()
-                {
-                    Visible = false,
-                    Type = TypeHexagon.Blocked
-                };
-                hex.SetDefaultTexture(TypeTexture.FieldFree);
+                Loot = r.Next(this.GameSettings.ScatterLoot.Min, this.GameSettings.ScatterLoot.Max),
+                Life = r.Next(this.GameSettings.ScatterLife.Min, this.GameSettings.ScatterLife.Max),
+                MaxLife = this.GameSettings.IsAllEqualLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max)
+            };
+            hex.SetDefaultTexture(TypeTexture.FieldFree);
 
-                return hex;
-            }
-            else
-            {
-                var hex = new HexagonObject()
-                {
-                    Loot = r.Next(this.GameSettings.ScatterLoot.Min, this.GameSettings.ScatterLoot.Max),
-                    Life = r.Next(this.GameSettings.ScatterLife.Min, this.GameSettings.ScatterLife.Max),
-                    MaxLife = this.GameSettings.IsAllEqualLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max)
-                };
-                hex.SetDefaultTexture(TypeTexture.FieldFree);
-
-                return hex;
-            }
+            return hex;
         }
 
         public virtual void EndStep()

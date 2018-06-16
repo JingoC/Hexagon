@@ -18,6 +18,11 @@ namespace HexagonLibrary.Model.Navigation
 
         }
 
+        public int CountNotTheir()
+        {
+            return this.AroundObjects.Count(x => x.BelongUser != this.Current.BelongUser);
+        }
+
         public int CountEnemy()
         {
             return this.AroundObjects.Count(x => (x.Type == TypeHexagon.Enemy) && (x.BelongUser != this.Current.BelongUser));
@@ -32,5 +37,7 @@ namespace HexagonLibrary.Model.Navigation
         {
             return this.AroundObjects.Count(x => ((x.Type == TypeHexagon.Free) || ((x.Type == TypeHexagon.Enemy) && (x.BelongUser != this.Current.BelongUser))));
         }
+
+
     }
 }

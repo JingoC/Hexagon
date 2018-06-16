@@ -49,6 +49,7 @@
     <Compile Include="Entity\GameObjects\GameObject.cs" />
     <Compile Include="Entity\Players\CPU.cs" />
     <Compile Include="Entity\Players\Player.cs" />
+    <Compile Include="Entity\Players\Strategy\BuildMapStrategy.cs" />
     <Compile Include="Entity\Players\Strategy\FirstStrategy.cs" />
     <Compile Include="Entity\Players\Strategy\ICPUStrategy.cs" />
     <Compile Include="Entity\Players\User.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Model\Navigation\Map.cs" />
     <Compile Include="Model\StateMachines\ClickObjectsStateMachine.cs" />
     <Compile Include="Model\StateMachines\ClickObjectsStateMachineEventArgs.cs" />
+    <Compile Include="Model\StateMachines\GameBuildMapStateMachine.cs" />
     <Compile Include="Model\StateMachines\GameNormalStateMachine.cs" />
     <Compile Include="Model\StateMachines\GameStateMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

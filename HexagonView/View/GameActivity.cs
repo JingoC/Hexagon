@@ -137,7 +137,7 @@ namespace HexagonView.View
                 this.cancelModeling = false;
                 this.startModelButton.Text = "S";
                 this.newGameButton.Visible = false;
-                if (this.gameSettings.PlayerMode == TypePlayerMode.Modeling)
+                if (this.gameSettings.GameMode == TypeGameMode.Modeling)
                 {
                     System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ThreadStart(delegate ()
                     {

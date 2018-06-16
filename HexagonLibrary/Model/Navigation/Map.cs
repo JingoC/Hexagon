@@ -135,8 +135,9 @@ namespace HexagonLibrary.Model.Navigation
                     dst.BelongUser = src.BelongUser;
                     dst.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
                     dst.Type = TypeHexagon.Enemy;
+                    dst.Visible = true;
                     src.Life = 0;
-
+                    
                     return true;
                 }
                 else

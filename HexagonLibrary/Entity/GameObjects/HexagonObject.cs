@@ -44,8 +44,8 @@ namespace HexagonLibrary.Entity.GameObjects
                 string c00 = HexagonObject.LifeEnable ? $"{this.Life}" : " ";
                 string c01 = HexagonObject.LootEnable ? $"   {this.Loot}" : String.Empty;
                 string c10 = HexagonObject.MaxLifeEnable ? $"{this.MaxLife}" : " ";
-
-                return $"{c00}{c01}{Environment.NewLine}{c10}";
+                string c11 = $"   {this.BelongUser}";
+                return $"{c00}{c01}{Environment.NewLine}{c10}{c11}";
             }
         }
 

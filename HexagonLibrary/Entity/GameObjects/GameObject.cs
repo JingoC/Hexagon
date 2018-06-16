@@ -70,6 +70,5 @@ namespace HexagonLibrary.Entity.GameObjects
             this.TextureManager.Textures.SetDefault((int)typeTexture);
             this.RestoreDefaultTexture();
         }
-        
     }
 }

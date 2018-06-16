@@ -94,7 +94,7 @@ namespace WinSystem.Controls
             return ((x > x1) && (x < x2) && (y > y1) && (y < y2));
         }
 
-        public void CheckEntry(float x, float y)
+        public virtual void CheckEntry(float x, float y)
         {
             if (this.Visible)
             {
@@ -113,7 +113,7 @@ namespace WinSystem.Controls
             }
         }
 
-        public void CheckEntryPressed(float x, float y)
+        public virtual void CheckEntryPressed(float x, float y)
         {
             if (this.Visible)
             {

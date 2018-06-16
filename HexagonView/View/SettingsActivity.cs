@@ -170,7 +170,6 @@ namespace HexagonView.View
                 ModelStepTiming = (int)this.modelTiming.Current.Value,
                 MapSize = new Size() { Width = (int)this.rows.Current.Value, Height = (int) this.columns.Current.Value },
                 GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : GetTypeModeGame((int)this.gameMode.Current.Value),
-                PlayerMode = this.modeling.IsChecked ? TypePlayerMode.Modeling : TypePlayerMode.Normal,
                 ViewLifeEnable = this.lifeEnable.IsChecked,
                 ViewLootEnable = this.lootEnable.IsChecked,
                 ViewMaxLife = this.maxLifeEnable.IsChecked,
