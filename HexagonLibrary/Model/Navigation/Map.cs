@@ -32,13 +32,14 @@ namespace HexagonLibrary.Model.Navigation
             for(int i = 0; i < this.Row; i++)
             {
                 this.Rows.Add(new List<HexagonObject>());
-                for(int j = 0; j < this.Column; j++)
+                for (int j = 0; j < this.Column; j++)
                 {
                     if (i == 0)
                     {
                         this.Columns.Add(new List<HexagonObject>());
                     }
-                    this.AddItem(HexagonObject.Empty, i, j);
+
+                    this.AddItem(new HexagonObject(-1) { Visible = false }, i, j);
                 }
             }
         }

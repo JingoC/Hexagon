@@ -25,7 +25,7 @@ namespace HexagonView.View
         Core core;
         GameSettings gameSettings;
 
-        GameButton endStepButton = new GameButton() { Name = "endStepButton", Text = "", ForeColor = Color.Black };
+        GameButton gameControlButton = new GameButton() { Name = "endStepButton", Text = "", ForeColor = Color.Black };
         GameButton newGameButton = new GameButton() { Name = "newGameButton", Text = "N", ForeColor = Color.Black };
         GameButton startModelButton = new GameButton() { Name = "startModeButton", Text = "M", ForeColor = Color.Black };
         
@@ -37,54 +37,64 @@ namespace HexagonView.View
 
         public GameActivity(Activity parent) : base(parent)
         {
-            this.endStepButton.OnClick += delegate (Object sender, EventArgs e)
-            {
-                if (stateStepBtn < 2)
-                {
-                    void LootChangedHandler(Object obj, EventArgs ea) => this.endStepButton.Text = this.core.GameModeStrategy.User.LootPoints.ToString();
-
-                    switch (stateStepBtn)
-                    {
-                        case 0:
-                            {
-                                this.core.GameModeStrategy.User.LootPointsChanged += LootChangedHandler;
-                                this.core.GameModeStrategy.EndStep();
-                                this.endStepButton.TextureManager.Textures.Change(1);
-                                stateStepBtn = 1;
-                            }
-                            break;
-                        case 1:
-                            {
-                                void FinishHandler(Object obj, EventArgs ea)
-                                {
-                                    this.endStepButton.TextureManager.Textures.Change(0);
-                                    this.core.GameModeStrategy.FinishCpuStep -= FinishHandler;
-                                    stateStepBtn = 0;
-                                };
-
-                                this.core.GameModeStrategy.User.LootPointsChanged -= LootChangedHandler;
-                                this.endStepButton.Text = String.Empty;
-                                this.endStepButton.TextureManager.Textures.Change(2);
-
-                                this.core.GameModeStrategy.FinishCpuStep += FinishHandler;
-                                this.core.GameModeStrategy.NextStep();
-
-                                stateStepBtn = 2;
-                            }
-                            break;
-                        default: stateStepBtn = 0; break;
-                    }
-                }
-            };
+            this.gameControlButton.OnClick += GameControlButton_OnClick;
 
             this.newGameButton.OnClick += (s, e) => { this.Start(); };
             this.startModelButton.OnClick += StartModelButton_OnClick;
             
-            this.menu.Items.Add(this.endStepButton);
+            this.menu.Items.Add(this.gameControlButton);
             this.menu.Items.Add(this.newGameButton);
             this.menu.Items.Add(this.startModelButton);
 
             this.Items.Add(this.menu);
+        }
+
+        private void GameControlButton_OnClick(object sender, EventArgs e)
+        {
+            if (stateStepBtn < 2)
+            {
+                void LootChangedHandler(Object obj, EventArgs ea)
+                {
+                    int lp = this.core.GameModeStrategy.User.LootPoints;
+
+                    if (lp == 0) EndLootAllocation(); else this.gameControlButton.Text = lp.ToString();
+                };
+
+                void FinishHandler(Object obj, EventArgs ea)
+                {
+                    this.gameControlButton.TextureManager.Textures.Change(0);
+                    this.core.GameModeStrategy.FinishCpuStep -= FinishHandler;
+                    stateStepBtn = 0;
+                };
+
+                void EndLootAllocation()
+                {
+                    this.core.GameModeStrategy.User.LootPointsChanged -= LootChangedHandler;
+                    this.gameControlButton.Text = String.Empty;
+                    this.gameControlButton.TextureManager.Textures.Change(2);
+
+                    this.core.GameModeStrategy.FinishCpuStep += FinishHandler;
+                    this.core.GameModeStrategy.NextStep();
+
+                    stateStepBtn = 2;
+                }
+
+                switch (stateStepBtn)
+                {
+                    // loot allocation
+                    case 0:
+                        {
+                            this.core.GameModeStrategy.User.LootPointsChanged += LootChangedHandler;
+                            this.core.GameModeStrategy.EndStep();
+                            this.gameControlButton.TextureManager.Textures.Change(1);
+                            stateStepBtn = 1;
+                        }
+                        break;
+                    // end loot allocation
+                    case 1: EndLootAllocation(); break;
+                    default: break;
+                }
+            }
         }
 
         public override void Designer()
@@ -95,8 +105,8 @@ namespace HexagonView.View
             this.startModelButton.TextureManager.Textures.Change(4);
 
             this.newGameButton.Position = new Vector2(10, 10);
-            this.endStepButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 40);
-            this.startModelButton.Position = new Vector2(10, this.endStepButton.Position.Y + this.endStepButton.Height + 40);
+            this.gameControlButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 40);
+            this.startModelButton.Position = new Vector2(10, this.gameControlButton.Position.Y + this.gameControlButton.Height + 40);
 
             int w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
             int h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
@@ -179,13 +189,13 @@ namespace HexagonView.View
                 case TypeGameMode.Normal:
                     {
                         this.startModelButton.Visible = false;
-                        this.endStepButton.Visible = true;
+                        this.gameControlButton.Visible = true;
                     }
                     break;
                 case TypeGameMode.Modeling:
                     {
                         this.startModelButton.Visible = true;
-                        this.endStepButton.Visible = false;
+                        this.gameControlButton.Visible = false;
                     }break;
             }
 
@@ -195,8 +205,8 @@ namespace HexagonView.View
         public void Start()
         {
             this.core.Reset();
-            this.endStepButton.TextureManager.Textures.Change(0);
-            this.endStepButton.Text = String.Empty;
+            this.gameControlButton.TextureManager.Textures.Change(0);
+            this.gameControlButton.Text = String.Empty;
             this.stateStepBtn = 0;
         }
 

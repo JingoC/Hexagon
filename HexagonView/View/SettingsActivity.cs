@@ -154,16 +154,27 @@ namespace HexagonView.View
 
         public GameSettings GetSettings()
         {
+            TypeGameMode GetTypeModeGame(int index)
+            {
+                switch(index)
+                {
+                    case 0: return TypeGameMode.Normal;
+                    case 1: return TypeGameMode.BuildMap;
+                    default: return TypeGameMode.Normal;
+                }
+            }
+
             return new GameSettings()
             {
                 CountPlayers = (int)this.players.Current.Value,
                 ModelStepTiming = (int)this.modelTiming.Current.Value,
                 MapSize = new Size() { Width = (int)this.rows.Current.Value, Height = (int) this.columns.Current.Value },
-                GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : TypeGameMode.Normal,
+                GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : GetTypeModeGame((int)this.gameMode.Current.Value),
                 PlayerMode = this.modeling.IsChecked ? TypePlayerMode.Modeling : TypePlayerMode.Normal,
                 ViewLifeEnable = this.lifeEnable.IsChecked,
                 ViewLootEnable = this.lootEnable.IsChecked,
-                ViewMaxLife = this.maxLifeEnable.IsChecked
+                ViewMaxLife = this.maxLifeEnable.IsChecked,
+                
             };
         }
     }

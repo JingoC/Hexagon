@@ -11,9 +11,9 @@ namespace HexagonLibrary.Model.StateMachines
     using Entity.GameObjects;
     using Entity.Players;
     
-    public delegate void StateMachineEventHandler(Object sender, StateMachineEventArgs e);
+    public delegate void ClickObjectsStateMachineEventHandler(Object sender, ClickObjectsStateMachineEventArgs e);
 
-    public class StateMachineEventArgs : EventArgs
+    public class ClickObjectsStateMachineEventArgs : EventArgs
     {
         /// <summary>
         /// Объект по котором произведен первичный клик
@@ -30,7 +30,7 @@ namespace HexagonLibrary.Model.StateMachines
         /// </summary>
         public HexagonObject DoubleObject { get; set; }
 
-        public StateMachineEventArgs()
+        public ClickObjectsStateMachineEventArgs()
         {
 
         }

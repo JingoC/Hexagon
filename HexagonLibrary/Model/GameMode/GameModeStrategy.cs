@@ -20,7 +20,6 @@ namespace HexagonLibrary.Model.GameMode
 
         protected Thread threadActionCpu;
         protected GameObjectPositionInfo lastPosInfo = new GameObjectPositionInfo();
-        protected StateMachine stateMachine;
 
         public bool IsReady { get; protected set; }
         public int Step { get; protected set; }
@@ -32,9 +31,7 @@ namespace HexagonLibrary.Model.GameMode
         public List<CPU> CPUs { get; set; }
 
         public event EventHandler FinishCpuStep;
-        public event EventHandler GameOver;
-        public event EventHandler UserGameOver;
-
+        
         public GameModeStrategy() : this(new GameSettings())
         {
 
@@ -50,7 +47,6 @@ namespace HexagonLibrary.Model.GameMode
             HexagonObject.MaxLifeEnable = gameSettings.ViewMaxLife;
 
             this.Map = new Map(gameSettings.MapSize.Width, gameSettings.MapSize.Height);
-            this.stateMachine = new StateMachine() { Map = this.Map };
 
             this.CPUs = new List<CPU>();
 
@@ -62,8 +58,7 @@ namespace HexagonLibrary.Model.GameMode
                 {
                     this.CPUs.Add(new CPU() { ID = i, Strategy = new FirstStrategy() });
                 }
-
-                this.stateMachine.SetActivePlayer(this.User);
+                
                 this.Players.Add(this.User);
                 this.Players.AddRange(this.CPUs);
             }
@@ -73,8 +68,6 @@ namespace HexagonLibrary.Model.GameMode
                 {
                     this.CPUs.Add(new CPU() { ID = i, Strategy = new FirstStrategy() });
                 }
-
-                this.stateMachine.SetActivePlayer(this.CPUs[0]);
                 
                 this.Players.AddRange(this.CPUs);
             }
@@ -84,14 +77,17 @@ namespace HexagonLibrary.Model.GameMode
 
         void Generate()
         {
-            for (int row = 0; row < this.Map.Row; row++)
+            if (this.GameSettings.GameMode != TypeGameMode.BuildMap)
             {
-                for (int col = 0; col < this.Map.Column; col++)
+                for (int row = 0; row < this.Map.Row; row++)
                 {
-                    this.Map.SetItem(this.GetMapItem(), row, col);
+                    for (int col = 0; col < this.Map.Column; col++)
+                    {
+                        this.Map.SetItem(this.GetMapItem(), row, col);
+                    }
                 }
             }
-
+            
             foreach(var player in this.Players)
             {
                 int row = 0;
@@ -139,7 +135,11 @@ namespace HexagonLibrary.Model.GameMode
             }
         }
 
-        public virtual void EndStep() { }
+        public virtual void EndStep()
+        {
+            
+        }
+
         public virtual void NextStep()
         {
             if (this.FinishCpuStep != null)

@@ -30,7 +30,7 @@ namespace HexagonLibrary.Entity.GameObjects
         public static HexagonObject Empty { get { return new HexagonObject(); } }
 
         public int SectorId { get; set; }
-        public int MaxLife { get; set; } = 100;
+        public int MaxLife { get; set; } = 8;
         public int Life { get; set; } = 0;
         public int BelongUser { get; set; } = -1;
         public TypeHexagon Type { get; set; } = TypeHexagon.Free;

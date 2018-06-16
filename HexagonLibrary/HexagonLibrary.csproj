@@ -60,8 +60,10 @@
     <Compile Include="Model\GameMode\GameSettings.cs" />
     <Compile Include="Model\Navigation\GameObjectPositionInfo.cs" />
     <Compile Include="Model\Navigation\Map.cs" />
-    <Compile Include="Model\StateMachines\StateMachine.cs" />
-    <Compile Include="Model\StateMachines\StateMachineEventArgs.cs" />
+    <Compile Include="Model\StateMachines\ClickObjectsStateMachine.cs" />
+    <Compile Include="Model\StateMachines\ClickObjectsStateMachineEventArgs.cs" />
+    <Compile Include="Model\StateMachines\GameNormalStateMachine.cs" />
+    <Compile Include="Model\StateMachines\GameStateMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

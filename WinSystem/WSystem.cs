@@ -33,6 +33,8 @@ namespace WinSystem
             {
                 if ((this.ActivitySelected != null) && (this.ActivitySelected.Parent != null))
                     this.ActivitySelected = this.ActivitySelected.Parent;
+                else
+                    Environment.Exit(0);
             };
 
             this.Activities.Add(new Activity(null));

@@ -14,6 +14,8 @@ namespace HexagonLibrary.Model.GameMode
 
     public class GameModeModeling : GameModeStrategy
     {
+        GameNormalStateMachine stateMachine;
+
         public GameModeModeling() : this(new GameSettings())
         {
 
@@ -21,19 +23,19 @@ namespace HexagonLibrary.Model.GameMode
 
         public GameModeModeling(GameSettings gameSettings) : base(gameSettings)
         {
-            
+            this.stateMachine = new GameNormalStateMachine() { Map = this.Map, GameState = TypeGameState.Attack };
         }
 
         public override void EndStep()
         {
-            this.stateMachine.SetGameState(TypeGameState.EndStep);
+            this.stateMachine.GameState = TypeGameState.Allocate;
         }
 
         public override void NextStep()
         {
             this.IsReady = false;
 
-            this.stateMachine.SetGameState(TypeGameState.Cpu);
+            this.stateMachine.GameState = TypeGameState.Wait;
 
             // multi threading
             this.threadActionCpu = new Thread(new ThreadStart(delegate ()
@@ -43,7 +45,7 @@ namespace HexagonLibrary.Model.GameMode
                     item.Strategy.Calculate(this.Map, item);
                 }
 
-                this.stateMachine.SetGameState(TypeGameState.Play);
+                this.stateMachine.GameState = TypeGameState.Attack;
 
                 this.IsReady = true;
                 this.Step++;
