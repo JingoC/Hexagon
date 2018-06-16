@@ -20,7 +20,7 @@ namespace HexagonLibrary.Model.GameMode
         {
 
         }
-
+        
         public GameModeNormal(GameSettings gameSettings) : base(gameSettings)
         {
             this.stateMachine.ClickHisObject += StateMachine_ClickHisObject;
@@ -136,6 +136,9 @@ namespace HexagonLibrary.Model.GameMode
 
                     this.IsReady = true;
                     this.Step++;
+
+                    base.NextStep();
+
                 }));
                 this.threadActionCpu.Start();
             }

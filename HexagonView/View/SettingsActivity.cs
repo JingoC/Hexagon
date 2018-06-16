@@ -41,7 +41,14 @@ namespace HexagonView.View
         Toggle maxLifeEnable = new Toggle(true);
         Label maxLifeEnableInfo = new Label() { Text = "Max Life Enable", ForeColor = Color.White };
 
+        Changer gameMode = new Changer(new ValueRange(0, 1)) { Step = 1 };
+        Label gameModeInfo = new Label() { Text = "Game mode", ForeColor = Color.White };
+
         public event EventHandler ExitActivity;
+
+        string[] gameModes = { "Normal", "BuildMap" };
+
+        void SetGameModeText() => this.gameMode.Text = this.gameModes[(int)this.gameMode.Current.Value];
 
         public SettingsActivity(Activity parent) : base(parent)
         {
@@ -49,6 +56,9 @@ namespace HexagonView.View
             this.rows.Current.Value = 10;
             this.columns.Current.Value = 10;
 
+            this.gameMode.ClickToUp += (s, e) => SetGameModeText();
+            this.gameMode.ClickToDown += (s, e) => SetGameModeText();
+            
             this.Items.Add(this.players);
             this.Items.Add(this.playersInfo);
             this.Items.Add(this.modelInfo);
@@ -66,6 +76,9 @@ namespace HexagonView.View
             this.Items.Add(this.lootEnableInfo);
             this.Items.Add(this.maxLifeEnable);
             this.Items.Add(this.maxLifeEnableInfo);
+
+            this.Items.Add(this.gameMode);
+            this.Items.Add(this.gameModeInfo);
         }
 
         public override void Designer()
@@ -107,30 +120,36 @@ namespace HexagonView.View
             float r1_y = 0;
             float r2_y = 1;
             float r3_y = 2;
+            float r4_y = 3;
 
             SetPosition(this.playersInfo, c1_x, r1_y);
             SetPosition(this.players, c2_x, r1_y);
             
             SetPosition(this.modelInfo, c3_x, r1_y);
             SetPosition(this.modeling, c4_x, r1_y);
-            
+
+            SetPosition(this.lifeEnableInfo, c5_x, r1_y);
+            SetPosition(this.lifeEnable, c6_x, r1_y);
+
             SetPosition(this.rowsInfo, c1_x, r2_y);
             SetPosition(this.rows, c2_x, r2_y);
 
             SetPosition(this.modelTimingInfo, c3_x, r2_y);
             SetPosition(this.modelTiming, c4_x, r2_y);
 
-            SetPosition(this.columnsInfo, c1_x, r3_y);
-            SetPosition(this.columns, c2_x, r3_y);
-
-            SetPosition(this.lifeEnableInfo, c5_x, r1_y);
-            SetPosition(this.lifeEnable, c6_x, r1_y);
-
             SetPosition(this.lootEnableInfo, c5_x, r2_y);
             SetPosition(this.lootEnable, c6_x, r2_y);
 
+            SetPosition(this.columnsInfo, c1_x, r3_y);
+            SetPosition(this.columns, c2_x, r3_y);
+            
             SetPosition(this.maxLifeEnableInfo, c5_x, r3_y);
             SetPosition(this.maxLifeEnable, c6_x, r3_y);
+
+            SetPosition(this.gameModeInfo, c1_x, r4_y);
+            SetPosition(this.gameMode, c2_x, r4_y);
+
+            SetGameModeText();
         }
 
         public GameSettings GetSettings()

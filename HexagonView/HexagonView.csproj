@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\GameButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\GameActivity.cs" />
     <Compile Include="GameView.cs" />

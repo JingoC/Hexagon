@@ -17,13 +17,42 @@ namespace WinSystem.Controls
 
         public virtual int Width
         {
-            get => this.Items.Count > 0 ? (int) this.Items.Max(x => x.Width + x.Position.X) : 0;
+            get
+            {
+                float x = 0;
+                float w = 0;
+                foreach (var item in this.Items)
+                {
+                    float px = item.Position.X;
+                    float pw = item.Width;
+
+                    x = (px >= 0) && (px < x) ? px : x;
+                    w = (pw > 0) && (pw > w) ? pw : w;
+                }
+
+                return (int) (x + w);
+            }
             set { }
         }
 
         public virtual int Height
         {
-            get => this.Items.Count > 0 ? (int)this.Items.Max(x => x.Height + x.Position.Y) : 0;
+            get
+            {
+                float y1 = 0;
+                float y2 = 0;
+                
+                foreach(var item in this.Items)
+                {
+                    float py = item.Position.Y;
+                    float ph = item.Height;
+
+                    y1 = (py >= 0) && (py < y1) ? py : y1;
+                    y2 = (ph > 0) && ((ph + py) > y2) ? ph + py : y2;
+                }
+
+                return (int) (y2 - y1);
+            }
             set { }
         }
 

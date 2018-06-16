@@ -48,7 +48,6 @@ namespace HexagonView
                 this.ActivitySelected = gamePage;
             };
 
-            //gamePage.SetSettings(new GameSettings() { GameMode = TypeGameMode.Modeling, CountPlayers = 5, PlayerMode = TypePlayerMode.Modeling, MapSize = new Size() { Width = row, Height = column } });
             this.ActivitySelected = startPage;
         }
     }

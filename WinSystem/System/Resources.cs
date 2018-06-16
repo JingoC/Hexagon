@@ -49,6 +49,11 @@ namespace WinSystem.System
 #else
             // { "Name": "defaultButton", "Type": "Texture2D"},
             string json = "[" +
+                "{\"Name\": \"gameBtn1\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"gameBtn2\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"gameBtn3\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"gameBtn4\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"gameBtn5\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"btn_newgame_idle\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"btn_newgame_click\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"btn_settings_idle\", \"Type\": \"Texture2D\"}," +
@@ -72,6 +77,7 @@ namespace WinSystem.System
                 "{\"Name\": \"hexagon_gray\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"hexagon_white\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultFont\", \"Type\": \"Font\"}," +
+                "{\"Name\": \"gameBtnFont\", \"Type\": \"Font\"}," +
                 "]";
 
             var json_list = JsonConvert.DeserializeObject<List<ResoureceInfo>>(json);

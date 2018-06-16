@@ -31,6 +31,10 @@ namespace HexagonLibrary.Model.GameMode
         public User User { get; set; }
         public List<CPU> CPUs { get; set; }
 
+        public event EventHandler FinishCpuStep;
+        public event EventHandler GameOver;
+        public event EventHandler UserGameOver;
+
         public GameModeStrategy() : this(new GameSettings())
         {
 
@@ -136,6 +140,10 @@ namespace HexagonLibrary.Model.GameMode
         }
 
         public virtual void EndStep() { }
-        public virtual void NextStep() { }
+        public virtual void NextStep()
+        {
+            if (this.FinishCpuStep != null)
+                this.FinishCpuStep(this, EventArgs.Empty);
+        }
     }
 }

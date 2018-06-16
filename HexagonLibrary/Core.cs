@@ -21,7 +21,7 @@ namespace HexagonLibrary
         private GameSettings gameSettings;
 
         public GameModeStrategy GameModeStrategy;
-
+        
         public override int Width
         {
             get
@@ -48,7 +48,6 @@ namespace HexagonLibrary
             }
                 
             this.GameModeStrategy = GameModeFactory.Create(this.gameSettings);
-
 
             this.Items.Clear();
             this.Items.Add(this.GameModeStrategy.Map);

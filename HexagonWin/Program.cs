@@ -28,11 +28,19 @@ namespace HexagonWin
         [STAThread]
         static void Main()
         {
+            System.Windows.Forms.Form cursorPos = new System.Windows.Forms.Form();
+            cursorPos.MinimizeBox = false;
+            cursorPos.MaximizeBox = false;
+            cursorPos.Show();
+            cursorPos.SetBounds(1340, 0, 10, 50);
+
             using (var winSystem = new GameView())
             {
                 winSystem.Graphics.GetGraphics().PreferredBackBufferWidth = 1300;
                 winSystem.Graphics.GetGraphics().PreferredBackBufferHeight = 800;
                 winSystem.Graphics.GetGraphics().ApplyChanges();
+                
+                winSystem.Input.PositionChangedMouse += (s, e) => cursorPos.Text = $"{e.X}:{e.Y}";
 
                 winSystem.Run();
             }

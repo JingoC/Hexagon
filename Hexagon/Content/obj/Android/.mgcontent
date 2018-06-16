@@ -27,5 +27,11 @@
     <File>D:/gitclone/Hexagon/Hexagon/Content/btn_newgame_idle.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/btn_settings_click.png</File>
     <File>D:/gitclone/Hexagon/Hexagon/Content/btn_settings_idle.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/gameBtnFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/gameBtn1.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/gameBtn2.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/gameBtn3.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/gameBtn4.png</File>
+    <File>D:/gitclone/Hexagon/Hexagon/Content/gameBtn5.png</File>
   </SourceFiles>
 </SourceFileCollection>

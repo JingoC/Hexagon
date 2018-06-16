@@ -45,6 +45,7 @@ namespace WinSystem.System
         public event DeviceEventHandler ClickMouse;
         public event DeviceEventHandler PressedMouse;
         public event DeviceEventHandler UnPressedMouse;
+        public event DeviceEventHandler PositionChangedMouse;
 
         public event DeviceEventHandler BackKeyboard;
 
@@ -52,6 +53,8 @@ namespace WinSystem.System
         private bool mouseIsPressedEvent;
         private bool keyboardIsPressed;
         private bool touchIsPressed;
+        private int lastX;
+        private int lastY;
 
         public bool Enable { get; set; } = true;
         public bool MouseEnable { get; set; } = true;
@@ -118,6 +121,19 @@ namespace WinSystem.System
                     }
                     break;
                 default: break;
+            }
+
+            int mx = Mouse.GetState().X;
+            int my = Mouse.GetState().Y;
+            if ((lastX != mx) || (lastY != my))
+            {
+                lastX = mx;
+                lastY = my;
+                DeviceEventArgs e = new DeviceEventArgs();
+                e.X = lastX;
+                e.Y = lastY;
+                if (this.PositionChangedMouse != null)
+                    this.PositionChangedMouse(this, e);
             }
         }
 
