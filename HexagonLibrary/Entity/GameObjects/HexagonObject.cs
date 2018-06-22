@@ -12,6 +12,13 @@ namespace HexagonLibrary.Entity.GameObjects
         Enemy = 2
     }
 
+    public enum TypeHexagonBonus
+    {
+        None = 0,
+        Bomb = 1,
+        Last = 1
+    }
+
     public class HexagonObject : GameObject, IEquatable<HexagonObject>
     {
         static public bool LifeEnable { get; set; } = true;
@@ -36,16 +43,21 @@ namespace HexagonLibrary.Entity.GameObjects
         public TypeHexagon Type { get; set; } = TypeHexagon.Free;
         public int Loot { get; set; } = 0;
         public int Level { get; set; } = 0;
-
+        public TypeHexagonBonus Bonus { get; set; } = TypeHexagonBonus.None;
         public override string Text
         {
             get
             {
-                string c00 = HexagonObject.LifeEnable ? $"{this.Life}" : " ";
-                string c01 = HexagonObject.LootEnable ? $"   {this.Loot}" : String.Empty;
-                string c10 = HexagonObject.MaxLifeEnable ? $"{this.MaxLife}" : " ";
-                string c11 = $"   {this.BelongUser}";
-                return $"{c00}{c01}{Environment.NewLine}{c10}{c11}";
+                if (this.Bonus == TypeHexagonBonus.None)
+                {
+                    string c00 = HexagonObject.LifeEnable ? $"{this.Life}" : " ";
+                    string c01 = HexagonObject.LootEnable ? $"   {this.Loot}" : String.Empty;
+                    string c10 = HexagonObject.MaxLifeEnable ? $"{this.MaxLife}" : " ";
+                    string c11 = true ? String.Empty : $"   {this.BelongUser}";
+                    return $"{c00}{c01}{Environment.NewLine}{c10}{c11}";
+                }
+
+                return String.Empty;
             }
         }
 

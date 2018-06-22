@@ -27,7 +27,8 @@ namespace HexagonLibrary.Entity.GameObjects
         UserActive0 = 10,
         FieldFree = 11,
         FieldMarked = 12,
-        LastTexture = 12
+        BonusBomb = 13,
+        LastTexture = 13
     }
     
     public partial class GameObject : MonoObject
@@ -54,7 +55,8 @@ namespace HexagonLibrary.Entity.GameObjects
                 "hexagon_white",
                 "hexagon_aqua_checked",
                 "hexagon_gray",
-                "hexagon_white"
+                "hexagon_white",
+                "hexagon_bonus_bomb"
             }).OfType<Texture2D>());
 
             base.Designer();

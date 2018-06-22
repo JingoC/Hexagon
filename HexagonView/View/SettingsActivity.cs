@@ -43,9 +43,7 @@ namespace HexagonView.View
 
         Changer gameMode = new Changer(new ValueRange(0, 1)) { Step = 1 };
         Label gameModeInfo = new Label() { Text = "Game mode", ForeColor = Color.White };
-
-        public event EventHandler ExitActivity;
-
+        
         string[] gameModes = { "Normal", "BuildMap" };
 
         void SetGameModeText() => this.gameMode.Text = this.gameModes[(int)this.gameMode.Current.Value];

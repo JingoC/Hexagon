@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Hexagon.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("hexagon.Resource", IsApplication=true)]
 
-namespace Hexagon
+namespace hexagon
 {
 	
 	

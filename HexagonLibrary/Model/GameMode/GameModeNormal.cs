@@ -125,34 +125,5 @@ namespace HexagonLibrary.Model.GameMode
                 this.threadActionCpu.Start();
             }
         }
-
-        protected override HexagonObject GetMapItem()
-        {
-            int percentBlock = 20;
-
-            if (r.Next(101) < percentBlock)
-            {
-                HexagonObject hex = new HexagonObject()
-                {
-                    Visible = false,
-                    Type = TypeHexagon.Blocked
-                };
-                hex.SetDefaultTexture(TypeTexture.FieldFree);
-
-                return hex;
-            }
-            else
-            {
-                var hex = new HexagonObject()
-                {
-                    Loot = r.Next(this.GameSettings.ScatterLoot.Min, this.GameSettings.ScatterLoot.Max),
-                    Life = r.Next(this.GameSettings.ScatterLife.Min, this.GameSettings.ScatterLife.Max),
-                    MaxLife = this.GameSettings.IsAllEqualLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max)
-                };
-                hex.SetDefaultTexture(TypeTexture.FieldFree);
-
-                return hex;
-            }
-        }
     }
 }

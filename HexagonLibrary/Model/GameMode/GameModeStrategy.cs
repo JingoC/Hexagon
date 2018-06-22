@@ -116,13 +116,41 @@ namespace HexagonLibrary.Model.GameMode
 
         protected virtual HexagonObject GetMapItem()
         {
-            var hex = new HexagonObject()
+            int percentBlock = this.GameSettings.PercentBlocked;
+            int percentBonus = this.GameSettings.PercentBonus;
+
+            int allPercent = percentBlock + percentBonus;
+            allPercent = allPercent < 100 ? 100 : allPercent;
+
+            var v = r.Next(allPercent + 1);
+
+            var loot = r.Next(this.GameSettings.ScatterLoot.Min, this.GameSettings.ScatterLoot.Max);
+            var life = r.Next(this.GameSettings.ScatterLife.Min, this.GameSettings.ScatterLife.Max);
+            var maxLife = this.GameSettings.IsAllEqualLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max);
+
+            HexagonObject hex = new HexagonObject()
             {
-                Loot = r.Next(this.GameSettings.ScatterLoot.Min, this.GameSettings.ScatterLoot.Max),
-                Life = r.Next(this.GameSettings.ScatterLife.Min, this.GameSettings.ScatterLife.Max),
-                MaxLife = this.GameSettings.IsAllEqualLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max)
+                Loot = loot,
+                Life = life,
+                MaxLife = maxLife
             };
             hex.SetDefaultTexture(TypeTexture.FieldFree);
+
+            if (v < percentBlock)
+            {
+                hex.Visible = false;
+                hex.Type = TypeHexagon.Blocked;
+            }
+            else if (v < percentBonus)
+            {
+                hex.Bonus = (TypeHexagonBonus)r.Next(1, (int)TypeHexagonBonus.Last + 1);
+                hex.SetDefaultTexture(TypeTexture.BonusBomb);
+                hex.Life = 0;
+            }
+            else
+            {
+                
+            }
 
             return hex;
         }

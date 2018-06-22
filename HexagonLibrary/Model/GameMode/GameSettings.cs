@@ -44,6 +44,8 @@ namespace HexagonLibrary.Model.GameMode
         public bool ViewLootEnable { get; set; } = true;
         public bool ViewLifeEnable { get; set; } = true;
         public bool ViewMaxLife { get; set; } = true;
+        public int PercentBonus { get; set; } = 20;
+        public int PercentBlocked { get; set; } = 15;
 
         public GameSettings()
         {

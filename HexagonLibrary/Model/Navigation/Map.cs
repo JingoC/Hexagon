@@ -131,12 +131,41 @@ namespace HexagonLibrary.Model.Navigation
 
                 if (IsHold)
                 {
-                    dst.Life = src.Life - (dst.Life == 0 ? 1 : dst.Life);
-                    dst.BelongUser = src.BelongUser;
-                    dst.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
-                    dst.Type = TypeHexagon.Enemy;
-                    dst.Visible = true;
-                    src.Life = 0;
+                    if (dst.Bonus == TypeHexagonBonus.None)
+                    {
+                        dst.Life = src.Life - (dst.Life == 0 ? 1 : dst.Life);
+                        dst.BelongUser = src.BelongUser;
+                        dst.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
+                        dst.Type = TypeHexagon.Enemy;
+                        dst.Visible = true;
+                        src.Life = 0;
+                    }
+                    else if (dst.Bonus == TypeHexagonBonus.Bomb)
+                    {
+                        void RecursiveBomb(HexagonObject obj)
+                        {
+                            obj.Life = 0;
+                            obj.BelongUser = -1;
+                            obj.Type = TypeHexagon.Blocked;
+                            obj.Bonus = TypeHexagonBonus.None;
+                            obj.Visible = false;
+                            var pi = this.GetPositionInfo(obj);
+
+                            foreach (var h in pi.AroundObjects)
+                            {
+                                if (h.Bonus == TypeHexagonBonus.Bomb)
+                                {
+                                    RecursiveBomb(h);
+                                }
+                                else
+                                {
+                                    h.Life = h.Life > dst.Loot ? h.Life - dst.Loot : 0;
+                                }
+                            }
+                        }
+
+                        RecursiveBomb(dst);
+                    }
                     
                     return true;
                 }

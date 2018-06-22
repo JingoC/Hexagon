@@ -76,6 +76,7 @@ namespace WinSystem.System
                 "{\"Name\": \"hexagon_aqua_checked\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"hexagon_gray\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"hexagon_white\", \"Type\": \"Texture2D\"}," +
+                "{\"Name\": \"hexagon_bonus_bomb\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultFont\", \"Type\": \"Font\"}," +
                 "{\"Name\": \"gameBtnFont\", \"Type\": \"Font\"}," +
                 "]";
