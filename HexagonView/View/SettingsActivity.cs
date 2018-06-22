@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace HexagonView.View
 {
+    using System.IO;
+    using System.IO.IsolatedStorage;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+
     using WinSystem;
     using WinSystem.Controls;
     using WinSystem.System;
@@ -14,9 +20,11 @@ namespace HexagonView.View
     using Microsoft.Xna.Framework;
 
     using HexagonLibrary.Model.GameMode;
-
+    
     public class SettingsActivity : Activity
     {
+        static string fileSettingsPath = "settings.json";
+
         Changer players = new Changer(new ValueRange(2, 10)) { Step = 1 };
         Label playersInfo = new Label() { Text = "Count Player ", ForeColor = Color.White };
 
@@ -43,7 +51,13 @@ namespace HexagonView.View
 
         Changer gameMode = new Changer(new ValueRange(0, 1)) { Step = 1 };
         Label gameModeInfo = new Label() { Text = "Game mode", ForeColor = Color.White };
-        
+
+        Changer percentBonus = new Changer(new ValueRange(0, 100)) { Step = 10 };
+        Label percentBonusInfo = new Label() { Text = "Percent Bonus", ForeColor = Color.White };
+
+        Changer percentBlocked = new Changer(new ValueRange(0, 100)) { Step = 10 };
+        Label percentBlockedInfo = new Label() { Text = "Percent Blocked", ForeColor = Color.White };
+
         string[] gameModes = { "Normal", "BuildMap" };
 
         void SetGameModeText() => this.gameMode.Text = this.gameModes[(int)this.gameMode.Current.Value];
@@ -77,6 +91,78 @@ namespace HexagonView.View
 
             this.Items.Add(this.gameMode);
             this.Items.Add(this.gameModeInfo);
+
+            this.Items.Add(this.percentBonus);
+            this.Items.Add(this.percentBonusInfo);
+            this.Items.Add(this.percentBlocked);
+            this.Items.Add(this.percentBlockedInfo);
+
+            this.LoadSettings();
+        }
+
+        void SaveSettings(GameSettings settings)
+        {
+            string content = JsonConvert.SerializeObject(settings);
+#if ANDROID
+            using (var istrg = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
+            {
+                using (var fstream = istrg.OpenFile(fileSettingsPath, FileMode.Create, FileAccess.Write))
+                {
+                    byte[] bytes = Encoding.Default.GetBytes(content.ToCharArray());
+                    fstream.Write(bytes, 0, bytes.Count());
+                }
+            }
+#else
+            File.WriteAllText(fileSettingsPath, content);
+#endif
+        }
+
+        void LoadSettings()
+        {
+            string content = String.Empty;
+            bool isExists = false;
+
+#if ANDROID
+            try
+            {
+                using (var istrg = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
+                {
+                    using (var fstream = istrg.OpenFile(fileSettingsPath, FileMode.Open, FileAccess.Read))
+                    {
+                        byte[] bytes = new byte[fstream.Length];
+                        fstream.Read(bytes, 0, (int) fstream.Length);
+                        content = Encoding.Default.GetString(bytes);
+                        isExists = true;
+                    }
+                }
+            }
+            catch(FileNotFoundException e)
+            {
+
+            }
+#else
+            isExists = File.Exists(fileSettingsPath);
+            if (isExists)
+                content = File.ReadAllText(fileSettingsPath);
+#endif
+
+            if (isExists)
+            {
+                GameSettings gs = JsonConvert.DeserializeObject<GameSettings>(content);
+
+                this.players.Current.Value = gs.CountPlayers;
+                this.modelTiming.Current.Value = gs.ModelStepTiming;
+                this.rows.Current.Value = gs.MapSize.Width;
+                this.columns.Current.Value = gs.MapSize.Height;
+                this.percentBlocked.Current.Value = gs.PercentBlocked;
+                this.percentBonus.Current.Value = gs.PercentBonus;
+                
+
+                //this.Items.Add(this.lifeEnable);
+                //this.Items.Add(this.lootEnable);
+                //this.Items.Add(this.maxLifeEnable);
+                
+            }
         }
 
         public override void Designer()
@@ -119,35 +205,42 @@ namespace HexagonView.View
             float r2_y = 1;
             float r3_y = 2;
             float r4_y = 3;
+            float r5_y = 4;
 
+            // C1 - R1
             SetPosition(this.playersInfo, c1_x, r1_y);
             SetPosition(this.players, c2_x, r1_y);
-            
+            // C3 - R1
             SetPosition(this.modelInfo, c3_x, r1_y);
             SetPosition(this.modeling, c4_x, r1_y);
-
+            // C5 - R1
             SetPosition(this.lifeEnableInfo, c5_x, r1_y);
             SetPosition(this.lifeEnable, c6_x, r1_y);
-
+            // C1 - R2
             SetPosition(this.rowsInfo, c1_x, r2_y);
             SetPosition(this.rows, c2_x, r2_y);
-
+            // C3 - R2
             SetPosition(this.modelTimingInfo, c3_x, r2_y);
             SetPosition(this.modelTiming, c4_x, r2_y);
-
+            // C5 - R2
             SetPosition(this.lootEnableInfo, c5_x, r2_y);
             SetPosition(this.lootEnable, c6_x, r2_y);
-
+            // C1 - R3
             SetPosition(this.columnsInfo, c1_x, r3_y);
             SetPosition(this.columns, c2_x, r3_y);
-            
+            // C5 - R3
             SetPosition(this.maxLifeEnableInfo, c5_x, r3_y);
             SetPosition(this.maxLifeEnable, c6_x, r3_y);
-
+            // C1 - R4
             SetPosition(this.gameModeInfo, c1_x, r4_y);
             SetPosition(this.gameMode, c2_x, r4_y);
-
             SetGameModeText();
+            // C1 - R5
+            SetPosition(this.percentBonusInfo, c1_x, r5_y);
+            SetPosition(this.percentBonus, c2_x, r5_y);
+            // C3 - R5
+            SetPosition(this.percentBlockedInfo, c3_x, r5_y);
+            SetPosition(this.percentBlocked, c4_x, r5_y);
         }
 
         public GameSettings GetSettings()
@@ -161,18 +254,21 @@ namespace HexagonView.View
                     default: return TypeGameMode.Normal;
                 }
             }
-
-            return new GameSettings()
+            
+            var settings = new GameSettings()
             {
                 CountPlayers = (int)this.players.Current.Value,
                 ModelStepTiming = (int)this.modelTiming.Current.Value,
-                MapSize = new Size() { Width = (int)this.rows.Current.Value, Height = (int) this.columns.Current.Value },
+                MapSize = new Size() { Width = (int)this.rows.Current.Value, Height = (int)this.columns.Current.Value },
                 GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : GetTypeModeGame((int)this.gameMode.Current.Value),
                 ViewLifeEnable = this.lifeEnable.IsChecked,
                 ViewLootEnable = this.lootEnable.IsChecked,
                 ViewMaxLife = this.maxLifeEnable.IsChecked,
-                
+                PercentBonus = (int)this.percentBonus.Current.Value,
+                PercentBlocked = (int)this.percentBlocked.Current.Value,
             };
+            this.SaveSettings(settings);
+            return settings;
         }
     }
 }

@@ -113,7 +113,10 @@ namespace HexagonLibrary.Model.Navigation
                 ((src.SectorId < 0) || (dst.SectorId < 0))
                 )
                 return false;
-            
+
+            if (src.Life < 1)
+                return false;
+
             if (src.Life >= dst.Life)
             {
                 int diff = src.Life - dst.Life;

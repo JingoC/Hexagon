@@ -35,7 +35,7 @@ namespace HexagonView
             this.Activities.Add(this.settingsPage);
             this.Activities.Add(this.startPage);
             
-            this.settingsPage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
+            //this.settingsPage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
             this.gamePage.ExitActivity += (s, e) => this.ActivitySelected = startPage;
 
             var sttg_btn = this.startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("settingsGameButton"));

@@ -31,6 +31,7 @@ namespace HexagonLibrary.Model.GameMode
         }
     }
 
+    [Serializable]
     public class GameSettings
     {
         public Size MapSize { get; set; } = new Size() { Width = 10, Height = 10 };
