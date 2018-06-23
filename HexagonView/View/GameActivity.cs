@@ -11,6 +11,7 @@ namespace HexagonView.View
     using WinSystem.System;
 
     using HexagonLibrary;
+    using HexagonLibrary.Entity.Players;
     using HexagonLibrary.Model;
     using HexagonLibrary.Model.GameMode;
     using HexagonLibrary.Entity.GameObjects;
@@ -23,8 +24,8 @@ namespace HexagonView.View
     class GameStatus
     {
         public int Step { get; set; } = 0;
-        public int Created { get => this.Point / 4; }
-        public int Destroy { get => this.Point / 4; }
+        public int Created { get => this.Point / Player.LootPointForCreate; }
+        public int Destroy { get => this.Point / Player.LootPointForCreate; }
 
         public int Point { get; set; } = 0;
         

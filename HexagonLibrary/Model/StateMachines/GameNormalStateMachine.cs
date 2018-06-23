@@ -39,8 +39,24 @@ namespace HexagonLibrary.Model.StateMachines
 
             this.stateMachines[(int)TypeGameState.Allocate].ClickHisObject += (s, e) => this.EventExexute(this.Allocate_His, s, e);
             this.stateMachines[(int)TypeGameState.Allocate].DoubleClickHisObject += (s, e) => this.EventExexute(this.Allocate_His, s, e);
-            this.stateMachines[(int)TypeGameState.Allocate].ClickNearObject += (s, e) => this.EventExexute(this.Allocate_Blocked, s, e);
+            this.stateMachines[(int)TypeGameState.Allocate].ClickNearObject += delegate (Object s, ClickObjectsStateMachineEventArgs e)
+            {
+                switch (e.DestinationObject.Type)
+                {
+                    case TypeHexagon.Blocked: this.EventExexute(this.Allocate_Blocked, s, e); break;
+                    default: break;
+                }
+            };
+            this.stateMachines[(int)TypeGameState.Allocate].DoubleClickNearObject += delegate (Object s, ClickObjectsStateMachineEventArgs e)
+            {
+                switch (e.DestinationObject.Type)
+                {
+                    case TypeHexagon.Blocked: this.EventExexute(this.Allocate_Blocked, s, e); break;
+                    default: break;
+                }
+            };
         }
+
         
         void EventExexute(ClickObjectsStateMachineEventHandler handler, Object sender, ClickObjectsStateMachineEventArgs e)
         {

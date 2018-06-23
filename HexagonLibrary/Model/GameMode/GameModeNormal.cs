@@ -48,6 +48,7 @@ namespace HexagonLibrary.Model.GameMode
 
             this.stateMachine.Allocate_His += this.StateMachine_Allocate_His;
             this.stateMachine.Allocate_Blocked += StateMachine_Allocate_Blocked;
+
         }
         
         private void StateMachine_Attack_His(object sender, ClickObjectsStateMachineEventArgs e)
