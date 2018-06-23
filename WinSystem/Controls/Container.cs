@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinSystem.System;
 
 namespace WinSystem.Controls
 {
@@ -14,6 +15,7 @@ namespace WinSystem.Controls
         public string Name { get; set; }
         public TextureContainer TextureManager { get; set; }
         public List<IControl> Items { get; set; } = new List<IControl>();
+        public Color Background { get; set; } = Color.Transparent;
 
         public virtual int Width
         {
@@ -96,7 +98,9 @@ namespace WinSystem.Controls
         public virtual void Draw(GameTime gameTime)
         {
             if (this.Visible)
+            {
                 this.Items.ForEach((x) => x.Draw(gameTime));
+            }
         }
 
         public virtual void CheckEntry(float x, float y)

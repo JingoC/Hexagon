@@ -20,10 +20,30 @@ namespace HexagonView.View
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     
+    class GameStatus
+    {
+        public int Step { get; set; } = 0;
+        public int Created { get => this.Point / 4; }
+        public int Destroy { get => this.Point / 4; }
+
+        public int Point { get; set; } = 0;
+        
+        public string Log { get; set; }
+
+        public override string ToString()
+        {
+            return $"Step: {this.Step}   Point: {this.Point}   Created: {this.Created}   Destroy: {this.Destroy}";
+        }
+    }
+
     public class GameActivity : Activity
     {
         Core core;
         GameSettings gameSettings;
+
+        GameStatus gameStatus = new GameStatus();
+        Label statusLabel = new Label() { Text = String.Empty, ForeColor = Color.White };
+        Container gameStatusContainer = new Container() { };
 
         GameButton gameControlButton = new GameButton() { Name = "endStepButton", Text = "", ForeColor = Color.Black };
         GameButton newGameButton = new GameButton() { Name = "newGameButton", Text = "N", ForeColor = Color.Black };
@@ -39,11 +59,14 @@ namespace HexagonView.View
 
             this.newGameButton.OnClick += (s, e) => { this.Start(); };
             this.startModelButton.OnClick += StartModelButton_OnClick;
-            
+
+            this.gameStatusContainer.Items.Add(this.statusLabel);
+
             this.menu.Items.Add(this.gameControlButton);
             this.menu.Items.Add(this.newGameButton);
             this.menu.Items.Add(this.startModelButton);
 
+            this.Items.Add(this.gameStatusContainer);
             this.Items.Add(this.menu);
         }
 
@@ -54,6 +77,8 @@ namespace HexagonView.View
                 void LootChangedHandler(Object obj, EventArgs ea)
                 {
                     int lp = this.core.GameModeStrategy.User.LootPoints;
+                    this.gameStatus.Point = lp;
+                    this.statusLabel.Text = this.gameStatus.ToString();
 
                     if (lp == 0) EndLootAllocation(); else this.gameControlButton.Text = lp.ToString();
                 };
@@ -73,6 +98,9 @@ namespace HexagonView.View
 
                     this.core.GameModeStrategy.FinishCpuStep += FinishHandler;
                     this.core.GameModeStrategy.NextStep();
+
+                    this.gameStatus.Step++;
+                    this.statusLabel.Text = this.gameStatus.ToString(); 
 
                     stateStepBtn = 2;
                 }
@@ -116,6 +144,9 @@ namespace HexagonView.View
             this.newGameButton.TextureManager.Textures.Change(3);
             this.startModelButton.TextureManager.Textures.Change(4);
 
+            this.statusLabel.Position = new Vector2(5, 2);
+            this.gameStatusContainer.Position = new Vector2(0, 0);
+            
             this.newGameButton.Position = new Vector2(10, 10);
             this.gameControlButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 40);
             this.startModelButton.Position = new Vector2(10, this.gameControlButton.Position.Y + this.gameControlButton.Height + 40);
@@ -157,6 +188,10 @@ namespace HexagonView.View
                         while (!isGameOver)
                         {
                             int curStep = core.GameModeStrategy.Step;
+                            
+                            this.gameStatus.Step = curStep;
+                            this.statusLabel.Text = this.gameStatus.ToString();
+
                             System.Threading.Thread.Sleep(this.core.GameModeStrategy.GameSettings.ModelStepTiming);
                             this.core.GameModeStrategy.NextStep();
                             while (curStep == this.core.GameModeStrategy.Step) { }
@@ -196,7 +231,10 @@ namespace HexagonView.View
             this.gameSettings = settings;
             this.Items.Remove(this.core);
             this.core = new Core(settings);
-            switch(settings.GameMode)
+
+            this.Start();
+
+            switch (settings.GameMode)
             {
                 case TypeGameMode.Normal:
                     {
@@ -217,6 +255,11 @@ namespace HexagonView.View
         public void Start()
         {
             this.core.Reset();
+
+            this.gameStatus = new GameStatus();
+            this.statusLabel.Text = this.gameStatus.ToString();
+            this.core.Position = new Vector2(10, this.gameStatusContainer.Position.Y + this.gameStatusContainer.Height + 15);
+
             this.gameControlButton.TextureManager.Textures.Change(0);
             this.gameControlButton.Text = String.Empty;
             this.stateStepBtn = 0;

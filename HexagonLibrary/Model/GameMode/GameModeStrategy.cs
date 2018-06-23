@@ -46,7 +46,9 @@ namespace HexagonLibrary.Model.GameMode
             HexagonObject.LootEnable = gameSettings.ViewLootEnable;
             HexagonObject.MaxLifeEnable = gameSettings.ViewMaxLife;
 
-            this.Map = new Map(gameSettings.MapSize.Width, gameSettings.MapSize.Height);
+            Player.LootPointForCreate = gameSettings.LootPointForCreate;
+
+            this.Map = new Map(this.Players, gameSettings.MapSize.Width, gameSettings.MapSize.Height);
 
             this.CPUs = new List<CPU>();
 
@@ -56,7 +58,7 @@ namespace HexagonLibrary.Model.GameMode
                 
                 for (int i = 1; i < gameSettings.CountPlayers; i++)
                 {
-                    this.CPUs.Add(new CPU() { ID = i, Strategy = new FirstStrategy() });
+                    this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy() });
                 }
                 
                 this.Players.Add(this.User);
@@ -66,20 +68,9 @@ namespace HexagonLibrary.Model.GameMode
             {
                 for (int i = 0; i < gameSettings.CountPlayers; i++)
                 {
-                    this.CPUs.Add(new CPU() { ID = i, Strategy = new FirstStrategy() });
-                }
-                
-                this.Players.AddRange(this.CPUs);
-            }else if (gameSettings.GameMode == TypeGameMode.BuildMap)
-            {
-                this.User = new User() { ID = 0 };
-
-                for (int i = 1; i < gameSettings.CountPlayers; i++)
-                {
                     this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy() });
                 }
-
-                this.Players.Add(this.User);
+                
                 this.Players.AddRange(this.CPUs);
             }
 
@@ -126,7 +117,7 @@ namespace HexagonLibrary.Model.GameMode
 
             var loot = r.Next(this.GameSettings.ScatterLoot.Min, this.GameSettings.ScatterLoot.Max);
             var life = r.Next(this.GameSettings.ScatterLife.Min, this.GameSettings.ScatterLife.Max);
-            var maxLife = this.GameSettings.IsAllEqualLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max);
+            var maxLife = this.GameSettings.IsAllSameMaxLife ? r.Next(8, 8) : r.Next(this.GameSettings.ScatterMaxLife.Min, this.GameSettings.ScatterMaxLife.Max);
 
             HexagonObject hex = new HexagonObject()
             {

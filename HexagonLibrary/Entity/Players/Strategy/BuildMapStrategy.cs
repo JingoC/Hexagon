@@ -14,42 +14,44 @@ namespace HexagonLibrary.Entity.Players.Strategy
         private Map map;
         private CPU cpu;
 
+        string log = String.Empty;
+
         public BuildMapStrategy()
         {
 
         }
         
+        public string GetLog()
+        {
+            return this.log;
+        }
+
         public void Calculate(Map map, CPU cpu)
         {
             this.map = map;
             this.cpu = cpu;
-
-            var hex = this.map.Items.OfType<HexagonObject>()
-                .Where((x) => (x.BelongUser == cpu.ID) && (x.Life > 0))
-                .Where((x) => this.map.GetPositionInfo(x).CountNotTheir() > 0)
-                .ToList();
-
-            if (hex != null)
+            
+            bool IsAttacks = false;
+            do
             {
-                bool IsAttacks = false;
-                do
+                IsAttacks = false;
+
+                var hex = this.map.Items.OfType<HexagonObject>()
+                    .Where((x) => (x.BelongUser == cpu.ID) && (x.Life > 0))
+                    .Where((x) => this.map.GetPositionInfo(x).CountAvailableToAttack() > 0)
+                    .ToList();
+
+                if (hex == null)
+                    break;
+                
+                foreach (var item in hex)
                 {
-                    IsAttacks = false;
-                    foreach (var item in hex)
-                    {
-                        if (item.Life > 0)
-                            if (this.Attack(item))
-                                IsAttacks = true;
-                    }
-
-                    hex = this.map.Items.OfType<HexagonObject>()
-                            .Where((x) => (x.BelongUser == cpu.ID) && (x.Life > 0))
-                            .Where((x) => this.map.GetPositionInfo(x).CountNotTheir() > 0)
-                            .ToList();
-
-                } while (IsAttacks);
-            }
-
+                    if (item.Life > 0)
+                        if (this.Attack(item))
+                            IsAttacks = true;
+                }
+            } while (IsAttacks);
+            
             this.EndStep();
         }
 
@@ -59,6 +61,7 @@ namespace HexagonLibrary.Entity.Players.Strategy
 
             HexagonObject hitem = around.AroundObjects
                 .Where((x) => (x.BelongUser != this.cpu.ID))
+                .Where(x => x.Type != TypeHexagon.Blocked)
                 .OrderBy((x) => x.Life)
                 .FirstOrDefault();
 
@@ -97,6 +100,7 @@ namespace HexagonLibrary.Entity.Players.Strategy
                 return this.cpu.LootPoints;
             }
 
+            // Получение списка своих объектов
             var hexYour = this.map.Items.OfType<HexagonObject>().Where(x => x.BelongUser == this.cpu.ID).ToList();
 
             if (hexYour.Count() <= 0)
@@ -127,14 +131,31 @@ namespace HexagonLibrary.Entity.Players.Strategy
                     return;
             }
 
+            // Потратили оставшиеся LootPoint на восстановление клеток
+            foreach (var item in hexYour)
+            {
+                if (!this.cpu.IsAccessToCreate())
+                    break;
+
+                var blocked = this.map.GetPositionInfo(item).AroundObjects.Where(x => (x.Type == TypeHexagon.Blocked) && (x.SectorId >= 0)).ToList();
+                if (blocked != null)
+                {
+                    foreach (var b in blocked)
+                    {
+                        if (!this.cpu.IsAccessToCreate())
+                            break;
+
+                        this.map.Create(this.cpu, b);
+                    }
+                }
+            }
+
             // получили список тех у кого нет областей для атаки
             // заполнили их жизни без приоритета
             var hexNotAttack = hexNotFullLife.Where((x) => this.map.GetPositionInfo(x).CountAvailableToAttack() == 0).ToList();
 
             if (UpdateLife(hexNotAttack) == 0)
                 return;
-
-            System.Threading.Thread.Sleep(300);
         }
     }
 }

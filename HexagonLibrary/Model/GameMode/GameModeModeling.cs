@@ -16,6 +16,8 @@ namespace HexagonLibrary.Model.GameMode
     {
         GameNormalStateMachine stateMachine;
 
+        public List<double> Timings = new List<double>(new double[10]);
+
         public GameModeModeling() : this(new GameSettings())
         {
 

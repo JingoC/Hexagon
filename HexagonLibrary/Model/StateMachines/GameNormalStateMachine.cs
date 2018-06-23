@@ -12,11 +12,13 @@ namespace HexagonLibrary.Model.StateMachines
     {
         public event ClickObjectsStateMachineEventHandler Attack_His;
         public event ClickObjectsStateMachineEventHandler Attack_Free;
+        public event ClickObjectsStateMachineEventHandler Attack_Blocked;
         public event ClickObjectsStateMachineEventHandler Attack_Enemy;
         public event ClickObjectsStateMachineEventHandler Attack_ChangeObject;
 
         public event ClickObjectsStateMachineEventHandler Allocate_His;
-
+        public event ClickObjectsStateMachineEventHandler Allocate_Blocked;
+        
         public GameNormalStateMachine() : base()
         {
             this.stateMachines[(int)TypeGameState.Attack].ClickFarObject += (s, e) => this.EventExexute(this.Attack_ChangeObject, s, e);
@@ -30,12 +32,14 @@ namespace HexagonLibrary.Model.StateMachines
                 switch(e.DestinationObject.Type)
                 {
                     case TypeHexagon.Free: this.EventExexute(this.Attack_Free, s, e); break;
+                    case TypeHexagon.Blocked: this.EventExexute(this.Attack_Blocked, s, e); break;
                     case TypeHexagon.Enemy: this.EventExexute(this.Attack_Enemy, s, e); break;
                 }
             };
 
             this.stateMachines[(int)TypeGameState.Allocate].ClickHisObject += (s, e) => this.EventExexute(this.Allocate_His, s, e);
             this.stateMachines[(int)TypeGameState.Allocate].DoubleClickHisObject += (s, e) => this.EventExexute(this.Allocate_His, s, e);
+            this.stateMachines[(int)TypeGameState.Allocate].ClickNearObject += (s, e) => this.EventExexute(this.Allocate_Blocked, s, e);
         }
         
         void EventExexute(ClickObjectsStateMachineEventHandler handler, Object sender, ClickObjectsStateMachineEventArgs e)

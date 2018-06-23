@@ -18,24 +18,40 @@ namespace HexagonLibrary.Model.Navigation
 
         }
 
+        public List<HexagonObject> Get(TypeHexagon type)
+        {
+            return this.AroundObjects.Where(x => x.Type == type).ToList();
+        }
+
         public int CountNotTheir()
         {
-            return this.AroundObjects.Count(x => x.BelongUser != this.Current.BelongUser);
+            return this.AroundObjects.Count(x => 
+                        (x.BelongUser != this.Current.BelongUser)
+                        && (x.SectorId >= 0));
         }
 
         public int CountEnemy()
         {
-            return this.AroundObjects.Count(x => (x.Type == TypeHexagon.Enemy) && (x.BelongUser != this.Current.BelongUser));
+            return this.AroundObjects.Count(x => 
+                (x.Type == TypeHexagon.Enemy) 
+                && (x.BelongUser != this.Current.BelongUser)
+                && (x.SectorId >= 0)
+                );
         }
 
         public int CountFree()
         {
-            return this.AroundObjects.Count(x => x.Type == TypeHexagon.Free);
+            return this.AroundObjects.Count(x => (x.Type == TypeHexagon.Free)
+                                && (x.SectorId >= 0));
         }
 
         public int CountAvailableToAttack()
         {
-            return this.AroundObjects.Count(x => ((x.Type == TypeHexagon.Free) || ((x.Type == TypeHexagon.Enemy) && (x.BelongUser != this.Current.BelongUser))));
+            return this.AroundObjects.Count(x => 
+                    ((x.Type == TypeHexagon.Free) 
+                    || ((x.Type == TypeHexagon.Enemy) && (x.BelongUser != this.Current.BelongUser))) 
+                    && (x.SectorId >= 0)
+                    );
         }
 
 

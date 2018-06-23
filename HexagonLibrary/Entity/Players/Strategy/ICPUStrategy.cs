@@ -10,6 +10,7 @@ namespace HexagonLibrary.Entity.Players.Strategy
 
     public interface ICPUStrategy
     {
+        string GetLog();
         void Calculate(Map map, CPU cpu);
     }
 }

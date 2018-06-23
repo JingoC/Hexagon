@@ -53,7 +53,6 @@
     <Compile Include="Entity\Players\Strategy\FirstStrategy.cs" />
     <Compile Include="Entity\Players\Strategy\ICPUStrategy.cs" />
     <Compile Include="Entity\Players\User.cs" />
-    <Compile Include="Model\GameMode\GameModeBuildMap.cs" />
     <Compile Include="Model\GameMode\GameModeFactory.cs" />
     <Compile Include="Model\GameMode\GameModeModeling.cs" />
     <Compile Include="Model\GameMode\GameModeNormal.cs" />
@@ -63,7 +62,6 @@
     <Compile Include="Model\Navigation\Map.cs" />
     <Compile Include="Model\StateMachines\ClickObjectsStateMachine.cs" />
     <Compile Include="Model\StateMachines\ClickObjectsStateMachineEventArgs.cs" />
-    <Compile Include="Model\StateMachines\GameBuildMapStateMachine.cs" />
     <Compile Include="Model\StateMachines\GameNormalStateMachine.cs" />
     <Compile Include="Model\StateMachines\GameStateMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

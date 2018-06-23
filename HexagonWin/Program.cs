@@ -34,6 +34,8 @@ namespace HexagonWin
             cursorPos.Show();
             cursorPos.SetBounds(1340, 0, 10, 50);
 
+            
+
             using (var winSystem = new GameView())
             {
                 winSystem.Graphics.GetGraphics().PreferredBackBufferWidth = 1300;

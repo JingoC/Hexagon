@@ -55,6 +55,11 @@ namespace HexagonLibrary.Entity.Players.Strategy
             this.EndStep();
         }
 
+        public string GetLog()
+        {
+            return String.Empty;
+        }
+
         bool Attack(HexagonObject h)
         {
             var around = this.map.GetPositionInfo(h);

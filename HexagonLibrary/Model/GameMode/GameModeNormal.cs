@@ -42,10 +42,46 @@ namespace HexagonLibrary.Model.GameMode
             this.stateMachine.SetActivePlayer(this.User);
 
             this.stateMachine.Attack_His += this.StateMachine_Attack_His;
-            this.stateMachine.Attack_ChangeObject += (s, e) => this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
+            this.stateMachine.Attack_ChangeObject += this.StateMachine_Attack_ChangeObject;
             this.stateMachine.Attack_Free += this.StateMachine_Attack_Free;
             this.stateMachine.Attack_Enemy += this.StateMachine_Attack_Free;
+
             this.stateMachine.Allocate_His += this.StateMachine_Allocate_His;
+            this.stateMachine.Allocate_Blocked += StateMachine_Allocate_Blocked;
+        }
+        
+        private void StateMachine_Attack_His(object sender, ClickObjectsStateMachineEventArgs e)
+        {
+            this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
+            e.DestinationObject.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
+        }
+
+        private void StateMachine_Attack_ChangeObject(object sender, ClickObjectsStateMachineEventArgs e)
+        {
+            this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
+        }
+
+        private void StateMachine_Attack_Free(object sender, ClickObjectsStateMachineEventArgs e)
+        {
+            HexagonObject src = e.SourceObject;
+            HexagonObject dst = e.DestinationObject;
+            
+            if (this.Map.Attack(src, dst))
+            {
+                src.RestoreDefaultTexture();
+                dst.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
+            }
+        }
+
+        private void StateMachine_Allocate_Blocked(object sender, ClickObjectsStateMachineEventArgs e)
+        {
+            HexagonObject src = e.SourceObject;
+            HexagonObject dst = e.DestinationObject;
+
+            if ((dst != null) && (this.User.IsAccessToCreate()))
+            {
+                this.Map.Create(this.User, dst);
+            }
         }
 
         private void StateMachine_Allocate_His(object sender, ClickObjectsStateMachineEventArgs e)
@@ -63,45 +99,6 @@ namespace HexagonLibrary.Model.GameMode
                 this.NextStep();
             }
         }
-
-        private void StateMachine_Attack_Free(object sender, ClickObjectsStateMachineEventArgs e)
-        {
-            HexagonObject src = e.SourceObject;
-            HexagonObject dst = e.DestinationObject;
-
-            if (this.Map.Attack(src, dst))
-            {
-                src.RestoreDefaultTexture();
-                dst.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
-            }
-        }
-
-        private void StateMachine_Attack_His(object sender, ClickObjectsStateMachineEventArgs e)
-        {
-            this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
-            e.DestinationObject.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
-        }
-
-        private void StateMachine_ClickModifyFreeOjbect(object sender, ClickObjectsStateMachineEventArgs e)
-        {
-            Player p = sender as Player;
-#if false
-            if (p.LootPoints >= e.DestinationObject.Life)
-            {
-                e.DestinationObject.BelongUser = -1;
-                e.DestinationObject.Type = TypeHexagon.Blocked;
-                e.DestinationObject.Visible = false;
-                e.DestinationObject.SetDefaultTexture(TypeTexture.FieldMarked);
-
-                p.LootPoints -= e.DestinationObject.Life;
-                e.DestinationObject.Life = 0;
-            }
-#endif
-            if (p.LootPoints == 0)
-            {
-                this.NextStep();
-            }
-        }
         
         public override void EndStep()
         {
@@ -112,7 +109,7 @@ namespace HexagonLibrary.Model.GameMode
                 this.User.LootPoints += this.Map.Items.Where((x) => (x as HexagonObject).BelongUser == this.User.ID).Sum((x) => (x as HexagonObject).Loot);
             }
         }
-
+        
         public override void NextStep()
         {
             if (this.stateMachine.GameState == TypeGameState.Allocate)

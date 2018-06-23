@@ -5,6 +5,8 @@ using System.Text;
 
 namespace HexagonLibrary.Model.Navigation
 {
+    using HexagonLibrary.Entity.Players;
+
     using Entity.GameObjects;
     using WinSystem.Controls;
 
@@ -12,6 +14,7 @@ namespace HexagonLibrary.Model.Navigation
 
     public class Map : Container
     {
+        private List<Player> players;
         Random r = new Random((int) DateTime.Now.Ticks);
         public List<List<HexagonObject>> Rows { get; private set; } = new List<List<HexagonObject>>();
         public List<List<HexagonObject>> Columns { get; private set; } = new List<List<HexagonObject>>();
@@ -19,13 +22,14 @@ namespace HexagonLibrary.Model.Navigation
         public int Column { get; private set; }
         public int Row { get; private set; }
 
-        public Map() : this(10, 10)
+        public Map(List<Player> players) : this(players, 10, 10)
         {
-
+            
         }
 
-        public Map(int row, int column)
+        public Map(List<Player> players, int row, int column)
         {
+            this.players = players;
             this.Row = row;
             this.Column = column;
             
@@ -117,98 +121,98 @@ namespace HexagonLibrary.Model.Navigation
             if (src.Life < 1)
                 return false;
 
-            if (src.Life >= dst.Life)
+            int[] percentsPositive = { 30, 60, 80, 100 };
+            int[] percentsNegative = { 25, 15, 5, 0 };
+
+            bool isSrcLifeLarge = src.Life >= dst.Life;
+            int diff = Math.Abs(src.Life - dst.Life);
+            diff = diff > 3 ? 3 : diff;
+
+            bool isHold = isSrcLifeLarge ?
+                r.Next(101) < percentsPositive[diff] :
+                r.Next(101) < percentsNegative[diff];
+
+            void ActionHold(HexagonObject obj)
             {
-                int diff = src.Life - dst.Life;
-
-                int percent = 0;
-                switch(diff)
-                {
-                    case 0: { percent = 30; } break;
-                    case 1: { percent = 60; } break;
-                    case 2: { percent = 80; } break;
-                    default: { percent = 100; } break;
-                }
-
-                bool IsHold = r.Next(101) < percent;
-
-                if (IsHold)
-                {
-                    if (dst.Bonus == TypeHexagonBonus.None)
-                    {
-                        dst.Life = src.Life - (dst.Life == 0 ? 1 : dst.Life);
-                        dst.BelongUser = src.BelongUser;
-                        dst.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
-                        dst.Type = TypeHexagon.Enemy;
-                        dst.Visible = true;
-                        src.Life = 0;
-                    }
-                    else if (dst.Bonus == TypeHexagonBonus.Bomb)
-                    {
-                        void RecursiveBomb(HexagonObject obj)
-                        {
-                            obj.Life = 0;
-                            obj.BelongUser = -1;
-                            obj.Type = TypeHexagon.Blocked;
-                            obj.Bonus = TypeHexagonBonus.None;
-                            obj.Visible = false;
-                            var pi = this.GetPositionInfo(obj);
-
-                            foreach (var h in pi.AroundObjects)
-                            {
-                                if (h.Bonus == TypeHexagonBonus.Bomb)
-                                {
-                                    RecursiveBomb(h);
-                                }
-                                else
-                                {
-                                    h.Life = h.Life > dst.Loot ? h.Life - dst.Loot : 0;
-                                }
-                            }
-                        }
-
-                        RecursiveBomb(dst);
-                    }
-                    
-                    return true;
-                }
-                else
-                {
-                    dst.Life = 0;
-                    src.Life = 0;
-                }
-                
+                obj.BelongUser = src.BelongUser;
+                obj.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
+                obj.Type = TypeHexagon.Enemy;
+                obj.Visible = true;
             }
-            else
+
+            void ActionBlocked(HexagonObject obj)
             {
-                int diff = dst.Life - src.Life;
-
-                int percent = 50;
-                switch(diff)
-                {
-                    case 1: percent = 25; break;
-                    case 2: percent = 10; break;
-                    default: percent = 0; break;
-                }
-
-                bool isHold = r.Next(101) < percent;
-
+                obj.BelongUser = -1;
+                obj.Type = TypeHexagon.Blocked;
+                obj.Bonus = TypeHexagonBonus.None;
+                obj.Visible = false;
+            }
+            
+            void AttackFree()
+            {
                 if (isHold)
                 {
-                    dst.Life = 0;
-                    dst.BelongUser = src.BelongUser;
-                    dst.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + src.BelongUser));
-                    dst.Type = TypeHexagon.Enemy;
-                    src.Life = 0;
+                    switch (dst.Bonus)
+                    {
+                        case TypeHexagonBonus.None:
+                        {
+                            dst.Life = isSrcLifeLarge ? src.Life - (dst.Life == 0 ? 1 : dst.Life) : 0;
+                            src.Life = 0;
+                            ActionHold(dst);
+                        }
+                        break;
+                        case TypeHexagonBonus.Bomb:
+                        {
+                            void RecursiveBomb(HexagonObject obj)
+                            {
+                                obj.Life = 0;
+                                ActionBlocked(obj);
+
+                                var pi = this.GetPositionInfo(obj);
+
+                                foreach (var h in pi.AroundObjects)
+                                {
+                                    if (h != null)
+                                    {
+                                        if (h.Bonus == TypeHexagonBonus.Bomb) RecursiveBomb(h);
+                                        else h.Life = h.Life > obj.Loot ? h.Life - obj.Loot : 0;
+                                    }
+                                }
+                            }
+
+                            RecursiveBomb(dst);
+                        }
+                        break;
+                        default: break;
+                    }
                 }
                 else
                 {
-                    dst.Life -= src.Life;
+                    dst.Life = isSrcLifeLarge ? 0 : dst.Life - src.Life;
                     src.Life = 0;
                 }
             }
+            
+            switch (dst.Type)
+            {
+                case TypeHexagon.Enemy: AttackFree(); break;
+                case TypeHexagon.Free: AttackFree(); break;
+                default: break;
+            }
 
-            return false;
+            return isHold;
+        }
+
+        public void Create(Player p, HexagonObject h)
+        {
+            h.Life = 0;
+            h.BelongUser = p.ID;
+            h.SetDefaultTexture((TypeTexture)(TypeTexture.UserIdle0 + p.ID));
+            h.Type = TypeHexagon.Enemy;
+            h.Bonus = TypeHexagonBonus.None;
+            h.Visible = true;
+            
+            p.LootPoints -= Player.LootPointForCreate;
         }
     }
 }

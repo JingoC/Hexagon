@@ -71,7 +71,7 @@ namespace HexagonLibrary.Entity.GameObjects
             this.SectorId = sectorId;
             this.Designer();
         }
-
+        
         public override void Designer()
         {
             base.Designer();

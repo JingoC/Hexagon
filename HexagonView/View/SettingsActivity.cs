@@ -20,7 +20,7 @@ namespace HexagonView.View
     using Microsoft.Xna.Framework;
 
     using HexagonLibrary.Model.GameMode;
-    
+
     public class SettingsActivity : Activity
     {
         static string fileSettingsPath = "settings.json";
@@ -49,8 +49,8 @@ namespace HexagonView.View
         Toggle maxLifeEnable;
         Label maxLifeEnableInfo;
 
-        Changer gameMode;
-        Label gameModeInfo;
+        Changer lootPointForCreate;
+        Label lootPointForCreateInfo;
 
         Changer percentBonus;
         Label percentBonusInfo;
@@ -58,16 +58,12 @@ namespace HexagonView.View
         Changer percentBlocked;
         Label percentBlockedInfo;
 
-        string[] gameModes = { "Normal", "BuildMap" };
-
-        void SetGameModeText() => this.gameMode.Text = this.gameModes[(int)this.gameMode.Current.Value];
-
         void Create()
         {
             var settings = this.LoadSettings();
             if (settings == null)
                 settings = new GameSettings();
-            
+
             // Changer
             this.players = new Changer(new ValueRange(2, 10));
             this.players.Step = 1;
@@ -121,12 +117,6 @@ namespace HexagonView.View
             this.maxLifeEnableInfo = new Label() { Text = "Max Life Enable", ForeColor = Color.White };
 
             // Changer
-            this.gameMode = new Changer(new ValueRange(0, 1)) { Step = 1 };
-            this.gameModeInfo = new Label() { Text = "Game mode", ForeColor = Color.White };
-            this.gameMode.ClickToUp += (s, e) => SetGameModeText();
-            this.gameMode.ClickToDown += (s, e) => SetGameModeText();
-            
-            // Changer
             this.percentBonus = new Changer(new ValueRange(0, 100)) { Step = 10 };
             this.percentBonus.Current.Value = settings.PercentBonus;
 
@@ -139,12 +129,19 @@ namespace HexagonView.View
 
             // Label
             this.percentBlockedInfo = new Label() { Text = "Blocked (%)", ForeColor = Color.White };
+
+            // Changer
+            this.lootPointForCreate = new Changer(new ValueRange(1, 100)) { Step = 1 };
+            this.lootPointForCreate.Current.Value = settings.LootPointForCreate;
+
+            // Label
+            this.lootPointForCreateInfo = new Label() { Text = "LP (Create)", ForeColor = Color.White };
         }
 
         public SettingsActivity(Activity parent) : base(parent)
         {
             this.Create();
-            
+
             this.Items.Add(this.players);
             this.Items.Add(this.playersInfo);
             this.Items.Add(this.modelInfo);
@@ -163,13 +160,13 @@ namespace HexagonView.View
             this.Items.Add(this.maxLifeEnable);
             this.Items.Add(this.maxLifeEnableInfo);
 
-            this.Items.Add(this.gameMode);
-            this.Items.Add(this.gameModeInfo);
-
             this.Items.Add(this.percentBonus);
             this.Items.Add(this.percentBonusInfo);
             this.Items.Add(this.percentBlocked);
             this.Items.Add(this.percentBlockedInfo);
+
+            this.Items.Add(this.lootPointForCreate);
+            this.Items.Add(this.lootPointForCreateInfo);
 
             this.LoadSettings();
         }
@@ -229,7 +226,7 @@ namespace HexagonView.View
 
             float w = GraphicsSingleton.GetInstance().Window.ClientBounds.Width;
             float h = GraphicsSingleton.GetInstance().Window.ClientBounds.Height;
-            
+
             /*
             |-----|-----|-----|-----|
             |  0  |  1  |  2  |  3  |
@@ -290,9 +287,9 @@ namespace HexagonView.View
             SetPosition(this.maxLifeEnableInfo, c5_x, r3_y);
             SetPosition(this.maxLifeEnable, c6_x, r3_y);
             // C1 - R4
-            SetPosition(this.gameModeInfo, c1_x, r4_y);
-            SetPosition(this.gameMode, c2_x, r4_y);
-            SetGameModeText();
+            SetPosition(this.lootPointForCreateInfo, c1_x, r4_y);
+            SetPosition(this.lootPointForCreate, c2_x, r4_y);
+
             // C1 - R5
             SetPosition(this.percentBonusInfo, c1_x, r5_y);
             SetPosition(this.percentBonus, c2_x, r5_y);
@@ -303,27 +300,18 @@ namespace HexagonView.View
 
         public GameSettings GetSettings()
         {
-            TypeGameMode GetTypeModeGame(int index)
-            {
-                switch(index)
-                {
-                    case 0: return TypeGameMode.Normal;
-                    case 1: return TypeGameMode.BuildMap;
-                    default: return TypeGameMode.Normal;
-                }
-            }
-            
             var settings = new GameSettings()
             {
                 CountPlayers = (int)this.players.Current.Value,
                 ModelStepTiming = (int)this.modelTiming.Current.Value,
                 MapSize = new Size() { Width = (int)this.rows.Current.Value, Height = (int)this.columns.Current.Value },
-                GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : GetTypeModeGame((int)this.gameMode.Current.Value),
+                GameMode = this.modeling.IsChecked ? TypeGameMode.Modeling : TypeGameMode.Normal,
                 ViewLifeEnable = this.lifeEnable.IsChecked,
                 ViewLootEnable = this.lootEnable.IsChecked,
                 ViewMaxLife = this.maxLifeEnable.IsChecked,
                 PercentBonus = (int)this.percentBonus.Current.Value,
                 PercentBlocked = (int)this.percentBlocked.Current.Value,
+                LootPointForCreate = (int)this.lootPointForCreate.Current.Value,
             };
             this.SaveSettings(settings);
             return settings;
