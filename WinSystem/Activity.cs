@@ -21,6 +21,11 @@ namespace WinSystem
         public override int Height { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Height; }
 
         public Color Background { get; set; }
+        
+        public virtual void ChangeActivity(bool active)
+        {
+
+        }
 
         public Activity(Activity parent)
         {

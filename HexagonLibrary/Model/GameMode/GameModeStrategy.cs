@@ -155,6 +155,16 @@ namespace HexagonLibrary.Model.GameMode
             return hex;
         }
 
+        public virtual void Suspend()
+        {
+
+        }
+
+        public virtual void Resume()
+        {
+
+        }
+
         public virtual void EndStep()
         {
             

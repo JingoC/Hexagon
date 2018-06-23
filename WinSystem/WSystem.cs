@@ -32,7 +32,11 @@ namespace WinSystem
             this.Input.BackKeyboard += delegate (Object sender, DeviceEventArgs e)
             {
                 if ((this.ActivitySelected != null) && (this.ActivitySelected.Parent != null))
+                {
+                    this.ActivitySelected.ChangeActivity(false);
+                    this.ActivitySelected.Parent.ChangeActivity(true);
                     this.ActivitySelected = this.ActivitySelected.Parent;
+                }
                 else
                     Environment.Exit(0);
             };

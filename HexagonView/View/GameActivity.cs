@@ -31,8 +31,6 @@ namespace HexagonView.View
         
         Container menu = new Container();
 
-        public event EventHandler ExitActivity;
-
         int stateStepBtn = 0;
 
         public GameActivity(Activity parent) : base(parent)
@@ -95,6 +93,20 @@ namespace HexagonView.View
                     default: break;
                 }
             }
+        }
+
+        public override void ChangeActivity(bool active)
+        {
+            if (active)
+            {
+                this.core.GameModeStrategy.Resume();
+            }
+            else
+            {
+                this.core.GameModeStrategy.Suspend();
+            }
+            
+            base.ChangeActivity(active);
         }
 
         public override void Designer()

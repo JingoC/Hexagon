@@ -19,8 +19,22 @@ namespace HexagonLibrary.Model.StateMachines
     public class GameStateMachine
     {
         private TypeGameState gameState = TypeGameState.Attack;
+        private bool enable = false;
 
         protected List<ClickObjectsStateMachine> stateMachines = new List<ClickObjectsStateMachine>();
+        
+        public bool Enable
+        {
+            get => this.enable;
+            set {
+                this.enable = value;
+                this.stateMachines.ForEach(x => x.Enable = false);
+                if (value)
+                {
+                    this.stateMachines[(int)this.gameState].Enable = true;
+                }
+            }
+        }
 
         public Map Map
         {
@@ -30,7 +44,14 @@ namespace HexagonLibrary.Model.StateMachines
         public TypeGameState GameState
         {
             get { return this.gameState; }
-            set { this.gameState = value; this.stateMachines.ForEach(x => x.Enable = false); this.stateMachines[(int)this.gameState].Enable = true; }
+            set
+            {
+                this.gameState = value;
+                if (this.enable)
+                {
+                    this.Enable = true;
+                }
+            }
         }
         
         public void SetActivePlayer(Player p)

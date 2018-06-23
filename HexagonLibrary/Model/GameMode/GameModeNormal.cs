@@ -18,6 +18,18 @@ namespace HexagonLibrary.Model.GameMode
     {
         GameNormalStateMachine stateMachine;
 
+        public override void Suspend()
+        {
+            this.stateMachine.Enable = false;
+            base.Suspend();
+        }
+
+        public override void Resume()
+        {
+            this.stateMachine.Enable = true;
+            base.Resume();
+        }
+
         public GameModeNormal() : this(new GameSettings())
         {
 
@@ -26,6 +38,7 @@ namespace HexagonLibrary.Model.GameMode
         public GameModeNormal(GameSettings gameSettings) : base(gameSettings)
         {
             this.stateMachine = new GameNormalStateMachine() { Map = this.Map, GameState = TypeGameState.Attack };
+            this.stateMachine.Enable = true;
             this.stateMachine.SetActivePlayer(this.User);
 
             this.stateMachine.Attack_His += this.StateMachine_Attack_His;
