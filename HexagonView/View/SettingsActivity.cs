@@ -25,51 +25,125 @@ namespace HexagonView.View
     {
         static string fileSettingsPath = "settings.json";
 
-        Changer players = new Changer(new ValueRange(2, 10)) { Step = 1 };
-        Label playersInfo = new Label() { Text = "Count Player ", ForeColor = Color.White };
+        Changer players;
+        Label playersInfo;
 
-        Toggle modeling = new Toggle(false);
-        Label modelInfo = new Label() { Text = "Modeling", ForeColor = Color.White };
+        Toggle modeling;
+        Label modelInfo;
 
-        Changer modelTiming = new Changer(new ValueRange(0, 1000)) { Step = 50 };
-        Label modelTimingInfo = new Label() { Text = "StepTime (ms)", ForeColor = Color.White };
+        Changer modelTiming;
+        Label modelTimingInfo;
 
-        Changer rows = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "RowChanger" };
-        Label rowsInfo = new Label() { Text = "Rows", ForeColor = Color.White };
+        Changer rows;
+        Label rowsInfo;
 
-        Changer columns = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "ColumnChanger" };
-        Label columnsInfo = new Label() { Text = "Columns", ForeColor = Color.White };
+        Changer columns;
+        Label columnsInfo;
 
-        Toggle lifeEnable = new Toggle(true);
-        Label lifeEnableInfo = new Label() { Text = "Life Enable", ForeColor = Color.White };
+        Toggle lifeEnable;
+        Label lifeEnableInfo;
 
-        Toggle lootEnable = new Toggle(true);
-        Label lootEnableInfo = new Label() { Text = "Loot Enable", ForeColor = Color.White };
+        Toggle lootEnable;
+        Label lootEnableInfo;
 
-        Toggle maxLifeEnable = new Toggle(true);
-        Label maxLifeEnableInfo = new Label() { Text = "Max Life Enable", ForeColor = Color.White };
+        Toggle maxLifeEnable;
+        Label maxLifeEnableInfo;
 
-        Changer gameMode = new Changer(new ValueRange(0, 1)) { Step = 1 };
-        Label gameModeInfo = new Label() { Text = "Game mode", ForeColor = Color.White };
+        Changer gameMode;
+        Label gameModeInfo;
 
-        Changer percentBonus = new Changer(new ValueRange(0, 100)) { Step = 10 };
-        Label percentBonusInfo = new Label() { Text = "Percent Bonus", ForeColor = Color.White };
+        Changer percentBonus;
+        Label percentBonusInfo;
 
-        Changer percentBlocked = new Changer(new ValueRange(0, 100)) { Step = 10 };
-        Label percentBlockedInfo = new Label() { Text = "Percent Blocked", ForeColor = Color.White };
+        Changer percentBlocked;
+        Label percentBlockedInfo;
 
         string[] gameModes = { "Normal", "BuildMap" };
 
         void SetGameModeText() => this.gameMode.Text = this.gameModes[(int)this.gameMode.Current.Value];
 
-        public SettingsActivity(Activity parent) : base(parent)
+        void Create()
         {
-            this.modelTiming.Current.Value = 50;
-            this.rows.Current.Value = 10;
-            this.columns.Current.Value = 10;
+            var settings = this.LoadSettings();
+            if (settings == null)
+                settings = new GameSettings();
+            
+            // Changer
+            this.players = new Changer(new ValueRange(2, 10));
+            this.players.Step = 1;
+            this.players.Current.Value = settings.CountPlayers;
 
+            // Label
+            this.playersInfo = new Label() { Text = "Count Player ", ForeColor = Color.White };
+
+            // Toggle
+            this.modeling = new Toggle(settings.GameMode == TypeGameMode.Modeling);
+            this.modelInfo = new Label() { Text = "Modeling", ForeColor = Color.White };
+
+            // Changer
+            this.modelTiming = new Changer(new ValueRange(0, 1000));
+            this.modelTiming.Current.Value = settings.ModelStepTiming;
+            this.modelTiming.Step = 50;
+
+            // Label
+            this.modelTimingInfo = new Label() { Text = "StepTime (ms)", ForeColor = Color.White };
+
+            // Changer
+            this.rows = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "RowChanger" };
+            this.rows.Current.Value = settings.MapSize.Width;
+
+            // Label
+            this.rowsInfo = new Label() { Text = "Rows", ForeColor = Color.White };
+
+            // Changer
+            this.columns = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "ColumnChanger" };
+            this.columns.Current.Value = settings.MapSize.Height;
+
+            // Label
+            this.columnsInfo = new Label() { Text = "Columns", ForeColor = Color.White };
+
+            // Toggle
+            this.lifeEnable = new Toggle(settings.ViewLifeEnable);
+
+            // Label
+            this.lifeEnableInfo = new Label() { Text = "Life Enable", ForeColor = Color.White };
+
+            // Toggle
+            this.lootEnable = new Toggle(settings.ViewLootEnable);
+
+            // Label
+            this.lootEnableInfo = new Label() { Text = "Loot Enable", ForeColor = Color.White };
+
+            // Toggle
+            this.maxLifeEnable = new Toggle(settings.ViewMaxLife);
+
+            // Label
+            this.maxLifeEnableInfo = new Label() { Text = "Max Life Enable", ForeColor = Color.White };
+
+            // Changer
+            this.gameMode = new Changer(new ValueRange(0, 1)) { Step = 1 };
+            this.gameModeInfo = new Label() { Text = "Game mode", ForeColor = Color.White };
             this.gameMode.ClickToUp += (s, e) => SetGameModeText();
             this.gameMode.ClickToDown += (s, e) => SetGameModeText();
+            
+            // Changer
+            this.percentBonus = new Changer(new ValueRange(0, 100)) { Step = 10 };
+            this.percentBonus.Current.Value = settings.PercentBonus;
+
+            // Label
+            this.percentBonusInfo = new Label() { Text = "Percent Bonus", ForeColor = Color.White };
+
+            // Changer
+            this.percentBlocked = new Changer(new ValueRange(0, 100)) { Step = 10 };
+            this.percentBlocked.Current.Value = settings.PercentBlocked;
+
+            // Label
+            this.percentBlockedInfo = new Label() { Text = "Percent Blocked", ForeColor = Color.White };
+        }
+
+        public SettingsActivity(Activity parent) : base(parent)
+        {
+            this.Create();
             
             this.Items.Add(this.players);
             this.Items.Add(this.playersInfo);
@@ -117,7 +191,7 @@ namespace HexagonView.View
 #endif
         }
 
-        void LoadSettings()
+        GameSettings LoadSettings()
         {
             string content = String.Empty;
             bool isExists = false;
@@ -130,13 +204,13 @@ namespace HexagonView.View
                     using (var fstream = istrg.OpenFile(fileSettingsPath, FileMode.Open, FileAccess.Read))
                     {
                         byte[] bytes = new byte[fstream.Length];
-                        fstream.Read(bytes, 0, (int) fstream.Length);
+                        fstream.Read(bytes, 0, (int)fstream.Length);
                         content = Encoding.Default.GetString(bytes);
                         isExists = true;
                     }
                 }
             }
-            catch(FileNotFoundException e)
+            catch (FileNotFoundException e)
             {
 
             }
@@ -146,23 +220,7 @@ namespace HexagonView.View
                 content = File.ReadAllText(fileSettingsPath);
 #endif
 
-            if (isExists)
-            {
-                GameSettings gs = JsonConvert.DeserializeObject<GameSettings>(content);
-
-                this.players.Current.Value = gs.CountPlayers;
-                this.modelTiming.Current.Value = gs.ModelStepTiming;
-                this.rows.Current.Value = gs.MapSize.Width;
-                this.columns.Current.Value = gs.MapSize.Height;
-                this.percentBlocked.Current.Value = gs.PercentBlocked;
-                this.percentBonus.Current.Value = gs.PercentBonus;
-                
-
-                //this.Items.Add(this.lifeEnable);
-                //this.Items.Add(this.lootEnable);
-                //this.Items.Add(this.maxLifeEnable);
-                
-            }
+            return isExists ? JsonConvert.DeserializeObject<GameSettings>(content) : null;
         }
 
         public override void Designer()
