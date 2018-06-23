@@ -20,6 +20,7 @@ namespace WinSystem
         public override int Width { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Width; }
         public override int Height { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Height; }
 
+        public Texture2D BackgroundImage { get; set; } = null;
         public Color Background { get; set; }
         
         public virtual void ChangeActivity(bool active)
@@ -46,11 +47,22 @@ namespace WinSystem
 
         public override void Draw(GameTime gameTime)
         {
-            GraphicsSingleton.GetInstance().GraphicsDevice.Clear(this.Background);
+            SpriteBatch sb = GraphicsSingleton.GetInstance().GetSpriteBatch();
 
-            GraphicsSingleton.GetInstance().GetSpriteBatch().Begin();
+            if (this.BackgroundImage != null)
+            {
+                sb.Begin();
+                sb.Draw(this.BackgroundImage, new Rectangle(0, 0, this.Width, this.Height), Color.White);
+                sb.End();
+            }
+            else
+            {
+                GraphicsSingleton.GetInstance().GraphicsDevice.Clear(this.Background);
+            }
+
+            sb.Begin();
             base.Draw(gameTime);
-            GraphicsSingleton.GetInstance().GetSpriteBatch().End();
+            sb.End();
         }
     }
 }

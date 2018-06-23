@@ -131,14 +131,14 @@ namespace HexagonView.View
             this.percentBonus.Current.Value = settings.PercentBonus;
 
             // Label
-            this.percentBonusInfo = new Label() { Text = "Percent Bonus", ForeColor = Color.White };
+            this.percentBonusInfo = new Label() { Text = "Bonus (%)", ForeColor = Color.White };
 
             // Changer
             this.percentBlocked = new Changer(new ValueRange(0, 100)) { Step = 10 };
             this.percentBlocked.Current.Value = settings.PercentBlocked;
 
             // Label
-            this.percentBlockedInfo = new Label() { Text = "Percent Blocked", ForeColor = Color.White };
+            this.percentBlockedInfo = new Label() { Text = "Blocked (%)", ForeColor = Color.White };
         }
 
         public SettingsActivity(Activity parent) : base(parent)
