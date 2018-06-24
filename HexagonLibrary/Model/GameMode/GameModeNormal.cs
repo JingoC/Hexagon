@@ -136,5 +136,74 @@ namespace HexagonLibrary.Model.GameMode
                 this.threadActionCpu.Start();
             }
         }
+
+        public override void LootPointAutoAllocate()
+        {
+            int UpdateLife(List<HexagonObject> items)
+            {
+                if (items.Count > 0)
+                {
+                    int sumNeedLife = items.Sum(x => (x.MaxLife - x.Life));
+
+                    do
+                    {
+                        foreach (var item in items)
+                        {
+                            if (this.User.LootPoints == 0)
+                                break;
+
+                            if (sumNeedLife == 0)
+                                break;
+
+                            if (item.Life != item.MaxLife)
+                            {
+                                item.Life++;
+                                this.User.LootPoints--;
+                                sumNeedLife--;
+                            }
+                        }
+                    } while ((this.User.LootPoints > 0) && ((sumNeedLife > 0)));
+                }
+
+                return this.User.LootPoints;
+            }
+
+            // Получение списка своих объектов
+            var hexYour = this.Map.Items.OfType<HexagonObject>().Where(x => x.BelongUser == this.User.ID).ToList();
+
+            if (hexYour.Count() <= 0)
+                return;
+
+            // Получили список своих объектов у которых не полные жизни
+            var hexNotFullLife = hexYour.Where((x) => x.Life < x.MaxLife).ToList();
+
+            // получили список тех, у кого есть области для атаки
+            var hexAttack = hexNotFullLife.Where((x) => this.Map.GetPositionInfo(x).CountAvailableToAttack() > 0).ToList();
+
+            // Заполнили жизни тех у кого есть области для атаки, с приоритетом по количеству этих областей
+            for (int countBusy = 6; countBusy > 0; countBusy--)
+            {
+                var tmpHex = hexAttack.Where(x => this.Map.GetPositionInfo(x).CountEnemy() == countBusy).ToList();
+
+                if (UpdateLife(tmpHex) == 0)
+                    return;
+            }
+
+            for (int countFree = 6; countFree > 0; countFree--)
+            {
+                var tmpHex = hexAttack.Where(x => this.Map.GetPositionInfo(x).CountFree() == countFree).ToList();
+
+                if (UpdateLife(tmpHex) == 0)
+                    return;
+            }
+
+            // получили список тех у кого нет областей для атаки
+            // заполнили их жизни без приоритета
+            var hexNotAttack = hexNotFullLife.Where((x) => this.Map.GetPositionInfo(x).CountAvailableToAttack() == 0).ToList();
+
+            if (UpdateLife(hexNotAttack) == 0)
+                return;
+
+        }
     }
 }

@@ -173,6 +173,7 @@ namespace HexagonView.View
 
         void SaveSettings(GameSettings settings)
         {
+            /*
             string content = JsonConvert.SerializeObject(settings);
 #if ANDROID
             using (var istrg = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
@@ -186,10 +187,13 @@ namespace HexagonView.View
 #else
             File.WriteAllText(fileSettingsPath, content);
 #endif
+*/
+            Storage.WriteAllText(fileSettingsPath, Storage.Serialize<GameSettings>(settings));
         }
 
         GameSettings LoadSettings()
         {
+            /*
             string content = String.Empty;
             bool isExists = false;
 
@@ -218,6 +222,9 @@ namespace HexagonView.View
 #endif
 
             return isExists ? JsonConvert.DeserializeObject<GameSettings>(content) : null;
+            */
+
+            return Storage.Deserialize<GameSettings>(Storage.ReadAllText(fileSettingsPath));
         }
 
         public override void Designer()

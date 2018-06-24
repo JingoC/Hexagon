@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace WinSystem
 {
-    using System;
+    using WinSystem.System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using WinSystem.Controls;
@@ -21,6 +22,7 @@ namespace WinSystem
         public Activity ActivitySelected;
         
         public event EventHandler UpdateEvent;
+        public event EventHandler Exit;
 
         public WSystem()
         {
@@ -38,7 +40,10 @@ namespace WinSystem
                     this.ActivitySelected = this.ActivitySelected.Parent;
                 }
                 else
-                    Environment.Exit(0);
+                {
+                    if (this.Exit != null)
+                        this.Exit(this, EventArgs.Empty);
+                }
             };
 
             this.Activities.Add(new Activity(null));

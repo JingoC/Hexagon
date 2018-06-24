@@ -43,6 +43,7 @@ namespace HexagonWin
                 winSystem.Graphics.GetGraphics().ApplyChanges();
                 
                 winSystem.Input.PositionChangedMouse += (s, e) => cursorPos.Text = $"{e.X}:{e.Y}";
+                winSystem.Exit += (s, e) => Environment.Exit(0);
 
                 winSystem.Run();
             }

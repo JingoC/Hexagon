@@ -20,7 +20,7 @@ namespace HexagonView.View
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    
+
     class GameStatus
     {
         public int Step { get; set; } = 0;
@@ -28,7 +28,7 @@ namespace HexagonView.View
         public int Destroy { get => this.Point / Player.LootPointForCreate; }
 
         public int Point { get; set; } = 0;
-        
+
         public string Log { get; set; }
 
         public override string ToString()
@@ -48,8 +48,9 @@ namespace HexagonView.View
 
         GameButton gameControlButton = new GameButton() { Name = "endStepButton", Text = "", ForeColor = Color.Black };
         GameButton newGameButton = new GameButton() { Name = "newGameButton", Text = "N", ForeColor = Color.Black };
+        GameButton autoAllocationButton = new GameButton() { Name = "autoAllocationButton", Text = "A", ForeColor = Color.Black };
         GameButton startModelButton = new GameButton() { Name = "startModeButton", Text = "M", ForeColor = Color.Black };
-        
+
         Container menu = new Container();
 
         int stateStepBtn = 0;
@@ -60,15 +61,25 @@ namespace HexagonView.View
 
             this.newGameButton.OnClick += (s, e) => { this.Start(); };
             this.startModelButton.OnClick += StartModelButton_OnClick;
+            this.autoAllocationButton.OnClick += this.AutoAllocationButton_OnClick;
 
             this.gameStatusContainer.Items.Add(this.statusLabel);
 
             this.menu.Items.Add(this.gameControlButton);
             this.menu.Items.Add(this.newGameButton);
+            this.menu.Items.Add(this.autoAllocationButton);
             this.menu.Items.Add(this.startModelButton);
 
             this.Items.Add(this.gameStatusContainer);
             this.Items.Add(this.menu);
+        }
+
+        private void AutoAllocationButton_OnClick(object sender, EventArgs e)
+        {
+            if (stateStepBtn == 1)
+            {
+                this.core.GameModeStrategy.LootPointAutoAllocate();
+            }
         }
 
         private void GameControlButton_OnClick(object sender, EventArgs e)
@@ -101,8 +112,9 @@ namespace HexagonView.View
                     this.core.GameModeStrategy.NextStep();
 
                     this.gameStatus.Step++;
-                    this.statusLabel.Text = this.gameStatus.ToString(); 
+                    this.statusLabel.Text = this.gameStatus.ToString();
 
+                    this.autoAllocationButton.Visible = false;
                     stateStepBtn = 2;
                 }
 
@@ -110,13 +122,14 @@ namespace HexagonView.View
                 {
                     // loot allocation
                     case 0:
-                        {
-                            this.core.GameModeStrategy.User.LootPointsChanged += LootChangedHandler;
-                            this.core.GameModeStrategy.EndStep();
-                            this.gameControlButton.TextureManager.Textures.Change(1);
-                            stateStepBtn = 1;
-                        }
-                        break;
+                    {
+                        this.core.GameModeStrategy.User.LootPointsChanged += LootChangedHandler;
+                        this.core.GameModeStrategy.EndStep();
+                        this.gameControlButton.TextureManager.Textures.Change(1);
+                        this.autoAllocationButton.Visible = true;
+                        stateStepBtn = 1;
+                    }
+                    break;
                     // end loot allocation
                     case 1: EndLootAllocation(); break;
                     default: break;
@@ -134,7 +147,7 @@ namespace HexagonView.View
             {
                 this.core.GameModeStrategy.Suspend();
             }
-            
+
             base.ChangeActivity(active);
         }
 
@@ -143,14 +156,16 @@ namespace HexagonView.View
             base.Designer();
 
             this.newGameButton.TextureManager.Textures.Change(3);
+            this.autoAllocationButton.TextureManager.Textures.Change(0);
             this.startModelButton.TextureManager.Textures.Change(4);
 
             this.statusLabel.Position = new Vector2(5, 2);
             this.gameStatusContainer.Position = new Vector2(0, 0);
-            
+
             this.newGameButton.Position = new Vector2(10, 10);
             this.gameControlButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 40);
-            this.startModelButton.Position = new Vector2(10, this.gameControlButton.Position.Y + this.gameControlButton.Height + 40);
+            this.autoAllocationButton.Position = new Vector2(10, this.gameControlButton.Position.Y + this.gameControlButton.Height + 40);
+            this.startModelButton.Position = new Vector2(10, this.autoAllocationButton.Position.Y + this.autoAllocationButton.Height + 40);
 
             int w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
             int h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
@@ -189,7 +204,7 @@ namespace HexagonView.View
                         while (!isGameOver)
                         {
                             int curStep = core.GameModeStrategy.Step;
-                            
+
                             this.gameStatus.Step = curStep;
                             this.statusLabel.Text = this.gameStatus.ToString();
 
@@ -226,7 +241,7 @@ namespace HexagonView.View
                 this.cancelModeling = true;
             }
         }
-        
+
         public void SetSettings(GameSettings settings)
         {
             this.gameSettings = settings;
@@ -238,16 +253,19 @@ namespace HexagonView.View
             switch (settings.GameMode)
             {
                 case TypeGameMode.Normal:
-                    {
-                        this.startModelButton.Visible = false;
-                        this.gameControlButton.Visible = true;
-                    }
-                    break;
+                {
+                    this.startModelButton.Visible = false;
+                    this.gameControlButton.Visible = true;
+                    this.autoAllocationButton.Visible = false;
+                }
+                break;
                 case TypeGameMode.Modeling:
-                    {
-                        this.startModelButton.Visible = true;
-                        this.gameControlButton.Visible = false;
-                    }break;
+                {
+                    this.startModelButton.Visible = true;
+                    this.gameControlButton.Visible = false;
+                    this.autoAllocationButton.Visible = false;
+                }
+                break;
             }
 
             this.Items.Add(this.core);
@@ -265,7 +283,5 @@ namespace HexagonView.View
             this.gameControlButton.Text = String.Empty;
             this.stateStepBtn = 0;
         }
-
-
     }
 }

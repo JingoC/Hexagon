@@ -166,5 +166,10 @@ namespace HexagonLibrary.Model.GameMode
             if (this.FinishCpuStep != null)
                 this.FinishCpuStep(this, EventArgs.Empty);
         }
+
+        public virtual void LootPointAutoAllocate()
+        {
+
+        }
     }
 }

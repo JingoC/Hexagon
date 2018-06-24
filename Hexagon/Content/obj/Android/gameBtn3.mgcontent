@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>D:/gitclone/Hexagon/Hexagon/Content/gameBtn3.png</SourceFile>
-  <SourceTime>2018-06-16T09:49:24.6535356+03:00</SourceTime>
+  <SourceTime>2018-06-24T01:48:55.8192447+03:00</SourceTime>
   <DestFile>D:/gitclone/Hexagon/Hexagon/Content/bin/Android/gameBtn3.xnb</DestFile>
-  <DestTime>2018-06-23T01:15:21.5403251+03:00</DestTime>
+  <DestTime>2018-06-24T01:49:38.7158979+03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T18:05:36+03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

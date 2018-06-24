@@ -28,11 +28,12 @@ namespace Hexagon
     public class MainActivity : Microsoft.Xna.Framework.AndroidGameActivity
     {
         protected override void OnCreate(Bundle bundle)
-        { 
+        {
             base.OnCreate(bundle);
 
             var winSystem = new GameView();
             SetContentView((View)winSystem.Graphics.Services.GetService(typeof(View)));
+            winSystem.Exit += (s, e) => winSystem.Graphics.Exit();
             winSystem.Run();
         }
     }

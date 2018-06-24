@@ -69,6 +69,7 @@ namespace HexagonLibrary.Entity.GameObjects
         public HexagonObject(int sectorId)
         {
             this.SectorId = sectorId;
+            this.Scale = 2f;
             this.Designer();
         }
         
