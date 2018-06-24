@@ -40,7 +40,7 @@ namespace HexagonLibrary
         public void Reset()
         {
             this.Name = "CoreHexagon";
-
+            
             if (this.GameModeStrategy != null)
             {
                 this.GameModeStrategy.Map.Items.Clear();

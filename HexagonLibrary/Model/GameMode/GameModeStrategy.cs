@@ -14,12 +14,22 @@ namespace HexagonLibrary.Model.GameMode
     using Model.StateMachines;
     using WinSystem.Controls;
 
+    public enum GameModeState
+    {
+        None = 0,
+        Play = 1,
+        Win = 2,
+        Lose = 3
+    }
+
     public class GameModeStrategy
     {
         protected Random r = new Random((int)DateTime.Now.Ticks);
 
         protected Thread threadActionCpu;
         protected GameObjectPositionInfo lastPosInfo = new GameObjectPositionInfo();
+
+        public GameModeState GameState { get; protected set; }
 
         public bool IsReady { get; protected set; }
         public int Step { get; protected set; }
@@ -40,6 +50,8 @@ namespace HexagonLibrary.Model.GameMode
         public GameModeStrategy(GameSettings gameSettings)
         {
             this.Step = 0;
+            this.GameState = GameModeState.Play;
+
             this.GameSettings = gameSettings;
 
             HexagonObject.LifeEnable = gameSettings.ViewLifeEnable;
@@ -49,7 +61,7 @@ namespace HexagonLibrary.Model.GameMode
             Player.LootPointForCreate = gameSettings.LootPointForCreate;
 
             HexagonObject.ScaleHexagon = gameSettings.ScaleHexagon;
-
+            
             this.Map = new Map(this.Players, gameSettings.MapSize.Width, gameSettings.MapSize.Height);
 
             this.CPUs = new List<CPU>();

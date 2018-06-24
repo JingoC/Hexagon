@@ -131,9 +131,29 @@ namespace HexagonLibrary.Model.GameMode
                     this.Step++;
 
                     this.stateMachine.GameState = TypeGameState.Attack;
+
+                    this.CheckGameState();        
+
                     base.NextStep();
                 }));
                 this.threadActionCpu.Start();
+            }
+        }
+
+        private void CheckGameState()
+        {
+            var hexs = this.Map.Items.OfType<HexagonObject>();
+
+            int countUserHexagon = hexs.Count(x => x.BelongUser == this.User.ID);
+            if (countUserHexagon <= 0)
+                this.GameState = GameModeState.Lose;
+            else
+            {
+                int countEnemyHexagon = hexs.Count(x => (x.BelongUser != this.User.ID) && (x.Type == TypeHexagon.Enemy));
+                if (countEnemyHexagon <= 0)
+                    this.GameState = GameModeState.Win;
+                else
+                    this.GameState = GameModeState.Play;
             }
         }
 

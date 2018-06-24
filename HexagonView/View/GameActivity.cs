@@ -42,6 +42,8 @@ namespace HexagonView.View
         Core core;
         GameSettings gameSettings;
 
+        Label endMessageLabel = new Label() { Text = String.Empty, ForeColor = Color.Green, Visible = false, ZIndex = 1 };
+
         GameStatus gameStatus = new GameStatus();
         Label statusLabel = new Label() { Text = String.Empty, ForeColor = Color.White };
         Container gameStatusContainer = new Container() { };
@@ -70,6 +72,7 @@ namespace HexagonView.View
             this.menu.Items.Add(this.autoAllocationButton);
             this.menu.Items.Add(this.startModelButton);
 
+            this.Items.Add(this.endMessageLabel);
             this.Items.Add(this.gameStatusContainer);
             this.Items.Add(this.menu);
         }
@@ -84,6 +87,9 @@ namespace HexagonView.View
 
         private void GameControlButton_OnClick(object sender, EventArgs e)
         {
+            if (this.core.GameModeStrategy.GameState != GameModeState.Play)
+                return;
+
             if (stateStepBtn < 2)
             {
                 void LootChangedHandler(Object obj, EventArgs ea)
@@ -100,6 +106,14 @@ namespace HexagonView.View
                     this.gameControlButton.TextureManager.Textures.Change(0);
                     this.core.GameModeStrategy.FinishCpuStep -= FinishHandler;
                     stateStepBtn = 0;
+
+                    var state = this.core.GameModeStrategy.GameState;
+                    if (state != GameModeState.Play)
+                    {
+                        this.endMessageLabel.ForeColor = state == GameModeState.Win ? Color.Green : Color.Red;
+                        this.endMessageLabel.Text = state == GameModeState.Win ? "You Win!" : "You Lose!";
+                        this.endMessageLabel.Visible = true;
+                    }
                 };
 
                 void EndLootAllocation()
@@ -172,6 +186,12 @@ namespace HexagonView.View
             int h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
 
             this.menu.Position = new Vector2(w - this.menu.Width - 20, h / 2 - this.menu.Height / 2);
+
+            this.endMessageLabel.Text = "You Win!";
+            this.endMessageLabel.TextureManager.Fonts.Add(Resources.GetResource("endMessageFont") as SpriteFont);
+            this.endMessageLabel.TextureManager.Fonts.Change(this.endMessageLabel.TextureManager.Fonts.Count() - 1);
+            this.endMessageLabel.Position = new Vector2(this.Width / 2 - this.endMessageLabel.Width / 2,
+                this.Height / 2 - this.endMessageLabel.Height / 2);
         }
 
         public override void Draw(GameTime gameTime)
@@ -283,6 +303,8 @@ namespace HexagonView.View
             this.gameControlButton.TextureManager.Textures.Change(0);
             this.gameControlButton.Text = String.Empty;
             this.stateStepBtn = 0;
+
+            this.endMessageLabel.Visible = false;
         }
     }
 }

@@ -375,3 +375,10 @@
 /processorParam:TextureFormat=Color
 /build:background_startpage.png
 
+#begin endMessageFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:endMessageFont.spritefont
+

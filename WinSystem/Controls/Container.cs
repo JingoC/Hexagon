@@ -16,6 +16,7 @@ namespace WinSystem.Controls
         public TextureContainer TextureManager { get; set; }
         public List<IControl> Items { get; set; } = new List<IControl>();
         public Color Background { get; set; } = Color.Transparent;
+        public int ZIndex { get; set; } = 0;
 
         public virtual int Width
         {
@@ -99,7 +100,21 @@ namespace WinSystem.Controls
         {
             if (this.Visible)
             {
-                this.Items.ForEach((x) => x.Draw(gameTime));
+                List<int> zIndex = new List<int>();
+                foreach(var item in this.Items)
+                {
+                    if (!zIndex.Any(x => x == item.ZIndex))
+                        zIndex.Add(item.ZIndex);
+                }
+
+                foreach (var z in zIndex.OrderBy(x => x))
+                {
+                    foreach(var item in this.Items)
+                    {
+                        if (z == item.ZIndex)
+                            item.Draw(gameTime);
+                    }
+                }
             }
         }
 

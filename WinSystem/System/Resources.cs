@@ -80,6 +80,7 @@ namespace WinSystem.System
                 "{\"Name\": \"background_startpage\", \"Type\": \"Texture2D\"}," +
                 "{\"Name\": \"defaultFont\", \"Type\": \"Font\"}," +
                 "{\"Name\": \"gameBtnFont\", \"Type\": \"Font\"}," +
+                "{\"Name\": \"endMessageFont\", \"Type\": \"Font\"}," +
                 "]";
 
             var json_list = JsonConvert.DeserializeObject<List<ResoureceInfo>>(json);

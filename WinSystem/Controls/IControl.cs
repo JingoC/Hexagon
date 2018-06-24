@@ -14,6 +14,7 @@ namespace WinSystem.Controls
         TextureContainer TextureManager { get; set; }
         int Width { get; }
         int Height { get; }
+        int ZIndex { get; set; }
 
         event EventHandler OnClick;
         event EventHandler OnPressed;
