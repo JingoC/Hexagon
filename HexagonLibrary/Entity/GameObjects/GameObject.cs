@@ -35,12 +35,12 @@ namespace HexagonLibrary.Entity.GameObjects
     {
         public static Color[] Colors = {
             Color.Aqua,
-            Color.Green,
+            Color.LimeGreen,
             Color.Red,
             Color.Yellow,
-            Color.Brown, 
-            Color.Purple,
-            Color.LimeGreen,
+            Color.SandyBrown, 
+            Color.Orchid,
+            Color.LightGreen,
             Color.Orange,
             Color.Blue,
             Color.White,
