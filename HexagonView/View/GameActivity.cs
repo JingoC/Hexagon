@@ -145,6 +145,7 @@ namespace HexagonView.View
             }
             else
             {
+                this.cancelModeling = true;
                 this.core.GameModeStrategy.Suspend();
             }
 

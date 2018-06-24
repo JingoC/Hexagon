@@ -86,7 +86,6 @@
     <Compile Include="Entity\Players\CPU.cs" />
     <Compile Include="Entity\Players\Player.cs" />
     <Compile Include="Entity\Players\Strategy\BuildMapStrategy.cs" />
-    <Compile Include="Entity\Players\Strategy\FirstStrategy.cs" />
     <Compile Include="Entity\Players\Strategy\ICPUStrategy.cs" />
     <Compile Include="Entity\Players\User.cs" />
     <Compile Include="Model\GameMode\GameModeFactory.cs" />

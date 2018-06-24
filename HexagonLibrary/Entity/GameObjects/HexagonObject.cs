@@ -24,6 +24,7 @@ namespace HexagonLibrary.Entity.GameObjects
         static public bool LifeEnable { get; set; } = true;
         static public bool LootEnable { get; set; } = true;
         static public bool MaxLifeEnable { get; set; } = true;
+        static public float ScaleHexagon { get; set; } = 1.5f;
 
         public override Vector2 Position
         {
@@ -69,7 +70,7 @@ namespace HexagonLibrary.Entity.GameObjects
         public HexagonObject(int sectorId)
         {
             this.SectorId = sectorId;
-            this.Scale = 2f;
+            this.Scale = HexagonObject.ScaleHexagon;
             this.Designer();
         }
         

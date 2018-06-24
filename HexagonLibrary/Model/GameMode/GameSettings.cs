@@ -40,6 +40,7 @@ namespace HexagonLibrary.Model.GameMode
         public int ModelStepTiming { get; set; } = 50;
 
         // View settings
+        public float ScaleHexagon { get; set; } = 1.5f;
         public bool ViewLootEnable { get; set; } = true;
         public bool ViewLifeEnable { get; set; } = true;
         public bool ViewMaxLife { get; set; } = true;

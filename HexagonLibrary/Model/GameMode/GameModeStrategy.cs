@@ -48,6 +48,8 @@ namespace HexagonLibrary.Model.GameMode
 
             Player.LootPointForCreate = gameSettings.LootPointForCreate;
 
+            HexagonObject.ScaleHexagon = gameSettings.ScaleHexagon;
+
             this.Map = new Map(this.Players, gameSettings.MapSize.Width, gameSettings.MapSize.Height);
 
             this.CPUs = new List<CPU>();
@@ -55,24 +57,16 @@ namespace HexagonLibrary.Model.GameMode
             if (gameSettings.GameMode == TypeGameMode.Normal)
             {
                 this.User = new User() { ID = 0 };
-                
-                for (int i = 1; i < gameSettings.CountPlayers; i++)
-                {
-                    this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy() });
-                }
-                
                 this.Players.Add(this.User);
-                this.Players.AddRange(this.CPUs);
             }
-            else if (gameSettings.GameMode == TypeGameMode.Modeling)
+
+            for (int i = this.Players.Count; i < gameSettings.CountPlayers; i++)
             {
-                for (int i = 0; i < gameSettings.CountPlayers; i++)
-                {
-                    this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy() });
-                }
-                
-                this.Players.AddRange(this.CPUs);
+                this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy() });
             }
+
+            this.Players.AddRange(this.CPUs);
+            
 
             this.Generate();
         }

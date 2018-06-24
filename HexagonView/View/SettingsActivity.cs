@@ -58,6 +58,9 @@ namespace HexagonView.View
         Changer percentBlocked;
         Label percentBlockedInfo;
 
+        Changer scaleHexagon;
+        Label scaleHexagonInfo;
+
         void Create()
         {
             var settings = this.LoadSettings();
@@ -85,14 +88,14 @@ namespace HexagonView.View
             this.modelTimingInfo = new Label() { Text = "StepTime (ms)", ForeColor = Color.White };
 
             // Changer
-            this.rows = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "RowChanger" };
+            this.rows = new Changer(new ValueRange(4, 100)) { Step = 1, Name = "RowChanger" };
             this.rows.Current.Value = settings.MapSize.Width;
 
             // Label
             this.rowsInfo = new Label() { Text = "Rows", ForeColor = Color.White };
 
             // Changer
-            this.columns = new Changer(new ValueRange(4, 20)) { Step = 1, Name = "ColumnChanger" };
+            this.columns = new Changer(new ValueRange(4, 100)) { Step = 1, Name = "ColumnChanger" };
             this.columns.Current.Value = settings.MapSize.Height;
 
             // Label
@@ -136,6 +139,13 @@ namespace HexagonView.View
 
             // Label
             this.lootPointForCreateInfo = new Label() { Text = "LP (Create)", ForeColor = Color.White };
+
+            // Changer
+            this.scaleHexagon = new Changer(new ValueRange(0.1, 5)) { Step = 0.1f };
+            this.scaleHexagon.Current.Value = settings.ScaleHexagon;
+
+            // Label
+            this.scaleHexagonInfo = new Label() { Text = "Scale", ForeColor = Color.White };
         }
 
         public SettingsActivity(Activity parent) : base(parent)
@@ -168,62 +178,19 @@ namespace HexagonView.View
             this.Items.Add(this.lootPointForCreate);
             this.Items.Add(this.lootPointForCreateInfo);
 
+            this.Items.Add(this.scaleHexagon);
+            this.Items.Add(this.scaleHexagonInfo);
+
             this.LoadSettings();
         }
 
         void SaveSettings(GameSettings settings)
         {
-            /*
-            string content = JsonConvert.SerializeObject(settings);
-#if ANDROID
-            using (var istrg = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
-            {
-                using (var fstream = istrg.OpenFile(fileSettingsPath, FileMode.Create, FileAccess.Write))
-                {
-                    byte[] bytes = Encoding.Default.GetBytes(content.ToCharArray());
-                    fstream.Write(bytes, 0, bytes.Count());
-                }
-            }
-#else
-            File.WriteAllText(fileSettingsPath, content);
-#endif
-*/
             Storage.WriteAllText(fileSettingsPath, Storage.Serialize<GameSettings>(settings));
         }
 
         GameSettings LoadSettings()
         {
-            /*
-            string content = String.Empty;
-            bool isExists = false;
-
-#if ANDROID
-            try
-            {
-                using (var istrg = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
-                {
-                    using (var fstream = istrg.OpenFile(fileSettingsPath, FileMode.Open, FileAccess.Read))
-                    {
-                        byte[] bytes = new byte[fstream.Length];
-                        fstream.Read(bytes, 0, (int)fstream.Length);
-                        content = Encoding.Default.GetString(bytes);
-                        isExists = true;
-                    }
-                }
-            }
-            catch (FileNotFoundException e)
-            {
-
-            }
-#else
-            isExists = File.Exists(fileSettingsPath);
-            if (isExists)
-                content = File.ReadAllText(fileSettingsPath);
-#endif
-
-            return isExists ? JsonConvert.DeserializeObject<GameSettings>(content) : null;
-            */
-
             return Storage.Deserialize<GameSettings>(Storage.ReadAllText(fileSettingsPath));
         }
 
@@ -243,6 +210,20 @@ namespace HexagonView.View
             |  2  |     |     |     |
             |-----|-----|-----|-----|
             |  3  |     |     |     |
+            |-----|-----|-----|-----|
+            */
+
+            /* 1     3     5     7
+            |-----|-----|-----|-----|
+            |  *  |  *  |  *  |     |  1
+            |-----|-----|-----|-----|
+            |  *  |  *  |  *  |     |  2
+            |-----|-----|-----|-----|
+            |  *  |     |  *  |     |  3
+            |-----|-----|-----|-----|
+            |  *  |     |  *  |     |  4
+            |-----|-----|-----|-----|
+            |  *  |  *  |     |     |  5
             |-----|-----|-----|-----|
             */
 
@@ -269,40 +250,50 @@ namespace HexagonView.View
             float r4_y = 3;
             float r5_y = 4;
 
-            // C1 - R1
+            // R1 - C1
             SetPosition(this.playersInfo, c1_x, r1_y);
             SetPosition(this.players, c2_x, r1_y);
-            // C3 - R1
+            // R1 - C3
             SetPosition(this.modelInfo, c3_x, r1_y);
             SetPosition(this.modeling, c4_x, r1_y);
-            // C5 - R1
+            // R1 - C5
             SetPosition(this.lifeEnableInfo, c5_x, r1_y);
             SetPosition(this.lifeEnable, c6_x, r1_y);
-            // C1 - R2
+            // R1 - C7
+            // R2 - C1
             SetPosition(this.rowsInfo, c1_x, r2_y);
             SetPosition(this.rows, c2_x, r2_y);
-            // C3 - R2
+            // R2 - C3
             SetPosition(this.modelTimingInfo, c3_x, r2_y);
             SetPosition(this.modelTiming, c4_x, r2_y);
-            // C5 - R2
+            // R2 - C5
             SetPosition(this.lootEnableInfo, c5_x, r2_y);
             SetPosition(this.lootEnable, c6_x, r2_y);
-            // C1 - R3
+            // R2 - C7
+            // R3 - C1
             SetPosition(this.columnsInfo, c1_x, r3_y);
             SetPosition(this.columns, c2_x, r3_y);
-            // C5 - R3
+            // R3 - C3
+            // R3 - C5
             SetPosition(this.maxLifeEnableInfo, c5_x, r3_y);
             SetPosition(this.maxLifeEnable, c6_x, r3_y);
-            // C1 - R4
+            // R3 - C7
+            // R4 - C1
             SetPosition(this.lootPointForCreateInfo, c1_x, r4_y);
             SetPosition(this.lootPointForCreate, c2_x, r4_y);
-
-            // C1 - R5
+            // R4 - C3
+            // R4 - C5
+            SetPosition(this.scaleHexagonInfo, c5_x, r4_y);
+            SetPosition(this.scaleHexagon, c6_x, r4_y);
+            // R4 - C7
+            // R5 - C1
             SetPosition(this.percentBonusInfo, c1_x, r5_y);
             SetPosition(this.percentBonus, c2_x, r5_y);
-            // C3 - R5
+            // R5 - C3
             SetPosition(this.percentBlockedInfo, c3_x, r5_y);
             SetPosition(this.percentBlocked, c4_x, r5_y);
+            // R5 - C5
+            // R5 - C7
         }
 
         public GameSettings GetSettings()
@@ -319,6 +310,7 @@ namespace HexagonView.View
                 PercentBonus = (int)this.percentBonus.Current.Value,
                 PercentBlocked = (int)this.percentBlocked.Current.Value,
                 LootPointForCreate = (int)this.lootPointForCreate.Current.Value,
+                ScaleHexagon = (float)this.scaleHexagon.Current.Value,
             };
             this.SaveSettings(settings);
             return settings;
