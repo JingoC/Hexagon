@@ -32,8 +32,9 @@ namespace Hexagon
             base.OnCreate(bundle);
 
             var winSystem = new GameView();
+
             SetContentView((View)winSystem.Graphics.Services.GetService(typeof(View)));
-            winSystem.Exit += (s, e) => winSystem.Graphics.Exit();
+            winSystem.Exit += (s, e) => Java.Lang.JavaSystem.Exit(0);
             winSystem.Run();
         }
     }

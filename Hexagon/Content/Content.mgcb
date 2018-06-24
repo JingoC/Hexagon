@@ -387,3 +387,10 @@
 /processorParam:TextureFormat=Color
 /build:../../Resources/images/hexagon_bonus_bomb.png
 
+#begin endMessageFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:endMessageFont.spritefont
+

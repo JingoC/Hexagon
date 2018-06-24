@@ -103,13 +103,20 @@ namespace HexagonLibrary.Model.StateMachines
                 else
                 {
                     bool isNearObject = this.Map.GetPositionInfo(this.currentObject).AroundObjects.Any(x => x.BelongUser == this.player.ID);
+                    bool isLinkedObject = (this.lastObject != null) && (this.Map.IsLinkedObjects(this.currentObject, this.lastObject));
 
                     switch (this.state)
                     {
                         case TypeState.Click_HisObject:
                         case TypeState.Click2_NearObject:
-                        case TypeState.Click2_HisObject: { this.SetState(isNearObject ? TypeState.Click2_NearObject : TypeState.Click_FarObject); } break;
-                        default: { this.SetState(isNearObject ? TypeState.Click_NearObject : TypeState.Click_FarObject); } break;
+                        case TypeState.Click2_HisObject:
+                        {
+                            this.SetState(isLinkedObject ? TypeState.Click2_NearObject : isNearObject ? TypeState.Click_NearObject : TypeState.Click_FarObject);
+                        } break;
+                        default:
+                        {
+                            this.SetState(isNearObject ? TypeState.Click_NearObject : TypeState.Click_FarObject);
+                        } break;
                     }
                 }
                 

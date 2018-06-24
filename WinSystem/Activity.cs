@@ -17,8 +17,8 @@ namespace WinSystem
         static int countActivity = 0;
         
         public Activity Parent { get; set; }
-        public override int Width { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Width; }
-        public override int Height { get => GraphicsSingleton.GetInstance().Window.ClientBounds.Height; }
+        public override int Width { get => GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth; }
+        public override int Height { get => GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight; }
 
         public Texture2D BackgroundImage { get; set; } = null;
         public Color Background { get; set; }

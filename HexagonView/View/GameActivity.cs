@@ -44,7 +44,8 @@ namespace HexagonView.View
 
         Label endMessageLabel = new Label() { Text = String.Empty, ForeColor = Color.Green, Visible = false, ZIndex = 1 };
 
-        StatisticLine balanceLine;
+        StatisticLine balanceLineSectors;
+        StatisticLine balanceLineLife;
 
         GameStatus gameStatus = new GameStatus();
         Label statusLabel = new Label() { Text = String.Empty, ForeColor = Color.White };
@@ -61,9 +62,6 @@ namespace HexagonView.View
 
         public GameActivity(Activity parent) : base(parent)
         {
-            this.balanceLine = new StatisticLine(this.Width, 10);
-            this.balanceLine.ZIndex = 1;
-
             this.gameControlButton.OnClick += GameControlButton_OnClick;
 
             this.newGameButton.OnClick += (s, e) => { this.Start(); };
@@ -71,7 +69,6 @@ namespace HexagonView.View
             this.autoAllocationButton.OnClick += this.AutoAllocationButton_OnClick;
 
             this.gameStatusContainer.Items.Add(this.statusLabel);
-            this.gameStatusContainer.Items.Add(this.balanceLine);
 
             this.menu.Items.Add(this.gameControlButton);
             this.menu.Items.Add(this.newGameButton);
@@ -176,6 +173,14 @@ namespace HexagonView.View
 
         public override void Designer()
         {
+            this.balanceLineSectors = new StatisticLine(this.Width, 10);
+            this.balanceLineSectors.ZIndex = 1;
+
+            this.balanceLineLife = new StatisticLine(this.Width, 10);
+            this.balanceLineLife.ZIndex = 1;
+            this.gameStatusContainer.Items.Add(this.balanceLineSectors);
+            this.gameStatusContainer.Items.Add(this.balanceLineLife);
+
             base.Designer();
 
             this.newGameButton.TextureManager.Textures.Change(3);
@@ -183,7 +188,8 @@ namespace HexagonView.View
             this.startModelButton.TextureManager.Textures.Change(4);
             
             this.statusLabel.Position = new Vector2(5, 2);
-            this.balanceLine.Position = new Vector2(2, this.statusLabel.Height + this.statusLabel.Position.Y + 10);
+            this.balanceLineSectors.Position = new Vector2(2, this.statusLabel.Height + this.statusLabel.Position.Y + 10);
+            this.balanceLineLife.Position = new Vector2(2, this.balanceLineSectors.Height + this.balanceLineSectors.Position.Y);
             this.gameStatusContainer.Position = new Vector2(0, 0);
 
             this.newGameButton.Position = new Vector2(10, 10);
@@ -287,14 +293,12 @@ namespace HexagonView.View
                 {
                     this.startModelButton.Visible = false;
                     this.gameControlButton.Visible = true;
-                    this.autoAllocationButton.Visible = false;
                 }
                 break;
                 case TypeGameMode.Modeling:
                 {
                     this.startModelButton.Visible = true;
                     this.gameControlButton.Visible = false;
-                    this.autoAllocationButton.Visible = false;
                 }
                 break;
             }
@@ -305,6 +309,8 @@ namespace HexagonView.View
         public void Start()
         {
             this.core.Reset();
+            
+            this.autoAllocationButton.Visible = false;
 
             this.gameStatus = new GameStatus();
             this.statusLabel.Text = this.gameStatus.ToString();
@@ -316,10 +322,12 @@ namespace HexagonView.View
 
             this.endMessageLabel.Visible = false;
 
-            this.balanceLine.Items.Clear();
+            this.balanceLineSectors.Items.Clear();
+            this.balanceLineLife.Items.Clear();
             for (int i = 0; i < this.gameSettings.CountPlayers; i++)
             {
-                this.balanceLine.Items.Add(new StatisticObject() { Name = $"{i}", Value = 1, Color = HexagonObject.Colors[i] });
+                this.balanceLineSectors.Items.Add(new StatisticObject() { Name = $"{i}", Value = 1, Color = HexagonObject.Colors[i] });
+                this.balanceLineLife.Items.Add(new StatisticObject() { Name = $"{i}", Value = 2, Color = HexagonObject.Colors[i] });
             }
             this.UpdateBalance();
         }
@@ -327,9 +335,12 @@ namespace HexagonView.View
         private void UpdateBalance()
         {
             int count = 0;
-            foreach(var p in this.core.GameModeStrategy.Players)
+            var hexs = this.core.GameModeStrategy.Map.Items.OfType<HexagonObject>();
+
+            foreach (var p in this.core.GameModeStrategy.Players)
             {
-                this.balanceLine.Items[count].Value = this.core.GameModeStrategy.Map.Items.OfType<HexagonObject>().Count(x => x.BelongUser == p.ID);
+                this.balanceLineSectors.Items[count].Value = hexs.Count(x => x.BelongUser == p.ID);
+                this.balanceLineLife.Items[count].Value = hexs.Where(x => x.BelongUser == p.ID).Sum(x => x.Life) + p.LootPoints;
                 count++;
             }
         }
