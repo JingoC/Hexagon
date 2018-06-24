@@ -44,6 +44,8 @@ namespace HexagonView.View
 
         Label endMessageLabel = new Label() { Text = String.Empty, ForeColor = Color.Green, Visible = false, ZIndex = 1 };
 
+        StatisticLine balanceLine;
+
         GameStatus gameStatus = new GameStatus();
         Label statusLabel = new Label() { Text = String.Empty, ForeColor = Color.White };
         Container gameStatusContainer = new Container() { };
@@ -54,11 +56,14 @@ namespace HexagonView.View
         GameButton startModelButton = new GameButton() { Name = "startModeButton", Text = "M", ForeColor = Color.Black };
 
         Container menu = new Container();
-
+        
         int stateStepBtn = 0;
 
         public GameActivity(Activity parent) : base(parent)
         {
+            this.balanceLine = new StatisticLine(this.Width, 10);
+            this.balanceLine.ZIndex = 1;
+
             this.gameControlButton.OnClick += GameControlButton_OnClick;
 
             this.newGameButton.OnClick += (s, e) => { this.Start(); };
@@ -66,12 +71,13 @@ namespace HexagonView.View
             this.autoAllocationButton.OnClick += this.AutoAllocationButton_OnClick;
 
             this.gameStatusContainer.Items.Add(this.statusLabel);
+            this.gameStatusContainer.Items.Add(this.balanceLine);
 
             this.menu.Items.Add(this.gameControlButton);
             this.menu.Items.Add(this.newGameButton);
             this.menu.Items.Add(this.autoAllocationButton);
             this.menu.Items.Add(this.startModelButton);
-
+            
             this.Items.Add(this.endMessageLabel);
             this.Items.Add(this.gameStatusContainer);
             this.Items.Add(this.menu);
@@ -130,6 +136,8 @@ namespace HexagonView.View
 
                     this.autoAllocationButton.Visible = false;
                     stateStepBtn = 2;
+
+                    this.UpdateBalance();
                 }
 
                 switch (stateStepBtn)
@@ -173,8 +181,9 @@ namespace HexagonView.View
             this.newGameButton.TextureManager.Textures.Change(3);
             this.autoAllocationButton.TextureManager.Textures.Change(0);
             this.startModelButton.TextureManager.Textures.Change(4);
-
+            
             this.statusLabel.Position = new Vector2(5, 2);
+            this.balanceLine.Position = new Vector2(2, this.statusLabel.Height + this.statusLabel.Position.Y + 10);
             this.gameStatusContainer.Position = new Vector2(0, 0);
 
             this.newGameButton.Position = new Vector2(10, 10);
@@ -224,6 +233,7 @@ namespace HexagonView.View
                         bool isGameOver = false;
                         while (!isGameOver)
                         {
+                            this.UpdateBalance();
                             int curStep = core.GameModeStrategy.Step;
 
                             this.gameStatus.Step = curStep;
@@ -232,7 +242,7 @@ namespace HexagonView.View
                             System.Threading.Thread.Sleep(this.core.GameModeStrategy.GameSettings.ModelStepTiming);
                             this.core.GameModeStrategy.NextStep();
                             while (curStep == this.core.GameModeStrategy.Step) { }
-
+                            
                             List<int> items = new List<int>();
                             var allItems = this.core.GameModeStrategy.Map.Items.OfType<HexagonObject>()
                                         .Where((x) => x.BelongUser >= 0);
@@ -291,7 +301,7 @@ namespace HexagonView.View
 
             this.Items.Add(this.core);
         }
-
+        
         public void Start()
         {
             this.core.Reset();
@@ -305,6 +315,23 @@ namespace HexagonView.View
             this.stateStepBtn = 0;
 
             this.endMessageLabel.Visible = false;
+
+            this.balanceLine.Items.Clear();
+            for (int i = 0; i < this.gameSettings.CountPlayers; i++)
+            {
+                this.balanceLine.Items.Add(new StatisticObject() { Name = $"{i}", Value = 1, Color = HexagonObject.Colors[i] });
+            }
+            this.UpdateBalance();
+        }
+
+        private void UpdateBalance()
+        {
+            int count = 0;
+            foreach(var p in this.core.GameModeStrategy.Players)
+            {
+                this.balanceLine.Items[count].Value = this.core.GameModeStrategy.Map.Items.OfType<HexagonObject>().Count(x => x.BelongUser == p.ID);
+                count++;
+            }
         }
     }
 }

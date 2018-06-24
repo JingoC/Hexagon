@@ -33,7 +33,19 @@ namespace HexagonLibrary.Entity.GameObjects
     
     public partial class GameObject : MonoObject
     {
-        //public override Vector2 Position { get; set; }
+        public static Color[] Colors = {
+            Color.Aqua,
+            Color.Green,
+            Color.Red,
+            Color.Yellow,
+            Color.Brown, 
+            Color.Purple,
+            Color.LimeGreen,
+            Color.Orange,
+            Color.Blue,
+            Color.White,
+            Color.Gray
+        };
 
         public GameObject()
         {
