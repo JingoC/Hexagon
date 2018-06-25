@@ -27,6 +27,7 @@ namespace Hexagon
         , ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize)]
     public class MainActivity : Microsoft.Xna.Framework.AndroidGameActivity
     {
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -36,6 +37,11 @@ namespace Hexagon
             SetContentView((View)winSystem.Graphics.Services.GetService(typeof(View)));
             winSystem.Exit += (s, e) => Java.Lang.JavaSystem.Exit(0);
             winSystem.Run();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
     }
 }

@@ -5,5 +5,5 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_INPUT_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="Hexagon"></application>
+	<application android:label="Hexagon" android:icon="@drawable/Icon"></application>
 </manifest>

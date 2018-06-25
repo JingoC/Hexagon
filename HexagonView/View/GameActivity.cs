@@ -322,8 +322,8 @@ namespace HexagonView.View
 
             this.endMessageLabel.Visible = false;
 
-            this.balanceLineSectors.Items.Clear();
-            this.balanceLineLife.Items.Clear();
+            this.balanceLineSectors.Dispose();
+            this.balanceLineLife.Dispose();
             for (int i = 0; i < this.gameSettings.CountPlayers; i++)
             {
                 this.balanceLineSectors.Items.Add(new StatisticObject() { Name = $"{i}", Value = 1, Color = HexagonObject.Colors[i] });

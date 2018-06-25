@@ -20,9 +20,10 @@ namespace HexagonView.Controls
         public double Value { get; set; }
     }
 
-    public class StatisticLine : MonoObject
+    public class StatisticLine : MonoObject, IDisposable
     {
         public List<StatisticObject> Items { get; set; } = new List<StatisticObject>();
+        private List<Texture2D> textures { get; set; } = new List<Texture2D>();
 
         int width;
         int height;
@@ -43,6 +44,8 @@ namespace HexagonView.Controls
 
         public override void Draw(GameTime gameTime)
         {
+            this.Dispose();
+
             var g = GraphicsSingleton.GetInstance();
             var sb = g.GetSpriteBatch();
 
@@ -65,10 +68,20 @@ namespace HexagonView.Controls
 
                     Vector2 pos = new Vector2(x, y);
                     sb.Draw(rect, pos, item.Color);
-
+                    this.textures.Add(rect);
                     x += (float)w;
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            foreach(var texture in this.textures)
+            {
+                texture.Dispose();
+            }
+
+            this.textures.Clear();
         }
     }
 }
