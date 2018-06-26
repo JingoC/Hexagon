@@ -22,18 +22,18 @@ namespace WinSystem.Controls
         {
             get
             {
-                float x = 0;
-                float w = 0;
+                float x1 = 100000000;
+                float x2 = 0;
                 foreach (var item in this.Items)
                 {
                     float px = item.Position.X;
                     float pw = item.Width;
 
-                    x = (px >= 0) && (px < x) ? px : x;
-                    w = (pw > 0) && (pw > w) ? pw : w;
+                    x1 = (px >= 0) && (px < x1) ? px : x1;
+                    x2 = (pw > 0) && ((pw + px) > x2) ? pw + px : x2;
                 }
 
-                return (int) (x + w);
+                return (int) (x2 - x1);
             }
             set { }
         }
@@ -42,7 +42,7 @@ namespace WinSystem.Controls
         {
             get
             {
-                float y1 = 0;
+                float y1 = 100000000;
                 float y2 = 0;
                 
                 foreach(var item in this.Items)
@@ -88,7 +88,7 @@ namespace WinSystem.Controls
 
         public Container()
         {
-
+            this.TextureManager = new TextureContainer();
         }
 
         public virtual void Designer()

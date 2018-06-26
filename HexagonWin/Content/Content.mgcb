@@ -382,3 +382,10 @@
 /processorParam:TextureFormat=Compressed
 /build:endMessageFont.spritefont
 
+#begin settingsHeaderFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:settingsHeaderFont.spritefont
+

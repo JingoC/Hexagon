@@ -322,6 +322,8 @@ namespace HexagonView.View
 
             this.endMessageLabel.Visible = false;
 
+            this.balanceLineLife.Items.Clear();
+            this.balanceLineSectors.Items.Clear();
             this.balanceLineSectors.Dispose();
             this.balanceLineLife.Dispose();
             for (int i = 0; i < this.gameSettings.CountPlayers; i++)

@@ -36,5 +36,6 @@
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_bonus_bomb.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/background_startpage.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/endMessageFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/settingsHeaderFont.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

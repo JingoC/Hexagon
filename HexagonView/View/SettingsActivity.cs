@@ -61,16 +61,47 @@ namespace HexagonView.View
         Changer scaleHexagon;
         Label scaleHexagonInfo;
 
+        Changer changeContainer;
+
+        Container gamePlayContainer;
+        Container viewContainer;
+        Container modelingContainer;
+
+        string[] headerContainer = { "View", "GamePlay", "Modeling" };
+
+        void ChangeContainer()
+        {
+            var type = (int)this.changeContainer.Current.Value;
+            this.changeContainer.Text = this.headerContainer[type];
+            switch(type)
+            {
+                case 0: this.gamePlayContainer.Visible = this.modelingContainer.Visible = false; this.viewContainer.Visible = true; break;
+                case 1: this.viewContainer.Visible = this.modelingContainer.Visible = false; this.gamePlayContainer.Visible = true; break;
+                case 2: this.gamePlayContainer.Visible = this.viewContainer.Visible = false; this.modelingContainer.Visible = true; break;
+            }
+
+            float w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
+            this.changeContainer.Position = new Vector2((w / 2) - (this.changeContainer.Width / 2), 5);
+        }
+
         void Create()
         {
             var settings = this.LoadSettings();
             if (settings == null)
                 settings = new GameSettings();
 
+            this.gamePlayContainer = new Container() { Visible = false };
+            this.gamePlayContainer.Position = new Vector2(0, 0);
+            this.viewContainer = new Container() { Visible = true };
+            this.viewContainer.Position = new Vector2(0, 0);
+            this.modelingContainer = new Container() { Visible = false };
+            this.modelingContainer.Position = new Vector2(0, 0);
+
             // Changer
             this.players = new Changer(new ValueRange(2, 10));
             this.players.Step = 1;
             this.players.Current.Value = settings.CountPlayers;
+
 
             // Label
             this.playersInfo = new Label() { Text = "Count Player ", ForeColor = Color.White };
@@ -85,7 +116,7 @@ namespace HexagonView.View
             this.modelTiming.Step = 50;
 
             // Label
-            this.modelTimingInfo = new Label() { Text = "StepTime (ms)", ForeColor = Color.White };
+            this.modelTimingInfo = new Label() { Text = $"StepTime {Environment.NewLine}(ms)", ForeColor = Color.White };
 
             // Changer
             this.rows = new Changer(new ValueRange(4, 100)) { Step = 1, Name = "RowChanger" };
@@ -146,40 +177,54 @@ namespace HexagonView.View
 
             // Label
             this.scaleHexagonInfo = new Label() { Text = "Scale", ForeColor = Color.White };
+
+            // Changer
+            this.changeContainer = new Changer(new ValueRange(0, 2)) { Text = "View", ForeColor = Color.White, Step = 1 };
+            this.changeContainer.Current.Value = 0;
+            this.changeContainer.Text = this.headerContainer[0];
+            this.changeContainer.ClickToUp += (s, e) => this.ChangeContainer();
+            this.changeContainer.ClickToDown += (s, e) => this.ChangeContainer();
+            
         }
 
         public SettingsActivity(Activity parent) : base(parent)
         {
             this.Create();
+            
+            // view
+            this.viewContainer.Items.Add(this.lifeEnable);
+            this.viewContainer.Items.Add(this.lifeEnableInfo);
+            this.viewContainer.Items.Add(this.lootEnable);
+            this.viewContainer.Items.Add(this.lootEnableInfo);
+            this.viewContainer.Items.Add(this.maxLifeEnable);
+            this.viewContainer.Items.Add(this.maxLifeEnableInfo);
+            this.viewContainer.Items.Add(this.scaleHexagon);
+            this.viewContainer.Items.Add(this.scaleHexagonInfo);
+            
+            // gamePlay
+            this.gamePlayContainer.Items.Add(this.players);
+            this.gamePlayContainer.Items.Add(this.playersInfo);
+            this.gamePlayContainer.Items.Add(this.rows);
+            this.gamePlayContainer.Items.Add(this.rowsInfo);
+            this.gamePlayContainer.Items.Add(this.columns);
+            this.gamePlayContainer.Items.Add(this.columnsInfo);
+            this.gamePlayContainer.Items.Add(this.percentBonus);
+            this.gamePlayContainer.Items.Add(this.percentBonusInfo);
+            this.gamePlayContainer.Items.Add(this.percentBlocked);
+            this.gamePlayContainer.Items.Add(this.percentBlockedInfo);
+            this.gamePlayContainer.Items.Add(this.lootPointForCreate);
+            this.gamePlayContainer.Items.Add(this.lootPointForCreateInfo);
+            
+            // modeling
+            this.modelingContainer.Items.Add(this.modelInfo);
+            this.modelingContainer.Items.Add(this.modeling);
+            this.modelingContainer.Items.Add(this.modelTiming);
+            this.modelingContainer.Items.Add(this.modelTimingInfo);
 
-            this.Items.Add(this.players);
-            this.Items.Add(this.playersInfo);
-            this.Items.Add(this.modelInfo);
-            this.Items.Add(this.modeling);
-            this.Items.Add(this.modelTiming);
-            this.Items.Add(this.modelTimingInfo);
-            this.Items.Add(this.rows);
-            this.Items.Add(this.rowsInfo);
-            this.Items.Add(this.columns);
-            this.Items.Add(this.columnsInfo);
-
-            this.Items.Add(this.lifeEnable);
-            this.Items.Add(this.lifeEnableInfo);
-            this.Items.Add(this.lootEnable);
-            this.Items.Add(this.lootEnableInfo);
-            this.Items.Add(this.maxLifeEnable);
-            this.Items.Add(this.maxLifeEnableInfo);
-
-            this.Items.Add(this.percentBonus);
-            this.Items.Add(this.percentBonusInfo);
-            this.Items.Add(this.percentBlocked);
-            this.Items.Add(this.percentBlockedInfo);
-
-            this.Items.Add(this.lootPointForCreate);
-            this.Items.Add(this.lootPointForCreateInfo);
-
-            this.Items.Add(this.scaleHexagon);
-            this.Items.Add(this.scaleHexagonInfo);
+            this.Items.Add(this.changeContainer);
+            this.Items.Add(this.viewContainer);
+            this.Items.Add(this.gamePlayContainer);
+            this.Items.Add(this.modelingContainer);
 
             this.LoadSettings();
         }
@@ -193,40 +238,17 @@ namespace HexagonView.View
         {
             return Storage.Deserialize<GameSettings>(Storage.ReadAllText(fileSettingsPath));
         }
-
+        
         public override void Designer()
         {
             base.Designer();
 
-            float w = GraphicsSingleton.GetInstance().Window.ClientBounds.Width;
-            float h = GraphicsSingleton.GetInstance().Window.ClientBounds.Height;
+            float w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
+            float h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
 
-            /*
-            |-----|-----|-----|-----|
-            |  0  |  1  |  2  |  3  |
-            |-----|-----|-----|-----|
-            |  1  |     |     |     |
-            |-----|-----|-----|-----|
-            |  2  |     |     |     |
-            |-----|-----|-----|-----|
-            |  3  |     |     |     |
-            |-----|-----|-----|-----|
-            */
-
-            /* 1     3     5     7
-            |-----|-----|-----|-----|
-            |  *  |  *  |  *  |     |  1
-            |-----|-----|-----|-----|
-            |  *  |  *  |  *  |     |  2
-            |-----|-----|-----|-----|
-            |  *  |     |  *  |     |  3
-            |-----|-----|-----|-----|
-            |  *  |     |  *  |     |  4
-            |-----|-----|-----|-----|
-            |  *  |  *  |     |     |  5
-            |-----|-----|-----|-----|
-            */
-
+            this.changeContainer.Text = this.headerContainer[0];
+            this.changeContainer.Position = new Vector2((w / 2) - (this.changeContainer.Width / 2), 5);
+            
             float stepX = w / 64;
             float stepY = h / 8;
 
@@ -250,50 +272,100 @@ namespace HexagonView.View
             float r4_y = 3;
             float r5_y = 4;
 
-            // R1 - C1
-            SetPosition(this.playersInfo, c1_x, r1_y);
-            SetPosition(this.players, c2_x, r1_y);
-            // R1 - C3
-            SetPosition(this.modelInfo, c3_x, r1_y);
-            SetPosition(this.modeling, c4_x, r1_y);
-            // R1 - C5
-            SetPosition(this.lifeEnableInfo, c5_x, r1_y);
-            SetPosition(this.lifeEnable, c6_x, r1_y);
-            // R1 - C7
-            // R2 - C1
-            SetPosition(this.rowsInfo, c1_x, r2_y);
-            SetPosition(this.rows, c2_x, r2_y);
-            // R2 - C3
-            SetPosition(this.modelTimingInfo, c3_x, r2_y);
-            SetPosition(this.modelTiming, c4_x, r2_y);
-            // R2 - C5
-            SetPosition(this.lootEnableInfo, c5_x, r2_y);
-            SetPosition(this.lootEnable, c6_x, r2_y);
-            // R2 - C7
-            // R3 - C1
-            SetPosition(this.columnsInfo, c1_x, r3_y);
-            SetPosition(this.columns, c2_x, r3_y);
-            // R3 - C3
-            // R3 - C5
-            SetPosition(this.maxLifeEnableInfo, c5_x, r3_y);
-            SetPosition(this.maxLifeEnable, c6_x, r3_y);
-            // R3 - C7
-            // R4 - C1
-            SetPosition(this.lootPointForCreateInfo, c1_x, r4_y);
-            SetPosition(this.lootPointForCreate, c2_x, r4_y);
-            // R4 - C3
-            // R4 - C5
-            SetPosition(this.scaleHexagonInfo, c5_x, r4_y);
-            SetPosition(this.scaleHexagon, c6_x, r4_y);
-            // R4 - C7
-            // R5 - C1
-            SetPosition(this.percentBonusInfo, c1_x, r5_y);
-            SetPosition(this.percentBonus, c2_x, r5_y);
-            // R5 - C3
-            SetPosition(this.percentBlockedInfo, c3_x, r5_y);
-            SetPosition(this.percentBlocked, c4_x, r5_y);
-            // R5 - C5
-            // R5 - C7
+            void Designer_GamePlay()
+            {
+                // R1 - C1
+                SetPosition(this.playersInfo, c1_x, r1_y);
+                SetPosition(this.players, c2_x, r1_y);
+                // R1 - C3
+                SetPosition(this.percentBonusInfo, c3_x, r1_y);
+                SetPosition(this.percentBonus, c4_x, r1_y);
+                // R1 - C5
+                // R1 - C7
+                // R2 - C1
+                SetPosition(this.rowsInfo, c1_x, r2_y);
+                SetPosition(this.rows, c2_x, r2_y);
+                // R2 - C3
+                SetPosition(this.percentBlockedInfo, c3_x, r2_y);
+                SetPosition(this.percentBlocked, c4_x, r2_y);
+                // R2 - C5
+                // R2 - C7
+                // R3 - C1
+                SetPosition(this.columnsInfo, c1_x, r3_y);
+                SetPosition(this.columns, c2_x, r3_y);
+                // R3 - C3
+                SetPosition(this.lootPointForCreateInfo, c3_x, r3_y);
+                SetPosition(this.lootPointForCreate, c4_x, r3_y);
+                // R3 - C5
+                // R3 - C7
+                // R4 - C1
+                // R4 - C3
+                // R4 - C5
+                // R4 - C7
+
+            }
+
+            void Designer_View()
+            {
+                // R1 - C1
+                SetPosition(this.scaleHexagonInfo, c1_x, r1_y);
+                SetPosition(this.scaleHexagon, c2_x, r1_y);
+                // R1 - C3
+                // R1 - C5
+                SetPosition(this.lifeEnableInfo, c5_x, r1_y);
+                SetPosition(this.lifeEnable, c6_x, r1_y);
+                // R1 - C7
+                // R2 - C1
+                // R2 - C3
+                // R2 - C5
+                SetPosition(this.lootEnableInfo, c5_x, r2_y);
+                SetPosition(this.lootEnable, c6_x, r2_y);
+                // R2 - C7
+                // R3 - C1
+                // R3 - C3
+                // R3 - C5
+                SetPosition(this.maxLifeEnableInfo, c5_x, r3_y);
+                SetPosition(this.maxLifeEnable, c6_x, r3_y);
+                // R3 - C7
+                // R4 - C1
+                // R4 - C3
+                // R4 - C5
+                // R4 - C7
+
+            }
+
+            void Designer_Modeling()
+            {
+                // R1 - C1
+                SetPosition(this.modelInfo, c1_x, r1_y);
+                SetPosition(this.modeling, c2_x, r1_y);
+                // R1 - C3
+                // R1 - C5
+                // R1 - C7
+                // R2 - C1
+                SetPosition(this.modelTimingInfo, c1_x, r2_y);
+                SetPosition(this.modelTiming, c2_x, r2_y);
+                // R2 - C3
+                // R2 - C5
+                // R2 - C7
+                // R3 - C1
+                // R3 - C3
+                // R3 - C5
+                // R3 - C7
+                // R4 - C1
+                // R4 - C3
+                // R4 - C5
+                // R4 - C7
+            }
+
+            Designer_View();
+            Designer_GamePlay();
+            Designer_Modeling();
+
+            float yContainer = this.changeContainer.Height + this.changeContainer.Position.Y;
+            this.gamePlayContainer.Position = new Vector2(0, yContainer);
+            this.modelingContainer.Position = new Vector2(0, yContainer);
+            this.viewContainer.Position = new Vector2(0, yContainer);
         }
 
         public GameSettings GetSettings()
