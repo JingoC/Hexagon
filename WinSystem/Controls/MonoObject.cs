@@ -85,7 +85,7 @@ namespace WinSystem.Controls
 
         }
 
-        public bool IsEntry(float x, float y)
+        public virtual bool IsEntry(float x, float y)
         {
             float x1 = this.Position.X;
             float y1 = this.Position.Y;

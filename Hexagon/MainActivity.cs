@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 using WinSystem;
+using WinSystem.System;
 using WinSystem.Controls;
 using HexagonLibrary;
 using HexagonLibrary.Model.GameMode;
@@ -33,7 +34,7 @@ namespace Hexagon
             base.OnCreate(bundle);
 
             var winSystem = new GameView();
-
+            winSystem.Input.MouseEnable = true;
             SetContentView((View)winSystem.Graphics.Services.GetService(typeof(View)));
             winSystem.Exit += (s, e) => Java.Lang.JavaSystem.Exit(0);
             winSystem.Run();

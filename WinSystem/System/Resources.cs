@@ -30,23 +30,6 @@ namespace WinSystem.System
 
         static public bool LoadResource()
         {
-#if !ANDROID
-            if (!File.Exists(fileResource))
-            {
-                File.Create(fileResource);
-                return true;
-            }
-            
-            try
-            {
-                JsonConvert.DeserializeObject<List<ResoureceInfo>>(File.ReadAllText(Resources.fileResource)).ForEach((x) => AddResource(x.Name, x.Type));
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-#else
             // { "Name": "defaultButton", "Type": "Texture2D"},
             string json = "[" +
                 "{\"Name\": \"gameBtn1\", \"Type\": \"Texture2D\"}," +
@@ -90,7 +73,6 @@ namespace WinSystem.System
                 Resources.AddResource(item.Name, item.Type);
             }
             return true;
-#endif
         }
 
         static public void AddResource(string name, TypeResource type)

@@ -41,7 +41,8 @@ namespace HexagonWin
                 winSystem.Graphics.GetGraphics().PreferredBackBufferWidth = 1300;
                 winSystem.Graphics.GetGraphics().PreferredBackBufferHeight = 800;
                 winSystem.Graphics.GetGraphics().ApplyChanges();
-                
+
+                winSystem.Input.TouchEnable = false;
                 winSystem.Input.PositionChangedMouse += (s, e) => cursorPos.Text = $"{e.X}:{e.Y}";
                 winSystem.Exit += (s, e) => Environment.Exit(0);
 

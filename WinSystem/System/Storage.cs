@@ -15,7 +15,6 @@ namespace WinSystem.System
     {
         public static void WriteAllText(string filePath, string text)
         {
-#if ANDROID
             using (var istrg = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
             {
                 using (var fstream = istrg.OpenFile(filePath, FileMode.Create, FileAccess.Write))
@@ -24,14 +23,10 @@ namespace WinSystem.System
                     fstream.Write(bytes, 0, bytes.Count());
                 }
             }
-#else
-            File.WriteAllText(filePath, text);
-#endif
         }
 
         public static string ReadAllText(string filePath)
         {
-#if ANDROID
             try
             {
                 string content = String.Empty;
@@ -51,13 +46,6 @@ namespace WinSystem.System
             {
                 return String.Empty;
             }
-#else
-            bool isExists = File.Exists(fileSettingsPath);
-            if (isExists)
-                return File.ReadAllText(filePath);
-
-            return String.Empty;
-#endif
         }
 
         public static string Serialize<T>(T item)
