@@ -8,16 +8,16 @@ namespace HexagonView
 {
     using View;
 
-    using WinSystem;
-    using WinSystem.Controls;
-    using WinSystem.System;
+    using MonoGuiFramework;
+    using MonoGuiFramework.Controls;
+    using MonoGuiFramework.System;
 
     using HexagonLibrary;
     using HexagonLibrary.Model.Navigation;
     using HexagonLibrary.Model.GameMode;
     using HexagonLibrary.Entity.GameObjects;
 
-    public class GameView : WSystem
+    public class GameView : MonoGui
     {
         List<Activity> views = new List<Activity>();
 

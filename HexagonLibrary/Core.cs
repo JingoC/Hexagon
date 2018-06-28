@@ -13,8 +13,8 @@ namespace HexagonLibrary
     using Microsoft.Xna.Framework;
     using Model.Navigation;
     using Model.StateMachines;
-    using WinSystem.Controls;
-    using WinSystem.System;
+    using MonoGuiFramework.Controls;
+    using MonoGuiFramework.System;
 
     public class Core : Container
     {

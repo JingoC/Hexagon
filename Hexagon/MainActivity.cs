@@ -8,9 +8,9 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
-using WinSystem;
-using WinSystem.System;
-using WinSystem.Controls;
+using MonoGuiFramework;
+using MonoGuiFramework.System;
+using MonoGuiFramework.Controls;
 using HexagonLibrary;
 using HexagonLibrary.Model.GameMode;
 

@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
-using WinSystem;
-using WinSystem.Controls;
+using MonoGuiFramework;
+using MonoGuiFramework.Controls;
 using HexagonLibrary;
 using HexagonLibrary.Entity.GameObjects;
 using HexagonLibrary.Model.GameMode;
@@ -15,7 +15,7 @@ using HexagonLibrary.Model.GameMode;
 namespace HexagonWin
 {
     using HexagonView;
-    using WinSystem.System;
+    using MonoGuiFramework.System;
 #if WINDOWS || LINUX
     /// <summary>
     /// The main class.

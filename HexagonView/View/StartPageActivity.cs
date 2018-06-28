@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HexagonView.View
 {
-    using WinSystem;
-    using WinSystem.Controls;
-    using WinSystem.System;
+    using MonoGuiFramework;
+    using MonoGuiFramework.Controls;
+    using MonoGuiFramework.System;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;

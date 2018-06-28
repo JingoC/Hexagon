@@ -12,7 +12,7 @@ namespace HexagonLibrary.Model.GameMode
     using Entity.Players.Strategy;
     using Entity.GameObjects;
     using Model.StateMachines;
-    using WinSystem.Controls;
+    using MonoGuiFramework.Controls;
 
     public enum GameModeState
     {

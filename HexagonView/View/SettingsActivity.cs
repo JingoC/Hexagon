@@ -12,9 +12,9 @@ namespace HexagonView.View
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
-    using WinSystem;
-    using WinSystem.Controls;
-    using WinSystem.System;
+    using MonoGuiFramework;
+    using MonoGuiFramework.Controls;
+    using MonoGuiFramework.System;
 
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework;

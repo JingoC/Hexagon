@@ -90,6 +90,10 @@
     <Compile Include="View\StartPageActivity.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MonoGuiFramework\MonoGuiFramework.csproj">
+      <Project>{9d79e3d1-b453-46fd-a3d2-60d955e8b542}</Project>
+      <Name>MonoGuiFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HexagonLibrary\HexagonLibrary.csproj">
       <Project>{4bf6e92f-62c0-484c-9c52-4d17f58db286}</Project>
       <Name>HexagonLibrary</Name>

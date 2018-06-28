@@ -9,9 +9,9 @@ namespace HexagonView.Controls
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    using WinSystem.Controls;
+    using MonoGuiFramework.Controls;
 
-    using WinSystem.System;
+    using MonoGuiFramework.System;
 
     public class StatisticObject
     {

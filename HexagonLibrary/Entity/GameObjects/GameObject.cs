@@ -9,8 +9,8 @@ namespace HexagonLibrary.Entity.GameObjects
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
-    using WinSystem.System;
-    using WinSystem.Controls;
+    using MonoGuiFramework.System;
+    using MonoGuiFramework.Controls;
 
     public enum TypeTexture
     {

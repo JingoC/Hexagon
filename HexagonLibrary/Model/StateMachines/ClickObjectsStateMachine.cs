@@ -10,7 +10,7 @@ namespace HexagonLibrary.Model.StateMachines
     using Entity.Players;
     using Entity.GameObjects;
 
-    using WinSystem.System;
+    using MonoGuiFramework.System;
 
     public enum TypeState
     {

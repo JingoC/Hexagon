@@ -8,7 +8,7 @@ namespace HexagonLibrary.Model.Navigation
     using HexagonLibrary.Entity.Players;
 
     using Entity.GameObjects;
-    using WinSystem.Controls;
+    using MonoGuiFramework.Controls;
 
     using Microsoft.Xna.Framework;
 

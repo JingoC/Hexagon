@@ -8,8 +8,8 @@ namespace HexagonView.Controls
 {
     using Microsoft.Xna.Framework.Graphics;
 
-    using WinSystem.System;
-    using WinSystem.Controls;
+    using MonoGuiFramework.System;
+    using MonoGuiFramework.Controls;
     using Microsoft.Xna.Framework;
 
     public class GameButton : Button
