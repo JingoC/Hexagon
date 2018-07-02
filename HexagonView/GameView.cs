@@ -34,18 +34,23 @@ namespace HexagonView
             this.Activities.Add(this.gamePage);
             this.Activities.Add(this.settingsPage);
             this.Activities.Add(this.startPage);
-            
-            var sttg_btn = this.startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("settingsGameButton"));
-            sttg_btn.OnClick += (s, e) => this.ActivitySelected = settingsPage;
+        }
 
-            var newgame_btn = this.startPage.Items.OfType<Button>().FirstOrDefault(x => x.Name.Equals("newGameButton"));
-            newgame_btn.OnClick += delegate (Object sender, EventArgs e)
+        protected override void Designer()
+        {
+            var sttg_btn = this.startPage.GetChild("settingsGameButton") as Button;
+            sttg_btn.OnClick += (s, ev) => this.ActivitySelected = settingsPage;
+
+            var newgame_btn = this.startPage.GetChild("newGameButton") as Button;
+            newgame_btn.OnClick += delegate (Object s, EventArgs ev)
             {
                 gamePage.SetSettings(settingsPage.GetSettings());
                 this.ActivitySelected = gamePage;
             };
 
             this.ActivitySelected = startPage;
+
+            base.Designer();
         }
     }
 }

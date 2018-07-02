@@ -9,9 +9,10 @@ namespace HexagonLibrary.Model.Navigation
 
     using Entity.GameObjects;
     using MonoGuiFramework.Controls;
+    using MonoGuiFramework.Base;
 
     using Microsoft.Xna.Framework;
-
+    
     public class Map : Container
     {
         private List<Player> players;
@@ -52,7 +53,7 @@ namespace HexagonLibrary.Model.Navigation
         {
             int x = item.Width * column + ((row % 2 == 0) ? 0 : (int)(24 * item.Scale));
             int y = item.Height * row + row * (int)(-12 * item.Scale);
-            item.Position = new Vector2(x, y);
+            item.Position = new Position(x, y);
             item.SectorId = row * this.Column + column;
             this.Items[row * this.Column + column] = item;
             this.Rows[row][column] = item;

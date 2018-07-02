@@ -15,6 +15,7 @@ namespace HexagonLibrary
     using Model.StateMachines;
     using MonoGuiFramework.Controls;
     using MonoGuiFramework.System;
+    using MonoGuiFramework.Base;
 
     public class Core : Container
     {

@@ -52,6 +52,9 @@ namespace HexagonLibrary.Entity.GameObjects
             
         }
 
+        public virtual Vector2 TextPosition { get; set; }
+        public virtual string Text { get; set; }
+
         public override void Designer()
         {
             this.TextureManager.Textures.AddRange(Resources.GetResources(new List<string> {

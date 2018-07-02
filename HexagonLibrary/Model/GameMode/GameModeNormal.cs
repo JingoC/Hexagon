@@ -14,6 +14,8 @@ namespace HexagonLibrary.Model.GameMode
 
     using Model.StateMachines;
 
+    using MonoGuiFramework.Base;
+
     public class GameModeNormal : GameModeStrategy
     {
         GameNormalStateMachine stateMachine;
@@ -53,13 +55,13 @@ namespace HexagonLibrary.Model.GameMode
         
         private void StateMachine_Attack_His(object sender, ClickObjectsStateMachineEventArgs e)
         {
-            this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
+            foreach (HexagonObject item in this.Map.Items) item.RestoreDefaultTexture();
             e.DestinationObject.TextureManager.Textures.Change((int)TypeTexture.UserActive0);
         }
 
         private void StateMachine_Attack_ChangeObject(object sender, ClickObjectsStateMachineEventArgs e)
         {
-            this.Map.Items.ForEach((x) => (x as HexagonObject).RestoreDefaultTexture());
+            foreach(HexagonObject item in this.Map.Items) item.RestoreDefaultTexture();
         }
 
         private void StateMachine_Attack_Free(object sender, ClickObjectsStateMachineEventArgs e)

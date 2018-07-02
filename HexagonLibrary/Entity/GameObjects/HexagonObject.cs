@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using MonoGuiFramework.Base;
 
 namespace HexagonLibrary.Entity.GameObjects
 {
@@ -26,13 +27,13 @@ namespace HexagonLibrary.Entity.GameObjects
         static public bool MaxLifeEnable { get; set; } = true;
         static public float ScaleHexagon { get; set; } = 1.5f;
 
-        public override Vector2 Position
+        public override Position Position
         {
             get => base.Position;
             set
             {
                 base.Position = value;
-                this.TextPosition = new Vector2(value.X + this.Width / 4 + 1, value.Y + this.Height / 4 - 1);
+                this.TextPosition = new Vector2(value.Absolute.X + this.Width / 4 + 1, value.Absolute.Y + this.Height / 4 - 1);
             }
         }
         public static HexagonObject Empty { get { return new HexagonObject(); } }

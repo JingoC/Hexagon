@@ -12,41 +12,53 @@ namespace HexagonView.View
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using MonoGuiFramework.Base;
+
+    using MonoGuiFramework.Containers;
 
     public class StartPageActivity : Activity
     {
-        Button newGame = new Button() { Name = "newGameButton", Scale = 2f };
-        Button settingsGame = new Button() { Name = "settingsGameButton", ForeColor = Color.White, Scale = 2f };
+        Button newGame;
+        Button settingsGame;
+
+        VerticalContainer menu;
 
         public StartPageActivity(Activity parent) : base(parent)
         {
             var graphics = GraphicsSingleton.GetInstance();
-            
-           
-            this.Items.Add(newGame);
-            this.Items.Add(settingsGame);
         }
 
         public override void Designer()
         {
             this.BackgroundImage = Resources.GetResource("background_startpage") as Texture2D;
 
+            this.menu = new VerticalContainer();
+            //this.menu.BorderColor = Color.Aqua;
+            this.menu.TextureScale = ScaleMode.Wrap;
+
+            this.newGame = new Button(this.menu) { Name = "newGameButton", Scale = 2f };
             this.newGame.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
             {
                 "btn_newgame_idle",
                 "btn_newgame_click"
             }).OfType<Texture2D>());
+            this.newGame.SetBounds(0, 0, this.newGame.Width, this.newGame.Height);
+            this.menu.Items.Add(this.newGame);
 
+            this.settingsGame = new Button(this.menu) { Name = "settingsGameButton", Scale = 2f };
             this.settingsGame.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
             {
                 "btn_settings_idle",
                 "btn_settings_click"
             }).OfType<Texture2D>());
+            this.settingsGame.SetBounds(0, 80, this.settingsGame.Width, this.settingsGame.Height);
+            this.menu.Items.Add(this.settingsGame);
+
+            this.menu.SetBounds(this.graphics.Width / 2 - this.menu.Width / 2, this.graphics.Height / 2 - this.menu.Height / 2, this.menu.Width, this.menu.Height);
+
+            this.Items.Add(this.menu);
 
             base.Designer();
-            
-            newGame.Position = new Vector2(this.Width / 2 - this.newGame.Width / 2, 100);
-            settingsGame.Position = new Vector2(this.Width / 2 - this.settingsGame.Width / 2, this.newGame.Position.Y + this.newGame.Height + 60);
         }
 
         public override void Draw(GameTime gameTime)

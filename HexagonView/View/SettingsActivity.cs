@@ -15,10 +15,11 @@ namespace HexagonView.View
     using MonoGuiFramework;
     using MonoGuiFramework.Controls;
     using MonoGuiFramework.System;
+    using MonoGuiFramework.Base;
 
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework;
-
+    
     using HexagonLibrary.Model.GameMode;
 
     public class SettingsActivity : Activity
@@ -81,7 +82,7 @@ namespace HexagonView.View
             }
 
             float w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
-            this.changeContainer.Position = new Vector2((w / 2) - (this.changeContainer.Width / 2), 5);
+            this.changeContainer.Position = new Position((int)((w / 2) - (this.changeContainer.Width / 2)), 5);
         }
 
         void Create()
@@ -91,11 +92,11 @@ namespace HexagonView.View
                 settings = new GameSettings();
 
             this.gamePlayContainer = new Container() { Visible = false };
-            this.gamePlayContainer.Position = new Vector2(0, 0);
+            this.gamePlayContainer.Position = new Position(0, 0);
             this.viewContainer = new Container() { Visible = true };
-            this.viewContainer.Position = new Vector2(0, 0);
+            this.viewContainer.Position = new Position(0, 0);
             this.modelingContainer = new Container() { Visible = false };
-            this.modelingContainer.Position = new Vector2(0, 0);
+            this.modelingContainer.Position = new Position(0, 0);
 
             // Changer
             this.players = new Changer(new ValueRange(2, 10));
@@ -247,16 +248,16 @@ namespace HexagonView.View
             float h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
 
             this.changeContainer.Text = this.headerContainer[0];
-            this.changeContainer.Position = new Vector2((w / 2) - (this.changeContainer.Width / 2), 5);
+            this.changeContainer.Position = new Position((int)((w / 2) - (this.changeContainer.Width / 2)), 5);
             
             float stepX = w / 64;
             float stepY = h / 8;
 
-            void SetPosition(IControl sc, float x, float y)
+            void SetPosition(Region sc, float x, float y)
             {
                 float _x = stepX * x;
                 float _y = stepY * y + stepY / 2 - sc.Height / 2;
-                sc.Position = new Vector2(_x, _y);
+                sc.Position = new Position((int)_x, (int)_y);
             };
 
             float c1_x = 1;
@@ -362,10 +363,10 @@ namespace HexagonView.View
             Designer_GamePlay();
             Designer_Modeling();
 
-            float yContainer = this.changeContainer.Height + this.changeContainer.Position.Y;
-            this.gamePlayContainer.Position = new Vector2(0, yContainer);
-            this.modelingContainer.Position = new Vector2(0, yContainer);
-            this.viewContainer.Position = new Vector2(0, yContainer);
+            float yContainer = this.changeContainer.Height + this.changeContainer.Position.Absolute.Y;
+            this.gamePlayContainer.Position = new Position(0, (int)yContainer);
+            this.modelingContainer.Position = new Position(0, (int)yContainer);
+            this.viewContainer.Position = new Position(0, (int)yContainer);
         }
 
         public GameSettings GetSettings()

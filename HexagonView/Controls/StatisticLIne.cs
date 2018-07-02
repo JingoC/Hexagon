@@ -51,8 +51,8 @@ namespace HexagonView.Controls
 
             double sum = this.Items.Sum(i => i.Value);
 
-            var x = this.Position.X;
-            var y = this.Position.Y;
+            var x = this.Position.Absolute.X;
+            var y = this.Position.Absolute.Y;
             var h = this.height;
 
             foreach (var item in this.Items)

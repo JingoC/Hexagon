@@ -18,15 +18,17 @@ namespace HexagonView.Controls
         {
             get
             {
-                if (this.Texture != null)
+                if (this.TextureManager.Textures.Current != null)
                 {
-                    float tx = this.Position.X;
-                    float ty = this.Position.Y;
+                    float tx = this.Position.Absolute.X;
+                    float ty = this.Position.Absolute.Y;
                     float tw = this.Width;
                     float th = this.Height;
 
-                    float w = (int)this.Font.MeasureString(this.Text).X;
-                    float h = this.Font.GetGlyphs().First(v => v.Value.Character == '0').Value.BoundsInTexture.Height;
+                    var font = this.TextureManager.Fonts.Current;
+
+                    float w = (int)font.MeasureString(this.Text).X;
+                    float h = font.GetGlyphs().First(v => v.Value.Character == '0').Value.BoundsInTexture.Height;
 
                     float x = tx + (tw / 2) - (w / 2);
                     float y = ty + (th / (1.5f * 2)) - (h / 2);
@@ -45,7 +47,7 @@ namespace HexagonView.Controls
 
         public override void Designer()
         {
-            if (this.Texture == null)
+            if (this.TextureManager.Textures.Current == null)
             {
                 this.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
                 {
@@ -57,7 +59,7 @@ namespace HexagonView.Controls
                 }).OfType<Texture2D>());
             }
 
-            if (this.Font == null)
+            if (this.TextureManager.Fonts.Current == null)
             {
                 this.TextureManager.Fonts.Add(Resources.GetResource("gameBtnFont") as SpriteFont);
             }

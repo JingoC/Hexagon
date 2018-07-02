@@ -17,6 +17,7 @@ namespace HexagonView.View
     using HexagonLibrary.Entity.GameObjects;
 
     using HexagonView.Controls;
+    using MonoGuiFramework.Base;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -42,7 +43,7 @@ namespace HexagonView.View
         Core core;
         GameSettings gameSettings;
 
-        Label endMessageLabel = new Label() { Text = String.Empty, ForeColor = Color.Green, Visible = false, ZIndex = 1 };
+        Label endMessageLabel = new Label() { Text = String.Empty, ForeColor = Color.Green, Visible = false, DrawOrder = 1 };
 
         StatisticLine balanceLineSectors;
         StatisticLine balanceLineLife;
@@ -174,10 +175,10 @@ namespace HexagonView.View
         public override void Designer()
         {
             this.balanceLineSectors = new StatisticLine(this.Width, 10);
-            this.balanceLineSectors.ZIndex = 1;
+            this.balanceLineSectors.DrawOrder = 1;
 
             this.balanceLineLife = new StatisticLine(this.Width, 10);
-            this.balanceLineLife.ZIndex = 1;
+            this.balanceLineLife.DrawOrder = 1;
             this.gameStatusContainer.Items.Add(this.balanceLineSectors);
             this.gameStatusContainer.Items.Add(this.balanceLineLife);
 
@@ -187,25 +188,25 @@ namespace HexagonView.View
             this.autoAllocationButton.TextureManager.Textures.Change(0);
             this.startModelButton.TextureManager.Textures.Change(4);
             
-            this.statusLabel.Position = new Vector2(5, 2);
-            this.balanceLineSectors.Position = new Vector2(2, this.statusLabel.Height + this.statusLabel.Position.Y + 10);
-            this.balanceLineLife.Position = new Vector2(2, this.balanceLineSectors.Height + this.balanceLineSectors.Position.Y);
-            this.gameStatusContainer.Position = new Vector2(0, 0);
+            this.statusLabel.Position = new Position(5, 2);
+            this.balanceLineSectors.Position = new Position(2, this.statusLabel.Height + (int)this.statusLabel.Position.Absolute.Y + 10);
+            this.balanceLineLife.Position = new Position(2, this.balanceLineSectors.Height + (int)this.balanceLineSectors.Position.Absolute.Y);
+            this.gameStatusContainer.Position = new Position(0, 0);
 
-            this.newGameButton.Position = new Vector2(10, 10);
-            this.gameControlButton.Position = new Vector2(10, this.newGameButton.Position.Y + this.newGameButton.Height + 40);
-            this.autoAllocationButton.Position = new Vector2(10, this.gameControlButton.Position.Y + this.gameControlButton.Height + 40);
-            this.startModelButton.Position = new Vector2(10, this.autoAllocationButton.Position.Y + this.autoAllocationButton.Height + 40);
+            this.newGameButton.Position = new Position(10, 10);
+            this.gameControlButton.Position = new Position(10, (int)(this.newGameButton.Position.Absolute.Y + this.newGameButton.Height + 40));
+            this.autoAllocationButton.Position = new Position(10, (int)(this.gameControlButton.Position.Absolute.Y + this.gameControlButton.Height + 40));
+            this.startModelButton.Position = new Position(10, (int)(this.autoAllocationButton.Position.Absolute.Y + this.autoAllocationButton.Height + 40));
 
             int w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
             int h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
 
-            this.menu.Position = new Vector2(w - this.menu.Width - 20, h / 2 - this.menu.Height / 2);
+            this.menu.Position = new Position(w - this.menu.Width - 20, h / 2 - this.menu.Height / 2);
 
             this.endMessageLabel.Text = "You Win!";
             this.endMessageLabel.TextureManager.Fonts.Add(Resources.GetResource("endMessageFont") as SpriteFont);
             this.endMessageLabel.TextureManager.Fonts.Change(this.endMessageLabel.TextureManager.Fonts.Count() - 1);
-            this.endMessageLabel.Position = new Vector2(this.Width / 2 - this.endMessageLabel.Width / 2,
+            this.endMessageLabel.Position = new Position(this.Width / 2 - this.endMessageLabel.Width / 2,
                 this.Height / 2 - this.endMessageLabel.Height / 2);
         }
 
@@ -314,7 +315,7 @@ namespace HexagonView.View
 
             this.gameStatus = new GameStatus();
             this.statusLabel.Text = this.gameStatus.ToString();
-            this.core.Position = new Vector2(10, this.gameStatusContainer.Position.Y + this.gameStatusContainer.Height + 15);
+            this.core.Position = new Position(10, (int)this.gameStatusContainer.Position.Absolute.Y + this.gameStatusContainer.Height + 15);
 
             this.gameControlButton.TextureManager.Textures.Change(0);
             this.gameControlButton.Text = String.Empty;
