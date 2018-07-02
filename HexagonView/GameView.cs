@@ -21,15 +21,18 @@ namespace HexagonView
     {
         List<Activity> views = new List<Activity>();
 
-        StartPageActivity startPage = new StartPageActivity(null) { Name = "StartPage" };
-        GameActivity gamePage = new GameActivity(null) { Name = "GamePage" };
-        SettingsActivity settingsPage = new SettingsActivity(null) { Name = "SettingsPage" };
+        StartPageActivity startPage;
+        GameActivity gamePage;
+        SettingsActivity settingsPage;
         
 
         public GameView() : base()
         {
-            this.gamePage.Parent = this.startPage;
-            this.settingsPage.Parent = this.startPage;
+            this.startPage = new StartPageActivity(null) { Name = "StartPage" };
+            this.gamePage = new GameActivity(startPage) { Name = "GamePage" };
+            this.settingsPage = new SettingsActivity(startPage) { Name = "SettingsPage" };
+
+            this.ActivitySelected = startPage;
 
             this.Activities.Add(this.gamePage);
             this.Activities.Add(this.settingsPage);
@@ -47,9 +50,7 @@ namespace HexagonView
                 gamePage.SetSettings(settingsPage.GetSettings());
                 this.ActivitySelected = gamePage;
             };
-
-            this.ActivitySelected = startPage;
-
+            
             base.Designer();
         }
     }

@@ -13,6 +13,7 @@ namespace HexagonView.View
     using Newtonsoft.Json.Serialization;
 
     using MonoGuiFramework;
+    using MonoGuiFramework.Containers;
     using MonoGuiFramework.Controls;
     using MonoGuiFramework.System;
     using MonoGuiFramework.Base;
@@ -21,7 +22,7 @@ namespace HexagonView.View
     using Microsoft.Xna.Framework;
     
     using HexagonLibrary.Model.GameMode;
-
+    
     public class SettingsActivity : Activity
     {
         static string fileSettingsPath = "settings.json";
@@ -61,65 +62,41 @@ namespace HexagonView.View
 
         Changer scaleHexagon;
         Label scaleHexagonInfo;
-
-        Changer changeContainer;
-
-        Container gamePlayContainer;
-        Container viewContainer;
-        Container modelingContainer;
-
-        string[] headerContainer = { "View", "GamePlay", "Modeling" };
-
-        void ChangeContainer()
-        {
-            var type = (int)this.changeContainer.Current.Value;
-            this.changeContainer.Text = this.headerContainer[type];
-            switch(type)
-            {
-                case 0: this.gamePlayContainer.Visible = this.modelingContainer.Visible = false; this.viewContainer.Visible = true; break;
-                case 1: this.viewContainer.Visible = this.modelingContainer.Visible = false; this.gamePlayContainer.Visible = true; break;
-                case 2: this.gamePlayContainer.Visible = this.viewContainer.Visible = false; this.modelingContainer.Visible = true; break;
-            }
-
-            float w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
-            this.changeContainer.Position = new Position((int)((w / 2) - (this.changeContainer.Width / 2)), 5);
-        }
-
+        
+        Activity viewActivity;
+        Activity modelingActivity;
+        
         void Create()
         {
             var settings = this.LoadSettings();
             if (settings == null)
                 settings = new GameSettings();
 
-            this.gamePlayContainer = new Container() { Visible = false };
-            this.gamePlayContainer.Position = new Position(0, 0);
-            this.viewContainer = new Container() { Visible = true };
-            this.viewContainer.Position = new Position(0, 0);
-            this.modelingContainer = new Container() { Visible = false };
-            this.modelingContainer.Position = new Position(0, 0);
+            this.Name = "GamePlay";
+            this.viewActivity = new Activity(this.Parent);
+            this.viewActivity.Name = "View";
+            this.modelingActivity = new Activity(this.Parent);
+            this.modelingActivity.Name = "Modeling";
 
-            // Changer
+            this.Navigation[(int)TypeNavigationActivity.Right] = this.viewActivity;
+            this.viewActivity.Navigation[(int)TypeNavigationActivity.Left] = this;
+            this.Navigation[(int)TypeNavigationActivity.Left] = this.modelingActivity;
+            this.modelingActivity.Navigation[(int)TypeNavigationActivity.Right] = this;
+            
             this.players = new Changer(new ValueRange(2, 10));
             this.players.Step = 1;
             this.players.Current.Value = settings.CountPlayers;
-
-
-            // Label
             this.playersInfo = new Label() { Text = "Count Player ", ForeColor = Color.White };
 
-            // Toggle
             this.modeling = new Toggle(settings.GameMode == TypeGameMode.Modeling);
             this.modelInfo = new Label() { Text = "Modeling", ForeColor = Color.White };
 
-            // Changer
             this.modelTiming = new Changer(new ValueRange(0, 1000));
             this.modelTiming.Current.Value = settings.ModelStepTiming;
             this.modelTiming.Step = 50;
 
-            // Label
             this.modelTimingInfo = new Label() { Text = $"StepTime {Environment.NewLine}(ms)", ForeColor = Color.White };
 
-            // Changer
             this.rows = new Changer(new ValueRange(4, 100)) { Step = 1, Name = "RowChanger" };
             this.rows.Current.Value = settings.MapSize.Width;
 
@@ -178,56 +155,12 @@ namespace HexagonView.View
 
             // Label
             this.scaleHexagonInfo = new Label() { Text = "Scale", ForeColor = Color.White };
-
-            // Changer
-            this.changeContainer = new Changer(new ValueRange(0, 2)) { Text = "View", ForeColor = Color.White, Step = 1 };
-            this.changeContainer.Current.Value = 0;
-            this.changeContainer.Text = this.headerContainer[0];
-            this.changeContainer.ClickToUp += (s, e) => this.ChangeContainer();
-            this.changeContainer.ClickToDown += (s, e) => this.ChangeContainer();
-            
         }
 
         public SettingsActivity(Activity parent) : base(parent)
         {
+            this.Parent = parent;
             this.Create();
-            
-            // view
-            this.viewContainer.Items.Add(this.lifeEnable);
-            this.viewContainer.Items.Add(this.lifeEnableInfo);
-            this.viewContainer.Items.Add(this.lootEnable);
-            this.viewContainer.Items.Add(this.lootEnableInfo);
-            this.viewContainer.Items.Add(this.maxLifeEnable);
-            this.viewContainer.Items.Add(this.maxLifeEnableInfo);
-            this.viewContainer.Items.Add(this.scaleHexagon);
-            this.viewContainer.Items.Add(this.scaleHexagonInfo);
-            
-            // gamePlay
-            this.gamePlayContainer.Items.Add(this.players);
-            this.gamePlayContainer.Items.Add(this.playersInfo);
-            this.gamePlayContainer.Items.Add(this.rows);
-            this.gamePlayContainer.Items.Add(this.rowsInfo);
-            this.gamePlayContainer.Items.Add(this.columns);
-            this.gamePlayContainer.Items.Add(this.columnsInfo);
-            this.gamePlayContainer.Items.Add(this.percentBonus);
-            this.gamePlayContainer.Items.Add(this.percentBonusInfo);
-            this.gamePlayContainer.Items.Add(this.percentBlocked);
-            this.gamePlayContainer.Items.Add(this.percentBlockedInfo);
-            this.gamePlayContainer.Items.Add(this.lootPointForCreate);
-            this.gamePlayContainer.Items.Add(this.lootPointForCreateInfo);
-            
-            // modeling
-            this.modelingContainer.Items.Add(this.modelInfo);
-            this.modelingContainer.Items.Add(this.modeling);
-            this.modelingContainer.Items.Add(this.modelTiming);
-            this.modelingContainer.Items.Add(this.modelTimingInfo);
-
-            this.Items.Add(this.changeContainer);
-            this.Items.Add(this.viewContainer);
-            this.Items.Add(this.gamePlayContainer);
-            this.Items.Add(this.modelingContainer);
-
-            this.LoadSettings();
         }
 
         void SaveSettings(GameSettings settings)
@@ -244,70 +177,115 @@ namespace HexagonView.View
         {
             base.Designer();
 
-            float w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
-            float h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
-
-            this.changeContainer.Text = this.headerContainer[0];
-            this.changeContainer.Position = new Position((int)((w / 2) - (this.changeContainer.Width / 2)), 5);
-            
-            float stepX = w / 64;
-            float stepY = h / 8;
-
-            void SetPosition(Region sc, float x, float y)
-            {
-                float _x = stepX * x;
-                float _y = stepY * y + stepY / 2 - sc.Height / 2;
-                sc.Position = new Position((int)_x, (int)_y);
-            };
-
-            float c1_x = 1;
-            float c2_x = 7;
-            float c3_x = 20;
-            float c4_x = 27;
-            float c5_x = 39;
-            float c6_x = 46;
-
-            float r1_y = 0;
-            float r2_y = 1;
-            float r3_y = 2;
-            float r4_y = 3;
-            float r5_y = 4;
+            float w = this.graphics.Width;
+            float h = this.graphics.Height;
 
             void Designer_GamePlay()
             {
-                // R1 - C1
-                SetPosition(this.playersInfo, c1_x, r1_y);
-                SetPosition(this.players, c2_x, r1_y);
-                // R1 - C3
-                SetPosition(this.percentBonusInfo, c3_x, r1_y);
-                SetPosition(this.percentBonus, c4_x, r1_y);
-                // R1 - C5
-                // R1 - C7
-                // R2 - C1
-                SetPosition(this.rowsInfo, c1_x, r2_y);
-                SetPosition(this.rows, c2_x, r2_y);
-                // R2 - C3
-                SetPosition(this.percentBlockedInfo, c3_x, r2_y);
-                SetPosition(this.percentBlocked, c4_x, r2_y);
-                // R2 - C5
-                // R2 - C7
-                // R3 - C1
-                SetPosition(this.columnsInfo, c1_x, r3_y);
-                SetPosition(this.columns, c2_x, r3_y);
-                // R3 - C3
-                SetPosition(this.lootPointForCreateInfo, c3_x, r3_y);
-                SetPosition(this.lootPointForCreate, c4_x, r3_y);
-                // R3 - C5
-                // R3 - C7
-                // R4 - C1
-                // R4 - C3
-                // R4 - C5
-                // R4 - C7
+                VerticalContainer rows = new VerticalContainer(this) { TextureScale = ScaleMode.None };
+                rows.BorderColor = Color.Yellow;
+                rows.SetBounds(0, 0, (int)w, (int)h);
 
+                HorizontalContainer row1 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
+                row1.BorderColor = Color.Blue;
+                row1.SetBounds(0, 0, (int)w, 100);
+
+                HorizontalContainer r1c1 = new HorizontalContainer(row1) { TextureScale = ScaleMode.None };
+                r1c1.SetBounds(0, 0, 200, 100);
+
+                this.playersInfo.BorderColor = Color.Green;
+                this.playersInfo.SetBounds(0, 0, 1, 1);
+                this.players.BorderColor = Color.Green;
+                this.players.SetBounds(10, 0, 100, 100);
+                
+                r1c1.Items.Add(this.playersInfo);
+                r1c1.Items.Add(this.players);
+                
+                HorizontalContainer r1c2 = new HorizontalContainer(row1) { TextureScale = ScaleMode.None };
+                r1c2.BorderColor = Color.Brown;
+                r1c2.SetBounds(0, 0, 200, 100);
+
+                this.percentBlockedInfo.SetBounds(0, 0, 10, 10);
+                this.percentBlocked.SetBounds(10, 0, 100, 100);
+
+                r1c2.Items.Add(this.percentBlockedInfo);
+                r1c2.Items.Add(this.percentBlocked);
+                
+                HorizontalContainer row2 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
+                row2.BorderColor = Color.Red;
+                row2.SetBounds(0, 0, (int)w, 100);
+
+                HorizontalContainer r2c1 = new HorizontalContainer(row2) { TextureScale = ScaleMode.None };
+                r2c1.SetBounds(0, 0, 200, 100);
+
+                this.rowsInfo.SetBounds(0, 0, 1, 1);
+                this.rows.SetBounds(10, 0, 100, 100);
+
+                r2c1.Items.Add(this.rowsInfo);
+                r2c1.Items.Add(this.rows);
+
+                HorizontalContainer r2c2 = new HorizontalContainer(row2) { TextureScale = ScaleMode.None };
+                r2c2.SetBounds(0, 0, 200, 100);
+
+                this.percentBonusInfo.SetBounds(0, 0, 1, 1);
+                this.percentBonus.SetBounds(10, 0, 100, 100);
+
+                r2c2.Items.Add(this.percentBonusInfo);
+                r2c2.Items.Add(this.percentBonus);
+
+                HorizontalContainer row3 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
+                row3.SetBounds(0, 0, (int)w, 100);
+
+                HorizontalContainer r3c1 = new HorizontalContainer(row3) { TextureScale = ScaleMode.None };
+                r3c1.SetBounds(0, 0, 200, 100);
+
+                this.columnsInfo.SetBounds(0, 0, 1, 1);
+                this.columns.SetBounds(10, 0, 100, 100);
+
+                r3c1.Items.Add(this.columnsInfo);
+                r3c1.Items.Add(this.columns);
+
+                HorizontalContainer r3c2 = new HorizontalContainer(row3) { TextureScale = ScaleMode.None };
+                r3c2.SetBounds(0, 0, 200, 100);
+
+                this.lootPointForCreateInfo.SetBounds(0, 0, 1, 1);
+                this.lootPointForCreate.SetBounds(10, 0, 100, 100);
+
+                r3c2.Items.Add(this.lootPointForCreateInfo);
+                r3c2.Items.Add(this.lootPointForCreate);
+                
+                // gamePlay
+                row1.Items.Add(r1c1);
+                row1.Items.Add(r1c2);
+                row2.Items.Add(r2c1);
+                row2.Items.Add(r2c2);
+                row3.Items.Add(r3c1);
+                row3.Items.Add(r3c2);
+                
+                rows.Items.Add(row1);
+                rows.Items.Add(row2);
+                rows.Items.Add(row3);
+
+                this.Items.Add(rows);
+                this.SetBounds(0, 0, this.Width, this.Height);
             }
 
             void Designer_View()
             {
+                
+                this.scaleHexagonInfo.SetBounds(10, 10, 100, 100);
+                this.scaleHexagonInfo.BorderColor = Color.Red;
+                this.scaleHexagon.SetBounds(200, 200, 100, 100);
+                this.scaleHexagon.BorderColor = Color.Yellow;
+
+                Changer c = new Changer(new ValueRange(10, 200));
+                c.BorderColor = Color.White;
+                c.SetBounds(400, 400, 1, 1);
+
+                this.viewActivity.Items.Add(this.scaleHexagon);
+                this.viewActivity.Items.Add(this.scaleHexagonInfo);
+                this.viewActivity.Items.Add(c);
+                /*
                 // R1 - C1
                 SetPosition(this.scaleHexagonInfo, c1_x, r1_y);
                 SetPosition(this.scaleHexagon, c2_x, r1_y);
@@ -333,10 +311,22 @@ namespace HexagonView.View
                 // R4 - C5
                 // R4 - C7
 
+                // view
+                this.viewContainer.Items.Add(this.lifeEnable);
+                this.viewContainer.Items.Add(this.lifeEnableInfo);
+                this.viewContainer.Items.Add(this.lootEnable);
+                this.viewContainer.Items.Add(this.lootEnableInfo);
+                this.viewContainer.Items.Add(this.maxLifeEnable);
+                this.viewContainer.Items.Add(this.maxLifeEnableInfo);
+                this.viewContainer.Items.Add(this.scaleHexagon);
+                this.viewContainer.Items.Add(this.scaleHexagonInfo);
+                */
+
             }
 
             void Designer_Modeling()
             {
+                /*
                 // R1 - C1
                 SetPosition(this.modelInfo, c1_x, r1_y);
                 SetPosition(this.modeling, c2_x, r1_y);
@@ -357,16 +347,22 @@ namespace HexagonView.View
                 // R4 - C3
                 // R4 - C5
                 // R4 - C7
+                // modeling
+                this.modelingContainer.Items.Add(this.modelInfo);
+                this.modelingContainer.Items.Add(this.modeling);
+                this.modelingContainer.Items.Add(this.modelTiming);
+                this.modelingContainer.Items.Add(this.modelTimingInfo);
+
+                this.Items.Add(this.changeContainer);
+                this.Items.Add(this.viewContainer);
+                this.Items.Add(this.gamePlayContainer);
+                this.Items.Add(this.modelingContainer);
+                */
             }
 
             Designer_View();
             Designer_GamePlay();
             Designer_Modeling();
-
-            float yContainer = this.changeContainer.Height + this.changeContainer.Position.Absolute.Y;
-            this.gamePlayContainer.Position = new Position(0, (int)yContainer);
-            this.modelingContainer.Position = new Position(0, (int)yContainer);
-            this.viewContainer.Position = new Position(0, (int)yContainer);
         }
 
         public GameSettings GetSettings()
