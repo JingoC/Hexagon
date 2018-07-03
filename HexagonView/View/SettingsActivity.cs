@@ -175,8 +175,6 @@ namespace HexagonView.View
         
         public override void Designer()
         {
-            base.Designer();
-
             float w = this.graphics.Width;
             float h = this.graphics.Height;
 
@@ -267,6 +265,7 @@ namespace HexagonView.View
                 rows.Items.Add(row3);
 
                 this.Items.Add(rows);
+                
                 this.SetBounds(0, 0, this.Width, this.Height);
             }
 
@@ -322,6 +321,8 @@ namespace HexagonView.View
                 this.viewContainer.Items.Add(this.scaleHexagonInfo);
                 */
 
+                this.viewActivity.SetBounds(0, 0, this.Width, this.Height);
+                this.viewActivity.Designer();
             }
 
             void Designer_Modeling()
@@ -363,6 +364,8 @@ namespace HexagonView.View
             Designer_View();
             Designer_GamePlay();
             Designer_Modeling();
+
+            base.Designer();
         }
 
         public GameSettings GetSettings()
