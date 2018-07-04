@@ -188,7 +188,7 @@ namespace HexagonView.View
                 row1.BorderColor = Color.Blue;
                 row1.SetBounds(0, 0, (int)w, 100);
 
-                HorizontalContainer r1c1 = new HorizontalContainer(row1) { TextureScale = ScaleMode.None };
+                HorizontalContainer r1c1 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
                 r1c1.SetBounds(0, 0, 200, 100);
 
                 this.playersInfo.BorderColor = Color.Green;
@@ -199,7 +199,7 @@ namespace HexagonView.View
                 r1c1.Items.Add(this.playersInfo);
                 r1c1.Items.Add(this.players);
                 
-                HorizontalContainer r1c2 = new HorizontalContainer(row1) { TextureScale = ScaleMode.None };
+                HorizontalContainer r1c2 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
                 r1c2.BorderColor = Color.Brown;
                 r1c2.SetBounds(0, 0, 200, 100);
 
@@ -213,7 +213,7 @@ namespace HexagonView.View
                 row2.BorderColor = Color.Red;
                 row2.SetBounds(0, 0, (int)w, 100);
 
-                HorizontalContainer r2c1 = new HorizontalContainer(row2) { TextureScale = ScaleMode.None };
+                HorizontalContainer r2c1 = new HorizontalContainer(row2) { TextureScale = ScaleMode.Wrap };
                 r2c1.SetBounds(0, 0, 200, 100);
 
                 this.rowsInfo.SetBounds(0, 0, 1, 1);
@@ -222,7 +222,7 @@ namespace HexagonView.View
                 r2c1.Items.Add(this.rowsInfo);
                 r2c1.Items.Add(this.rows);
 
-                HorizontalContainer r2c2 = new HorizontalContainer(row2) { TextureScale = ScaleMode.None };
+                HorizontalContainer r2c2 = new HorizontalContainer(row2) { TextureScale = ScaleMode.Wrap };
                 r2c2.SetBounds(0, 0, 200, 100);
 
                 this.percentBonusInfo.SetBounds(0, 0, 1, 1);
@@ -234,7 +234,7 @@ namespace HexagonView.View
                 HorizontalContainer row3 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
                 row3.SetBounds(0, 0, (int)w, 100);
 
-                HorizontalContainer r3c1 = new HorizontalContainer(row3) { TextureScale = ScaleMode.None };
+                HorizontalContainer r3c1 = new HorizontalContainer(row3) { TextureScale = ScaleMode.Wrap };
                 r3c1.SetBounds(0, 0, 200, 100);
 
                 this.columnsInfo.SetBounds(0, 0, 1, 1);
@@ -243,7 +243,7 @@ namespace HexagonView.View
                 r3c1.Items.Add(this.columnsInfo);
                 r3c1.Items.Add(this.columns);
 
-                HorizontalContainer r3c2 = new HorizontalContainer(row3) { TextureScale = ScaleMode.None };
+                HorizontalContainer r3c2 = new HorizontalContainer(row3) { TextureScale = ScaleMode.Wrap };
                 r3c2.SetBounds(0, 0, 200, 100);
 
                 this.lootPointForCreateInfo.SetBounds(0, 0, 1, 1);
@@ -271,94 +271,102 @@ namespace HexagonView.View
 
             void Designer_View()
             {
+                VerticalContainer rows = new VerticalContainer(this) { TextureScale = ScaleMode.None };
+                rows.BorderColor = Color.Yellow;
+                rows.SetBounds(0, 0, (int)w, (int)h);
+
+                HorizontalContainer row1 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
+                row1.BorderColor = Color.Blue;
+                row1.SetBounds(0, 0, (int)w, 100);
+
+                HorizontalContainer r1c1 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
+                r1c1.SetBounds(0, 0, 200, 100);
+
+                this.lifeEnableInfo.SetBounds(0, 0, 1, 1);
+                this.lifeEnable.SetBounds(0, 0, 1, 1);
+
+                r1c1.Items.Add(this.lifeEnableInfo);
+                r1c1.Items.Add(this.lifeEnable);
+
+                HorizontalContainer r1c2 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
+                r1c2.SetBounds(0, 0, 200, 100);
+
+                this.scaleHexagonInfo.SetBounds(0, 0, 100, 100);
+                this.scaleHexagon.SetBounds(0, 0, 100, 100);
+
+                r1c2.Items.Add(this.scaleHexagonInfo);
+                r1c2.Items.Add(this.scaleHexagon);
+
+                HorizontalContainer row2 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
+                row2.BorderColor = Color.Blue;
+                row2.SetBounds(0, 0, (int)w, 100);
                 
-                this.scaleHexagonInfo.SetBounds(10, 10, 100, 100);
-                this.scaleHexagonInfo.BorderColor = Color.Red;
-                this.scaleHexagon.SetBounds(200, 200, 100, 100);
-                this.scaleHexagon.BorderColor = Color.Yellow;
+                HorizontalContainer r2c1 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
+                r2c1.SetBounds(0, 0, 200, 100);
 
-                Changer c = new Changer(new ValueRange(10, 200));
-                c.BorderColor = Color.White;
-                c.SetBounds(400, 400, 1, 1);
+                r2c1.Items.Add(this.lootEnableInfo);
+                r2c1.Items.Add(this.lootEnable);
 
-                this.viewActivity.Items.Add(this.scaleHexagon);
-                this.viewActivity.Items.Add(this.scaleHexagonInfo);
-                this.viewActivity.Items.Add(c);
-                /*
-                // R1 - C1
-                SetPosition(this.scaleHexagonInfo, c1_x, r1_y);
-                SetPosition(this.scaleHexagon, c2_x, r1_y);
-                // R1 - C3
-                // R1 - C5
-                SetPosition(this.lifeEnableInfo, c5_x, r1_y);
-                SetPosition(this.lifeEnable, c6_x, r1_y);
-                // R1 - C7
-                // R2 - C1
-                // R2 - C3
-                // R2 - C5
-                SetPosition(this.lootEnableInfo, c5_x, r2_y);
-                SetPosition(this.lootEnable, c6_x, r2_y);
-                // R2 - C7
-                // R3 - C1
-                // R3 - C3
-                // R3 - C5
-                SetPosition(this.maxLifeEnableInfo, c5_x, r3_y);
-                SetPosition(this.maxLifeEnable, c6_x, r3_y);
-                // R3 - C7
-                // R4 - C1
-                // R4 - C3
-                // R4 - C5
-                // R4 - C7
+                HorizontalContainer row3 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
+                row3.BorderColor = Color.Blue;
+                row3.SetBounds(0, 0, (int)w, 100);
 
-                // view
-                this.viewContainer.Items.Add(this.lifeEnable);
-                this.viewContainer.Items.Add(this.lifeEnableInfo);
-                this.viewContainer.Items.Add(this.lootEnable);
-                this.viewContainer.Items.Add(this.lootEnableInfo);
-                this.viewContainer.Items.Add(this.maxLifeEnable);
-                this.viewContainer.Items.Add(this.maxLifeEnableInfo);
-                this.viewContainer.Items.Add(this.scaleHexagon);
-                this.viewContainer.Items.Add(this.scaleHexagonInfo);
-                */
+                HorizontalContainer r3c1 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
+                r3c1.SetBounds(0, 0, 200, 100);
 
+                r3c1.Items.Add(this.maxLifeEnableInfo);
+                r3c1.Items.Add(this.maxLifeEnable);
+
+                row1.Items.Add(r1c1);
+                row1.Items.Add(r1c2);
+                row2.Items.Add(r2c1);
+                row3.Items.Add(r3c1);
+
+                rows.Items.Add(row1);
+                rows.Items.Add(row2);
+                rows.Items.Add(row3);
+
+                this.viewActivity.Items.Add(rows);
                 this.viewActivity.SetBounds(0, 0, this.Width, this.Height);
                 this.viewActivity.Designer();
             }
 
             void Designer_Modeling()
             {
-                /*
-                // R1 - C1
-                SetPosition(this.modelInfo, c1_x, r1_y);
-                SetPosition(this.modeling, c2_x, r1_y);
-                // R1 - C3
-                // R1 - C5
-                // R1 - C7
-                // R2 - C1
-                SetPosition(this.modelTimingInfo, c1_x, r2_y);
-                SetPosition(this.modelTiming, c2_x, r2_y);
-                // R2 - C3
-                // R2 - C5
-                // R2 - C7
-                // R3 - C1
-                // R3 - C3
-                // R3 - C5
-                // R3 - C7
-                // R4 - C1
-                // R4 - C3
-                // R4 - C5
-                // R4 - C7
-                // modeling
-                this.modelingContainer.Items.Add(this.modelInfo);
-                this.modelingContainer.Items.Add(this.modeling);
-                this.modelingContainer.Items.Add(this.modelTiming);
-                this.modelingContainer.Items.Add(this.modelTimingInfo);
+                VerticalContainer rows = new VerticalContainer(this) { TextureScale = ScaleMode.None };
+                rows.BorderColor = Color.Yellow;
+                rows.SetBounds(0, 0, (int)w, (int)h);
 
-                this.Items.Add(this.changeContainer);
-                this.Items.Add(this.viewContainer);
-                this.Items.Add(this.gamePlayContainer);
-                this.Items.Add(this.modelingContainer);
-                */
+                HorizontalContainer row1 = new HorizontalContainer(rows) { TextureScale = ScaleMode.None };
+                row1.BorderColor = Color.Blue;
+                row1.SetBounds(0, 0, (int)w, 100);
+
+                HorizontalContainer r1c1 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
+                r1c1.SetBounds(0, 0, 200, 100);
+
+                this.modelInfo.SetBounds(0, 0, 1, 1);
+                this.modeling.SetBounds(0, 0, 1, 1);
+
+                r1c1.Items.Add(this.modelInfo);
+                r1c1.Items.Add(this.modeling);
+
+                HorizontalContainer r1c2 = new HorizontalContainer(row1) { TextureScale = ScaleMode.Wrap };
+                r1c2.SetBounds(0, 0, 200, 100);
+
+                this.modelTimingInfo.SetBounds(0, 0, 1, 1);
+                this.modelTiming.SetBounds(0, 0, 1, 1);
+
+                r1c2.Items.Add(this.modelTimingInfo);
+                r1c2.Items.Add(this.modelTiming);
+
+                row1.Items.Add(r1c1);
+                row1.Items.Add(r1c2);
+
+                rows.Items.Add(row1);
+
+                this.modelingActivity.Items.Add(rows);
+                this.modelingActivity.SetBounds(0, 0, this.Width, this.Height);
+                this.modelingActivity.Designer();
             }
 
             Designer_View();
