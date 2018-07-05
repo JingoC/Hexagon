@@ -26,6 +26,7 @@ namespace HexagonView.View
         public StartPageActivity(Activity parent) : base(parent)
         {
             var graphics = GraphicsSingleton.GetInstance();
+            this.Designer();
         }
 
         public override void Designer()
@@ -33,8 +34,6 @@ namespace HexagonView.View
             this.BackgroundImage = Resources.GetResource("background_startpage") as Texture2D;
 
             this.menu = new VerticalContainer();
-            //this.menu.BorderColor = Color.Aqua;
-            this.menu.TextureScale = ScaleMode.Wrap;
 
             this.newGame = new Button(this.menu) { Name = "newGameButton", Scale = 2f };
             this.newGame.TextureManager.Textures.AddRange(Resources.GetResources(new List<string>()
@@ -42,7 +41,7 @@ namespace HexagonView.View
                 "btn_newgame_idle",
                 "btn_newgame_click"
             }).OfType<Texture2D>());
-            this.newGame.SetBounds(0, 0, this.newGame.Width, this.newGame.Height);
+            this.newGame.Position = new Position(0, 0);
             this.menu.Items.Add(this.newGame);
 
             this.settingsGame = new Button(this.menu) { Name = "settingsGameButton", Scale = 2f };
@@ -51,7 +50,7 @@ namespace HexagonView.View
                 "btn_settings_idle",
                 "btn_settings_click"
             }).OfType<Texture2D>());
-            this.settingsGame.SetBounds(0, 80, this.settingsGame.Width, this.settingsGame.Height);
+            this.settingsGame.Position = new Position(0, 80);
             this.menu.Items.Add(this.settingsGame);
 
             this.menu.SetBounds(this.graphics.Width / 2 - this.menu.Width / 2, this.graphics.Height / 2 - this.menu.Height / 2, this.menu.Width, this.menu.Height);

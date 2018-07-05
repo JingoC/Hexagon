@@ -88,7 +88,7 @@ namespace HexagonView.View
             this.players.Current.Value = settings.CountPlayers;
             this.playersInfo = new Label() { Text = "Count Player ", ForeColor = Color.White };
 
-            this.modeling = new Toggle(settings.GameMode == TypeGameMode.Modeling);
+            this.modeling = new Toggle(this, settings.GameMode == TypeGameMode.Modeling);
             this.modelInfo = new Label() { Text = "Modeling", ForeColor = Color.White };
 
             this.modelTiming = new Changer(new ValueRange(0, 1000));
@@ -111,19 +111,19 @@ namespace HexagonView.View
             this.columnsInfo = new Label() { Text = "Columns", ForeColor = Color.White };
 
             // Toggle
-            this.lifeEnable = new Toggle(settings.ViewLifeEnable);
+            this.lifeEnable = new Toggle(this, settings.ViewLifeEnable);
 
             // Label
             this.lifeEnableInfo = new Label() { Text = "Life Enable", ForeColor = Color.White };
 
             // Toggle
-            this.lootEnable = new Toggle(settings.ViewLootEnable);
+            this.lootEnable = new Toggle(this, settings.ViewLootEnable);
 
             // Label
             this.lootEnableInfo = new Label() { Text = "Loot Enable", ForeColor = Color.White };
 
             // Toggle
-            this.maxLifeEnable = new Toggle(settings.ViewMaxLife);
+            this.maxLifeEnable = new Toggle(this, settings.ViewMaxLife);
 
             // Label
             this.maxLifeEnableInfo = new Label() { Text = "Max Life Enable", ForeColor = Color.White };
@@ -161,6 +161,7 @@ namespace HexagonView.View
         {
             this.Parent = parent;
             this.Create();
+            this.Designer();
         }
 
         void SaveSettings(GameSettings settings)

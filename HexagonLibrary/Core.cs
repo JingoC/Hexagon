@@ -33,15 +33,14 @@ namespace HexagonLibrary
 
         public Core(GameSettings gameSettings)
         {
-            this.gameSettings = gameSettings;
-
-            this.Reset();
+            this.Reset(gameSettings);
         }
-
-        public void Reset()
+        
+        public void Reset(GameSettings gameSettings)
         {
             this.Name = "CoreHexagon";
-            
+            this.gameSettings = gameSettings;
+
             if (this.GameModeStrategy != null)
             {
                 this.GameModeStrategy.Map.Items.Clear();

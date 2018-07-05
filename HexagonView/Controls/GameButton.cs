@@ -43,6 +43,7 @@ namespace HexagonView.Controls
         public GameButton() : base()
         {
             base.Scale = 1f;
+            this.Designer();
         }
 
         public override void Designer()

@@ -49,7 +49,7 @@ namespace HexagonLibrary.Entity.GameObjects
 
         public GameObject()
         {
-            
+            this.Designer();
         }
 
         public virtual Vector2 TextPosition { get; set; }

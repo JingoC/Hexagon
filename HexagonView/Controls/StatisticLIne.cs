@@ -24,12 +24,9 @@ namespace HexagonView.Controls
     {
         public List<StatisticObject> Items { get; set; } = new List<StatisticObject>();
         private List<Texture2D> textures { get; set; } = new List<Texture2D>();
-
-        int width;
-        int height;
-
-        public override int Height => this.height;
-        public override int Width => this.width;
+        
+        public override int Height => base.Height;
+        public override int Width => base.Width;
 
         public StatisticLine() : this(10, 10)
         {
@@ -74,7 +71,7 @@ namespace HexagonView.Controls
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             foreach(var texture in this.textures)
             {
@@ -82,6 +79,7 @@ namespace HexagonView.Controls
             }
 
             this.textures.Clear();
+            base.Dispose();
         }
     }
 }

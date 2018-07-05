@@ -21,6 +21,7 @@ namespace HexagonView.View
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using MonoGuiFramework.Containers;
 
     class GameStatus
     {
@@ -43,19 +44,18 @@ namespace HexagonView.View
         Core core;
         GameSettings gameSettings;
 
-        Label endMessageLabel = new Label() { Text = String.Empty, ForeColor = Color.Green, Visible = false, DrawOrder = 1 };
+        Label endMessageLabel;
 
         StatisticLine balanceLineSectors;
         StatisticLine balanceLineLife;
 
         GameStatus gameStatus = new GameStatus();
-        Label statusLabel = new Label() { Text = String.Empty, ForeColor = Color.White };
-        Container gameStatusContainer = new Container() { };
+        Label statusLabel;
 
-        GameButton gameControlButton = new GameButton() { Name = "endStepButton", Text = "", ForeColor = Color.Black };
-        GameButton newGameButton = new GameButton() { Name = "newGameButton", Text = "N", ForeColor = Color.Black };
-        GameButton autoAllocationButton = new GameButton() { Name = "autoAllocationButton", Text = "A", ForeColor = Color.Black };
-        GameButton startModelButton = new GameButton() { Name = "startModeButton", Text = "M", ForeColor = Color.Black };
+        GameButton gameControlButton;
+        GameButton newGameButton;
+        GameButton autoAllocationButton;
+        GameButton startModelButton;
 
         Container menu = new Container();
         
@@ -63,22 +63,104 @@ namespace HexagonView.View
 
         public GameActivity(Activity parent) : base(parent)
         {
-            this.gameControlButton.OnClick += GameControlButton_OnClick;
+            this.Scrollable = true;
+            this.gameStatus = new GameStatus();
 
-            this.newGameButton.OnClick += (s, e) => { this.Start(); };
-            this.startModelButton.OnClick += StartModelButton_OnClick;
-            this.autoAllocationButton.OnClick += this.AutoAllocationButton_OnClick;
+            this.Designer();
+        }
 
-            this.gameStatusContainer.Items.Add(this.statusLabel);
+        public override void Designer()
+        {
+            VerticalContainer rows = new VerticalContainer(this) { BorderColor = Color.Red };
+            this.Items.Add(rows);
 
-            this.menu.Items.Add(this.gameControlButton);
-            this.menu.Items.Add(this.newGameButton);
-            this.menu.Items.Add(this.autoAllocationButton);
-            this.menu.Items.Add(this.startModelButton);
+            VerticalContainer top = new VerticalContainer(rows) { Position = new Position(4, 5), BorderColor = Color.Green };
+            rows.Items.Add(top);
+
+            HorizontalContainer content = new HorizontalContainer(rows) { BorderColor = Color.Blue, Position = new Position(0, 0) };
+            rows.Items.Add(content);
+
+            HorizontalContainer content_game = new HorizontalContainer(content) { BorderColor = Color.Yellow };
+            content_game.SetBounds(0, 10, (int)(this.Width * 0.8), (int)(this.Height * 0.7));
+            content.Items.Add(content_game);
             
-            this.Items.Add(this.endMessageLabel);
-            this.Items.Add(this.gameStatusContainer);
-            this.Items.Add(this.menu);
+            VerticalContainer content_menu = new VerticalContainer(content) { BorderColor = Color.Aqua };
+            content.Items.Add(content_menu);
+            
+            this.statusLabel = new Label()
+            {
+                ForeColor = Color.White,
+                Text = "Status",
+                Position = new Position(10, 4)
+            };
+            top.Items.Add(this.statusLabel);
+
+            this.balanceLineSectors = new StatisticLine(this.Width, 10) { DrawOrder = 1, Position = new Position(10, 4) };
+            top.Items.Add(this.balanceLineSectors);
+
+            this.balanceLineLife = new StatisticLine(this.Width, 10) { DrawOrder = 1, Position = new Position(10, 0) };
+            top.Items.Add(this.balanceLineLife);
+
+            this.core = new Core(new GameSettings());
+            content_game.Items.Add(this.core);
+
+            this.newGameButton = new GameButton()
+            {
+                Name = "newGameButton",
+                Text = "N", ForeColor = Color.Black,
+                Position = new Position(0, 10),
+            };
+            this.newGameButton.TextureManager.Textures.Change(3);
+            this.newGameButton.OnClick += (s, e) => this.Start();
+            content_menu.Items.Add(this.newGameButton);
+            
+            this.gameControlButton = new GameButton()
+            {
+                Name = "endStepButton",
+                Text = String.Empty,
+                ForeColor = Color.Black,
+                Position = new Position(0, 10)
+            };
+            this.gameControlButton.OnClick += GameControlButton_OnClick;
+            content_menu.Items.Add(this.gameControlButton);
+            
+            this.autoAllocationButton = new GameButton()
+            {
+                Name = "autoAllocationButton",
+                Text = "A",
+                ForeColor = Color.Black,
+                Position = new Position(0, 10)
+            };
+            this.autoAllocationButton.TextureManager.Textures.Change(0);
+            this.autoAllocationButton.OnClick += this.AutoAllocationButton_OnClick;
+            content_menu.Items.Add(this.autoAllocationButton);
+
+            this.startModelButton = new GameButton()
+            {
+                Name = "startModeButton",
+                Text = "M",
+                ForeColor = Color.Black,
+                Position = new Position(0, 10)
+            };
+            this.startModelButton.TextureManager.Textures.Change(4);
+            this.startModelButton.OnClick += StartModelButton_OnClick;
+            content_menu.Items.Add(this.startModelButton);
+
+            this.endMessageLabel = new Label()
+            {
+                Text = "You Win!",
+                ForeColor = Color.Green,
+                Visible = false,
+                DrawOrder = 1
+            };
+            this.endMessageLabel.Position = new Position(this.Width / 2 - this.endMessageLabel.Width / 2, this.Height / 2 - this.endMessageLabel.Height / 2);
+            this.endMessageLabel.TextureManager.Fonts.Add(Resources.GetResource("endMessageFont") as SpriteFont);
+            this.endMessageLabel.TextureManager.Fonts.Change(this.endMessageLabel.TextureManager.Fonts.Count() - 1);
+            this.Items.Add(endMessageLabel);
+
+            base.Designer();
+            
+            content_menu.Position = new Position(content_game.Width - (this.Width - content_menu.Width - 10), content.Height / 2 - content_menu.Height / 2);
         }
 
         private void AutoAllocationButton_OnClick(object sender, EventArgs e)
@@ -171,45 +253,7 @@ namespace HexagonView.View
 
             base.ChangeActivity(active);
         }
-
-        public override void Designer()
-        {
-            this.balanceLineSectors = new StatisticLine(this.Width, 10);
-            this.balanceLineSectors.DrawOrder = 1;
-
-            this.balanceLineLife = new StatisticLine(this.Width, 10);
-            this.balanceLineLife.DrawOrder = 1;
-            this.gameStatusContainer.Items.Add(this.balanceLineSectors);
-            this.gameStatusContainer.Items.Add(this.balanceLineLife);
-
-            base.Designer();
-
-            this.newGameButton.TextureManager.Textures.Change(3);
-            this.autoAllocationButton.TextureManager.Textures.Change(0);
-            this.startModelButton.TextureManager.Textures.Change(4);
-            
-            this.statusLabel.Position = new Position(5, 2);
-            this.balanceLineSectors.Position = new Position(2, this.statusLabel.Height + (int)this.statusLabel.Position.Absolute.Y + 10);
-            this.balanceLineLife.Position = new Position(2, this.balanceLineSectors.Height + (int)this.balanceLineSectors.Position.Absolute.Y);
-            this.gameStatusContainer.Position = new Position(0, 0);
-
-            this.newGameButton.Position = new Position(10, 10);
-            this.gameControlButton.Position = new Position(10, (int)(this.newGameButton.Position.Absolute.Y + this.newGameButton.Height + 40));
-            this.autoAllocationButton.Position = new Position(10, (int)(this.gameControlButton.Position.Absolute.Y + this.gameControlButton.Height + 40));
-            this.startModelButton.Position = new Position(10, (int)(this.autoAllocationButton.Position.Absolute.Y + this.autoAllocationButton.Height + 40));
-
-            int w = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferWidth;
-            int h = GraphicsSingleton.GetInstance().GetGraphics().PreferredBackBufferHeight;
-
-            this.menu.Position = new Position(w - this.menu.Width - 20, h / 2 - this.menu.Height / 2);
-
-            this.endMessageLabel.Text = "You Win!";
-            this.endMessageLabel.TextureManager.Fonts.Add(Resources.GetResource("endMessageFont") as SpriteFont);
-            this.endMessageLabel.TextureManager.Fonts.Change(this.endMessageLabel.TextureManager.Fonts.Count() - 1);
-            this.endMessageLabel.Position = new Position(this.Width / 2 - this.endMessageLabel.Width / 2,
-                this.Height / 2 - this.endMessageLabel.Height / 2);
-        }
-
+        
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
@@ -283,8 +327,7 @@ namespace HexagonView.View
         public void SetSettings(GameSettings settings)
         {
             this.gameSettings = settings;
-            this.Items.Remove(this.core);
-            this.core = new Core(settings);
+            this.core.Reset(settings);
 
             this.Start();
 
@@ -303,19 +346,16 @@ namespace HexagonView.View
                 }
                 break;
             }
-
-            this.Items.Add(this.core);
         }
         
         public void Start()
         {
-            this.core.Reset();
+            this.core.Reset(this.gameSettings);
             
             this.autoAllocationButton.Visible = false;
 
             this.gameStatus = new GameStatus();
             this.statusLabel.Text = this.gameStatus.ToString();
-            this.core.Position = new Position(10, (int)this.gameStatusContainer.Position.Absolute.Y + this.gameStatusContainer.Height + 15);
 
             this.gameControlButton.TextureManager.Textures.Change(0);
             this.gameControlButton.Text = String.Empty;
