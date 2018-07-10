@@ -9,7 +9,6 @@
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_aqua_checked.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_blue.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_brown.png</File>
-    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_gray.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_green.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_limegreen.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_orange.png</File>
@@ -37,5 +36,6 @@
     <File>D:/gitclone/Hexagon/HexagonWin/Content/background_startpage.png</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/endMessageFont.spritefont</File>
     <File>D:/gitclone/Hexagon/HexagonWin/Content/settingsHeaderFont.spritefont</File>
+    <File>D:/gitclone/Hexagon/HexagonWin/Content/hexagon_gray.png</File>
   </SourceFiles>
 </SourceFileCollection>

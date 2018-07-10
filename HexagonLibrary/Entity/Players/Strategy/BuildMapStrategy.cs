@@ -8,17 +8,19 @@ using HexagonLibrary.Model.Navigation;
 namespace HexagonLibrary.Entity.Players.Strategy
 {
     using HexagonLibrary.Entity.GameObjects;
+    using HexagonLibrary.Model.GameMode;
 
     public class BuildMapStrategy : ICPUStrategy
     {
         private Map map;
         private CPU cpu;
+        private GameSettings settings;
 
         string log = String.Empty;
 
-        public BuildMapStrategy()
+        public BuildMapStrategy(GameSettings settings)
         {
-
+            this.settings = settings;
         }
         
         public string GetLog()
@@ -48,7 +50,11 @@ namespace HexagonLibrary.Entity.Players.Strategy
                 {
                     if (item.Life > 0)
                         if (this.Attack(item))
+                        {
                             IsAttacks = true;
+                            System.Threading.Thread.Sleep(this.settings.DelayOnAction);
+                        }
+                            
                 }
             } while (IsAttacks);
             

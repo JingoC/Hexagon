@@ -41,7 +41,7 @@ namespace HexagonView.View
                 "btn_newgame_idle",
                 "btn_newgame_click"
             }).OfType<Texture2D>());
-            this.newGame.Position = new Position(0, 0);
+            this.newGame.SetBounds(0, 0, this.MaxWidth, this.MaxHeight);
             this.menu.Items.Add(this.newGame);
 
             this.settingsGame = new Button(this.menu) { Name = "settingsGameButton", Scale = 2f };
@@ -50,10 +50,10 @@ namespace HexagonView.View
                 "btn_settings_idle",
                 "btn_settings_click"
             }).OfType<Texture2D>());
-            this.settingsGame.Position = new Position(0, 80);
+            this.settingsGame.SetBounds(0, 80, this.MaxWidth, this.MaxHeight);
             this.menu.Items.Add(this.settingsGame);
 
-            this.menu.SetBounds(this.graphics.Width / 2 - this.menu.Width / 2, this.graphics.Height / 2 - this.menu.Height / 2, this.menu.Width, this.menu.Height);
+            this.menu.SetBounds(Graphics.Width / 2 - this.menu.Width / 2, Graphics.Height / 2 - this.menu.Height / 2, this.menu.Width, this.menu.Height);
 
             this.Items.Add(this.menu);
 

@@ -74,7 +74,7 @@ namespace HexagonLibrary.Model.GameMode
 
             for (int i = this.Players.Count; i < gameSettings.CountPlayers; i++)
             {
-                this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy() });
+                this.CPUs.Add(new CPU() { ID = i, Strategy = new BuildMapStrategy(this.GameSettings) });
             }
 
             this.Players.AddRange(this.CPUs);

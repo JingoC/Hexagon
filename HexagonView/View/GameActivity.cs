@@ -63,7 +63,7 @@ namespace HexagonView.View
 
         public GameActivity(Activity parent) : base(parent)
         {
-            this.Scrollable = true;
+            this.Scrollable = false;
             this.gameStatus = new GameStatus();
 
             this.Designer();
@@ -74,31 +74,41 @@ namespace HexagonView.View
             VerticalContainer rows = new VerticalContainer(this) { BorderColor = Color.Red };
             this.Items.Add(rows);
 
-            VerticalContainer top = new VerticalContainer(rows) { Position = new Position(4, 5), BorderColor = Color.Green };
+            VerticalContainer top = new VerticalContainer(rows) { BorderColor = Color.Green };
+            top.SetBounds(4, 5, 10, 10);
             rows.Items.Add(top);
 
-            HorizontalContainer content = new HorizontalContainer(rows) { BorderColor = Color.Blue, Position = new Position(0, 0) };
+            HorizontalContainer content = new HorizontalContainer(rows) { BorderColor = Color.Blue };
+            content.SetBounds(0, 0, 10, 10);
+            content.TextureScale = ScaleMode.None;
+            content.MaxHeight = this.Height;
+            content.MaxWidth = (int) (this.Width * 0.5f);
+            content.SetBounds(0, 0, this.Width, this.Height);
             rows.Items.Add(content);
 
             HorizontalContainer content_game = new HorizontalContainer(content) { BorderColor = Color.Yellow };
             content_game.SetBounds(0, 10, (int)(this.Width * 0.8), (int)(this.Height * 0.7));
+            content_game.Align = AlignmentType.Left;
             content.Items.Add(content_game);
             
             VerticalContainer content_menu = new VerticalContainer(content) { BorderColor = Color.Aqua };
+            content_menu.Align = AlignmentType.Right | AlignmentType.Middle;
             content.Items.Add(content_menu);
             
             this.statusLabel = new Label()
             {
                 ForeColor = Color.White,
-                Text = "Status",
-                Position = new Position(10, 4)
+                Text = "Status"
             };
+            this.statusLabel.SetBounds(10, 4, 10, 10);
             top.Items.Add(this.statusLabel);
 
-            this.balanceLineSectors = new StatisticLine(this.Width, 10) { DrawOrder = 1, Position = new Position(10, 4) };
+            this.balanceLineSectors = new StatisticLine(this.Width, 10) { DrawOrder = 1 };
+            this.balanceLineSectors.SetBounds(0, 4, this.Width, 10);
             top.Items.Add(this.balanceLineSectors);
 
-            this.balanceLineLife = new StatisticLine(this.Width, 10) { DrawOrder = 1, Position = new Position(10, 0) };
+            this.balanceLineLife = new StatisticLine(this.Width, 10) { DrawOrder = 1 };
+            this.balanceLineLife.SetBounds(0, 0, this.Width, 10);
             top.Items.Add(this.balanceLineLife);
 
             this.core = new Core(new GameSettings());
@@ -108,8 +118,9 @@ namespace HexagonView.View
             {
                 Name = "newGameButton",
                 Text = "N", ForeColor = Color.Black,
-                Position = new Position(0, 10),
+                DrawOrder = 2
             };
+            this.newGameButton.SetBounds(0, 10, 10, 10);
             this.newGameButton.TextureManager.Textures.Change(3);
             this.newGameButton.OnClick += (s, e) => this.Start();
             content_menu.Items.Add(this.newGameButton);
@@ -119,8 +130,9 @@ namespace HexagonView.View
                 Name = "endStepButton",
                 Text = String.Empty,
                 ForeColor = Color.Black,
-                Position = new Position(0, 10)
+                DrawOrder = 2
             };
+            this.gameControlButton.SetBounds(0, 10, 10, 10);
             this.gameControlButton.OnClick += GameControlButton_OnClick;
             content_menu.Items.Add(this.gameControlButton);
             
@@ -129,8 +141,9 @@ namespace HexagonView.View
                 Name = "autoAllocationButton",
                 Text = "A",
                 ForeColor = Color.Black,
-                Position = new Position(0, 10)
+                DrawOrder = 2
             };
+            this.autoAllocationButton.SetBounds(0, 10, 10, 10);
             this.autoAllocationButton.TextureManager.Textures.Change(0);
             this.autoAllocationButton.OnClick += this.AutoAllocationButton_OnClick;
             content_menu.Items.Add(this.autoAllocationButton);
@@ -140,8 +153,9 @@ namespace HexagonView.View
                 Name = "startModeButton",
                 Text = "M",
                 ForeColor = Color.Black,
-                Position = new Position(0, 10)
+                DrawOrder = 2
             };
+            this.startModelButton.SetBounds(0, 10, 10, 10);
             this.startModelButton.TextureManager.Textures.Change(4);
             this.startModelButton.OnClick += StartModelButton_OnClick;
             content_menu.Items.Add(this.startModelButton);
@@ -153,14 +167,14 @@ namespace HexagonView.View
                 Visible = false,
                 DrawOrder = 1
             };
-            this.endMessageLabel.Position = new Position(this.Width / 2 - this.endMessageLabel.Width / 2, this.Height / 2 - this.endMessageLabel.Height / 2);
+            this.endMessageLabel.SetBounds(this.Width / 2 - this.endMessageLabel.Width / 2, this.Height / 2 - this.endMessageLabel.Height / 2, 10, 10);
             this.endMessageLabel.TextureManager.Fonts.Add(Resources.GetResource("endMessageFont") as SpriteFont);
             this.endMessageLabel.TextureManager.Fonts.Change(this.endMessageLabel.TextureManager.Fonts.Count() - 1);
             this.Items.Add(endMessageLabel);
 
             base.Designer();
             
-            content_menu.Position = new Position(content_game.Width - (this.Width - content_menu.Width - 10), content.Height / 2 - content_menu.Height / 2);
+            this.UpdateBounds();
         }
 
         private void AutoAllocationButton_OnClick(object sender, EventArgs e)

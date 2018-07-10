@@ -176,8 +176,8 @@ namespace HexagonView.View
         
         public override void Designer()
         {
-            float w = this.graphics.Width;
-            float h = this.graphics.Height;
+            float w = Graphics.Width;
+            float h = Graphics.Height;
 
             void Designer_GamePlay()
             {

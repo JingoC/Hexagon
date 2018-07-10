@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGuiFramework.Base;
+using MonoGuiFramework.System;
 
 namespace HexagonLibrary.Entity.GameObjects
 {
@@ -25,12 +27,12 @@ namespace HexagonLibrary.Entity.GameObjects
         static public bool LifeEnable { get; set; } = true;
         static public bool LootEnable { get; set; } = true;
         static public bool MaxLifeEnable { get; set; } = true;
-        static public float ScaleHexagon { get; set; } = 1.5f;
+        static public float ScaleHexagon { get; set; } = 0.15f;
 
         public override Position Position
         {
             get => base.Position;
-            set
+            protected set
             {
                 base.Position = value;
                 this.TextPosition = new Vector2(value.Absolute.X + this.Width / 4 + 1, value.Absolute.Y + this.Height / 4 - 1);
@@ -74,9 +76,27 @@ namespace HexagonLibrary.Entity.GameObjects
             this.Scale = HexagonObject.ScaleHexagon;
             this.Designer();
         }
-        
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
+            var font = this.TextureManager.Fonts.Current;
+            if (font != null)
+            {
+                var measure = font.MeasureString(this.Text);
+                int x = (int)(this.Width / 2 - measure.X / 2 + this.Position.Absolute.X);
+                int y = (int)(this.Height / 2 - measure.Y / 2 + this.Position.Absolute.Y);
+
+                Vector2 position = new Vector2(x, y);
+                SpriteBatch.DrawString(this.TextureManager.Fonts.Current, this.Text, position, Color.Black);
+            }
+        }
+
         public override void Designer()
         {
+            if (this.TextureManager.Fonts.Current == null)
+                this.TextureManager.Fonts.Add(Resources.GetResource("defaultFont") as SpriteFont);
             base.Designer();
         }
 

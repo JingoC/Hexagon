@@ -10,7 +10,7 @@ namespace HexagonLibrary.Entity.GameObjects
     using Microsoft.Xna.Framework.Graphics;
 
     using MonoGuiFramework.System;
-    using MonoGuiFramework.Controls;
+    using MonoGuiFramework.Base;
 
     public enum TypeTexture
     {
@@ -31,7 +31,7 @@ namespace HexagonLibrary.Entity.GameObjects
         LastTexture = 13
     }
     
-    public partial class GameObject : MonoObject
+    public partial class GameObject : Control
     {
         public static Color[] Colors = {
             Color.Aqua,
