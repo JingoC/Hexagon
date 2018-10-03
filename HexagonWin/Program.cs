@@ -96,7 +96,7 @@ namespace HexagonWin
 
             Resources.AddJsonLoadResources(json);
 
-            var logger = LoggerSingleton.GetInstance();
+            var logger = Logger.GetInstance();
             logger.Stream = new IOStream();
             logger.Stream.Write += (t) => tb.AppendText(t);
 

@@ -25,8 +25,6 @@ namespace HexagonView.View
 
         public StartPageActivity(Activity parent) : base(parent)
         {
-            var graphics = GraphicsSingleton.GetInstance();
-            this.Designer();
         }
 
         public override void Designer()

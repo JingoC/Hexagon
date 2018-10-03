@@ -68,8 +68,8 @@ namespace HexagonLibrary.Model.StateMachines
         {
             this.state = TypeState.Idle;
             
-            InputSingleton.GetInstance().ClickMouse += Device_ScreenClick;
-            InputSingleton.GetInstance().ClickTouch += Device_ScreenClick;
+            Input.GetInstance().ClickMouse += Device_ScreenClick;
+            Input.GetInstance().ClickTouch += Device_ScreenClick;
         }
 
         private void Device_ScreenClick(object sender, DeviceEventArgs e)

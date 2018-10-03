@@ -45,7 +45,7 @@ namespace HexagonLibrary.Model.GameMode
         public bool ViewLifeEnable { get; set; } = true;
         public bool ViewMaxLife { get; set; } = true;
         public int DelayOnStep { get; set; } = 0;
-        public int DelayOnAction { get; set; } = 100;
+        public int DelayOnAction { get; set; } = 10;
         
         // Hexagon settings
         public Range ScatterLoot { get; set; } = new Range(0, 5);

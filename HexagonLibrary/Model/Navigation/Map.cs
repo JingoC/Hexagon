@@ -122,8 +122,8 @@ namespace HexagonLibrary.Model.Navigation
             if (src.Life < 1)
                 return false;
 
-            int[] percentsPositive = { 30, 60, 80, 100 };
-            int[] percentsNegative = { 25, 15, 5, 0 };
+            int[] percentsPositive = { 60, 80, 100, 100 };
+            int[] percentsNegative = { 15, 5, 2, 0 };
 
             bool isSrcLifeLarge = src.Life >= dst.Life;
             int diff = Math.Abs(src.Life - dst.Life);

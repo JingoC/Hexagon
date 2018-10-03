@@ -159,9 +159,7 @@ namespace HexagonView.View
 
         public SettingsActivity(Activity parent) : base(parent)
         {
-            this.Parent = parent;
-            this.Create();
-            this.Designer();
+            
         }
 
         void SaveSettings(GameSettings settings)
@@ -178,6 +176,8 @@ namespace HexagonView.View
         {
             float w = Graphics.Width;
             float h = Graphics.Height;
+
+            this.Create();
 
             void Designer_GamePlay()
             {
