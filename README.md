@@ -1,3 +1,7 @@
+Required
+---------------------
+MonoGui for VS: http://www.monogame.net/downloads/
+
 Example MonoGui applictaion "Hexagon"
 ---------------------
 
